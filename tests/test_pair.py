@@ -3,7 +3,8 @@ import pytest
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
-from star_tracker.pair import Pair,angleCalculator,generateData,drawKVector,findPossibleCombinations,mergeSort
+from star_tracker.pair import Pair,angleCalculator,generateData,drawKVector,findPossibleCombinations
+from star_tracker.sort import mergeSort
 from star_tracker.loadfile import loadRawData
 
 def test_minor_than():

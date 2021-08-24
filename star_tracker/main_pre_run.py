@@ -1,4 +1,5 @@
-from pair import generateData,Pair,mergeSort,drawKVector
+from pair import generateData,Pair,drawKVector
+from sort import mergeSort
 from loadfile import loadRawData
 import matplotlib.pyplot as plt
 import numpy as np
