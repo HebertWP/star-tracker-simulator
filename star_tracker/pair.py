@@ -2,9 +2,9 @@ import numpy as np
 class Pair:
     #init
     def __init__(self,first_star_ID,second_starID,angle):
-        self.first_star_ID=first_star_ID
-        self.second_starID=second_starID
-        self.angle=angle
+        self.first_star_ID = first_star_ID
+        self.second_starID = second_starID
+        self.angle = angle
        
     def __len__(self):
         res = 1 
@@ -14,13 +14,15 @@ class Pair:
 
     def __str__(self):
         s = '| %d --> %d %.2f |' % (self.first_star_ID, self.second_starID, self.angle)
-        if hasattr(self, "next"):
-            s = s + str(self.next) 
         return s
     
+    def valid(self, ang, st):
+        return (ang - st <= self.angle <= ang + st)
     #minor than
     def __lt__(self,other):
-        return self.angle < other.angle
+        if isinstance(other, Pair):
+            return self.angle < other.angle
+        return self.angle < other
 
     #minor equal to
     def __le__(self,other):
@@ -50,39 +52,3 @@ def angleCalculator(theta1, phi1, theta2, phi2):
     
     ang = np.arccos(x1*x2+y1*y2+z1*z2)
     return ang
-
-def generateData(names,theta,phi,mag,minMag,maxMag,minAng, maxAng):
-    res = [Pair(-1,-1,-1)] * int((len(names) * ( len(names) - 1)) / 2)
-    aux = 0
-    for i in range(len(names) - 1):
-        for y in range(i + 1, len(names)):
-            if (minMag <= mag[i] and mag[i] <= maxMag 
-            and minMag <= mag[y] and mag[y] <= maxMag 
-            and minAng <= (theta[i] - theta[y])*(theta[i] - theta[y]) and (theta[i] - theta[y])*(theta[i] - theta[y]) <= maxAng*maxAng 
-            and minAng <= (phi[i] - phi[y])*(phi[i] - phi[y]) and (phi[i] - phi[y])*(phi[i] - phi[y]) <= maxAng*maxAng):
-                ang = angleCalculator(theta[i], phi[i], theta[y], phi[y])
-                if minAng <= ang <= maxAng :
-                    res[aux] = Pair(names[i],names[y],ang)
-                    aux = aux + 1
-    res=res[0:aux]
-    return res
-
-def drawKVector(kvector,plt,**kwargs):
-    x = range(len(kvector))
-    y = []
-    for i in kvector:
-        y.append(i.angle)
-    plt.scatter(x, y)
-
-def findPossibleCombinations(kvector,ang,var):
-    minAngle = ang - var
-    minIndex = None
-    maxAngle = ang + var
-    maxIndex = None
-    size = len(kvector)
-    for x in range(size):
-        if minIndex == None and kvector[x].angle >= minAngle:
-            minIndex = x
-        if maxIndex == None and kvector[x].angle > maxAngle:
-            maxIndex = x - 1
-    return minIndex, maxIndex

@@ -1,7 +1,7 @@
 import random
 import csv
 
-def generareData(outputFile, minMag, maxMag, starNumbers):
+def creteRandomStarData(outputFile, minMag, maxMag, starNumbers):
     file=open(outputFile,"w")
     fieldnames = ['Numero de catalogacao', 'phi', 'theta', 'Magnitude visual']
     writer = csv.DictWriter(file, fieldnames=fieldnames)

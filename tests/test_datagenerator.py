@@ -1,9 +1,9 @@
 import random
 
-from star_tracker.datagenerator import generareData
+from star_tracker.datagenerator import creteRandomStarData
 
-def test_loadRawData():
+def test_creteRandomStarData():
     random.seed(10)
-    generareData("data/stars.csv",1,7,3000)
+    creteRandomStarData("data/stars.csv", 1, 7, 3000)
 
     assert True == True

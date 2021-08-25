@@ -1,12 +1,11 @@
-from pair import generateData,Pair,drawKVector
-from sort import mergeSort
+from pair import Pair
+from kvector import Kvector
 from loadfile import loadRawData
 import matplotlib.pyplot as plt
 import numpy as np
 
-name, theta, phi, mag = loadRawData("data/stars.csv")
-data = generateData(name,theta,phi,mag, 3, 5, 5*np.pi/180,90*np.pi/180)
-print(len(data))
-mergeSort(data)
-drawKVector(data,plt,markersize=0.001)
-plt.savefig("data/k-vector.png", dpi = 1000, title = 'k-vector', c = 'y')
+k = Kvector.load()
+k.drawKVector(plt, markersize=0.001, title = 'k-vector')
+f = k.search(10*np.pi/180, 0.25*np.pi/180)
+print(len(f))
+plt.savefig("data/k-vector.png")
