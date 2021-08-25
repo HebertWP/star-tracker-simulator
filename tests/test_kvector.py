@@ -17,13 +17,13 @@ def test_save_load_Kvector():
     p.save()
     a = Kvector.load()
     assert str(p) == str(a)
-"""
+
 def test_drawKVector():
-    k = Kvector.loadKvector()
+    k = Kvector.load()
     k.drawKVector(plt, markersize=0.001)
     plt.savefig("data/k-vector.png", dpi = 1000)
     assert True == True
-"""
+
 def test_search():
     id,theta,phi,mag = loadRawData("data/test_data_generator.csv")
     k=Kvector.generateKVectorList(id, theta, phi, mag, 3, 6, 0, 360*np.pi/180)
