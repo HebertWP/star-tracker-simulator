@@ -1,9 +1,9 @@
 import numpy as np
 class Pair:
     #init
-    def __init__(self,first_star_ID,second_starID,angle):
+    def __init__(self,first_star_ID,second_star_ID,angle):
         self.first_star_ID = first_star_ID
-        self.second_starID = second_starID
+        self.second_star_ID = second_star_ID
         self.angle = angle
        
     def __len__(self):
@@ -13,7 +13,7 @@ class Pair:
         return res
 
     def __str__(self):
-        s = '| %d --> %d %.2f |' % (self.first_star_ID, self.second_starID, self.angle)
+        s = '| %d --> %d %.2f |' % (self.first_star_ID, self.second_star_ID, self.angle)
         return s
     
     def valid(self, ang, st):

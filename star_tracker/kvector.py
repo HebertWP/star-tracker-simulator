@@ -55,6 +55,28 @@ class Kvector:
             list[i]=Pair(star_01[i],star_02[i],ang[i])
         return Kvector(list)
 
+    @staticmethod
+    def Pivoting(list_01,list_02):
+        res_01 = [Pair(-1,-1,-1)] * len(list_01)
+        res_02 = [Pair(-1,-1,-1)] * len(list_02)
+        k = 0
+        for i in range(len(list_01)):
+            for j in range(len(list_02)):
+                if ( list_01[i].first_star_ID == list_02[j].first_star_ID ) or ( list_01[i].first_star_ID == list_02[j].second_star_ID ) or ( list_01[i].second_star_ID == list_02[j].first_star_ID ) or ( list_01[i].second_star_ID == list_02[j].second_star_ID ):
+                    res_01[k]=list_01[i]
+                    k += 1
+                    break
+        res_01=res_01[0:k]
+        k =0 
+        for i in range(len(list_02)):
+            for j in range(len(list_01)):
+                if ( list_02[i].first_star_ID == list_01[j].first_star_ID ) or ( list_02[i].first_star_ID == list_01[j].second_star_ID ) or ( list_02[i].second_star_ID == list_01[j].first_star_ID ) or ( list_02[i].second_star_ID == list_01[j].second_star_ID ):
+                    res_02[k]=list_02[i]
+                    k += 1
+                    break
+        res_02=res_02[0:k]
+        return [res_01,res_02]
+    
     def drawKVector(self,plt,**kwargs):
         x = range(len(self.list))
         y = []
@@ -99,4 +121,4 @@ class Kvector:
         return s
 
     def __len__(self):
-        return len(self.list)    
+        return len(self.list)
