@@ -4,7 +4,7 @@ import matplotlib
 try:
     from star_tracker.basic import *
 except ImportError:
-    from basic import *
+    from basic import spherical2catersian
 
 def loadRawData(inputfile):
     stars = pandas.read_csv(inputfile)

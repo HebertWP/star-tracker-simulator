@@ -3,7 +3,7 @@ import pytest
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
-from star_tracker.pair import Pair,angleCalculator
+from star_tracker.pair import Pair
 
 def test_minor_than():
     p1 = Pair(0,1,2)
@@ -44,17 +44,6 @@ def test_print():
     p = Pair(0,1,2)
     s = str(p)
     assert s == '| 0 --> 1 2.00 |'
-
-def test_ang_calculator():
-    to_rad = (np.pi/180)
-    theta1 = 60  * to_rad
-    phi1 = 0 * to_rad
-    theta2 = 30 * to_rad
-    phi2 = 0 * to_rad
-
-    ang = angleCalculator(theta1, phi1, theta2, phi2)
-
-    assert ang == pytest.approx(30 * to_rad)
 
 def test_valid():
     p1 = Pair(0,1,2)

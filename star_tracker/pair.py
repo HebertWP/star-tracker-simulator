@@ -39,16 +39,3 @@ class Pair:
     #bigger than
     def __gt__(self, other):
         return self.angle > other.angle
-
-def angleCalculator(theta1, phi1, theta2, phi2):
-    x1 = np.sin(theta1)*np.cos(phi1)
-    x2 = np.sin(theta2)*np.cos(phi2)
-    
-    y1 = np.sin(theta1)*np.sin(phi1)
-    y2 = np.sin(theta2)*np.sin(phi2)
-    
-    z1 = np.cos(theta1)
-    z2 = np.cos(theta2)
-    
-    ang = np.arccos(x1*x2+y1*y2+z1*z2)
-    return ang

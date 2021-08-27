@@ -2,11 +2,13 @@ import csv
 import pandas
 import importlib
 try:
-    from star_tracker.pair import Pair, angleCalculator
+    from star_tracker.pair import Pair
     from star_tracker.sort import mergeSort
+    from star_tracker.basic import *
 except ImportError:
-    from pair import Pair, angleCalculator
+    from pair import Pair
     from sort import mergeSort
+    from basic import *
 
 class Kvector:
 
@@ -30,14 +32,31 @@ class Kvector:
         kvector = kvector[0:aux]
         mergeSort(kvector)
         return kvector
-
+    
+    def generateTriangleList(names, theta, phi, mag, minMag, maxMag, minAng, maxAng):
+        kvector = [Pair(-1,-1,-1)] * int((len(names) * ( len(names) - 1)) / 2)
+        aux = 0
+        for i in range(len(names) - 1):
+            for y in range(i + 1, len(names)):
+                if (minMag <= mag[i] <= maxMag 
+                and minMag <= mag[y] <= maxMag 
+                and minAng*minAng <= (theta[i] - theta[y])*(theta[i] - theta[y]) <= maxAng*maxAng 
+                and minAng*minAng <= (phi[i] - phi[y])*(phi[i] - phi[y]) <= maxAng*maxAng):
+                    ang = angleCalculator(theta[i], phi[i], theta[y], phi[y])
+                    if minAng <= ang <= maxAng :
+                        kvector[aux] = Pair(names[i],names[y],ang)
+                        aux = aux + 1
+        kvector = kvector[0:aux]
+        mergeSort(kvector)
+        return kvector
+    
     def save(self):
         file = open("data/kvector.csv","w")
         fieldnames = ['star_01', 'star_02', 'ang']
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         for i in range(len(self)):
-            writer.writerow({'star_01': self.list[i].first_star_ID, 'star_02':self.list[i].second_starID, 'ang':self.list[i].angle})
+            writer.writerow({'star_01': self.list[i].first_star_ID, 'star_02':self.list[i].second_star_ID, 'ang':self.list[i].angle})
         file.close()
 
     @staticmethod
