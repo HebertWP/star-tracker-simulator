@@ -22,6 +22,9 @@ class Point:
         except AttributeError:
             other_x, other_y = other
         return np.hypot(self.x - other_x, self.y - other_y)
+    
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
 
 class Rect:
     """A rectangle centred at (cx, cy) with width w and height h."""
@@ -134,7 +137,20 @@ class QuadTree:
                 self.nw.insert(point) or
                 self.se.insert(point) or
                 self.sw.insert(point))
-
+    
+    def remove(self, point):
+        if not self.boundary.contains(point):
+            # The point does not lie inside boundary: bail.
+            return False
+        if point in self.points:
+            self.points.remove(point)
+        if self.divided:
+            return (self.ne.remove(point) or
+                    self.nw.remove(point) or
+                    self.se.remove(point) or
+                    self.sw.remove(point))
+        return False
+        
     def query(self, boundary, found_points):
         """Find the points in the quadtree that lie within boundary."""
 

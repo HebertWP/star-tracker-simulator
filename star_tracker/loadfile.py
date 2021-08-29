@@ -32,7 +32,9 @@ def plotCatalog2D(theta,phi, mag, plt,output):
     plt.scatter(phi,theta, s=mag,c='white')
     plt.title("2-Dimensional Star Catalog")
     plt.xlabel("phi [rad]")
+    plt.xlim(0, 2*pi)
     plt.ylabel("theta [rad]")
+    plt.ylim(0, pi)
     plt.savefig(output)
     plt.close('all')
     

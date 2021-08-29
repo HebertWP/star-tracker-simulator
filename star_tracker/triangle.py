@@ -39,3 +39,17 @@ class Triangle:
         if isinstance(other, Triangle):
             return self.area > other.area
         return self.area > other
+    
+    def valid(self, area, st):
+        return (area - st <= self.area <= area + st)
+    
+    def validMoment(self, moment, st):
+        return (moment - st <= self.moment <= moment + st)
+    @staticmethod
+    def triangleListToNumList(list):
+        res = []
+        for i in list:
+            for j in i.star:
+                if not j in res:
+                    res.append(j)
+        return res

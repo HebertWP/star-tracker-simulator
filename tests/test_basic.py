@@ -22,13 +22,27 @@ def test_ang_calculator():
     assert ang == pytest.approx(30 * to_rad)
 
 def test_distanceCalculator():
-    d = distanceCalculator([0,30*pi/180],[0,0])
+    ang = angleCalculator(0, 0, 30*pi/180, 0)
+    d = distanceCalculator(ang)
     assert d == pytest.approx(0.51, 0.1)
 
 def test_areaCalculator():
-    A = areaCalculator(theta = [0, pi, pi/2], phi = [0, 0, 0])
+    ang1 = angleCalculator(0, 0, pi, 0)
+    ang2 = angleCalculator(0, 0, pi/2, 0)
+    ang3 = angleCalculator(pi, 0, pi/2, 0)
+    a = distanceCalculator(ang1)
+    b = distanceCalculator(ang2)
+    c = distanceCalculator(ang3)
+    A = areaCalculator(a,b,c)
     assert 1 == pytest.approx(A)
 
 def test_momentCalculator():
-    J = momentCalculator(theta = [0, pi, pi/2], phi = [0, 0, 0])
+    ang1 = angleCalculator(0, 0, pi, 0)
+    ang2 = angleCalculator(0, 0, pi/2, 0)
+    ang3 = angleCalculator(pi, 0, pi/2, 0)
+    a = distanceCalculator(ang1)
+    b = distanceCalculator(ang2)
+    c = distanceCalculator(ang3)
+    A = areaCalculator(a,b,c)
+    J = momentCalculator(A,a,b,c)
     assert J == pytest.approx(0.22, 0.1)

@@ -12,7 +12,6 @@ class TestPlotRawData:
     def test_plot3D(self):
         self.loadData()
         ax = plot3D(self.theta,self.phi,self.mag,plt,"data/Catalog Plot 3D.png")
-        plt.savefig("data/plot3D.png", dpi = 1000)
         assert True == True
 
     def test_plot2D(self):
