@@ -36,12 +36,9 @@ class TestPlotRawData:
     def test_plot2D(self):
         self.loadData()
         loadfile.plotCatalog2D(self.ar, self.dec, self.v, plt, "data/Catalog Plot 2D.png")
-        assert True == True
-"""        
+        assert True == True        
+    
     def test_plot3D(self):
         self.loadData()
-        ax = plot3D(self.theta,self.phi,self.mag,plt,"data/Catalog Plot 3D.png")
+        ax = loadfile.plot3D(self.ar, self.dec, self.v, plt, "data/Catalog Plot 3D.png")
         assert True == True
-
-    
-"""

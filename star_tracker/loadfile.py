@@ -3,9 +3,9 @@ import csv
 from numpy import sin,cos,pi
 import matplotlib
 try:
-    from star_tracker.basic import *
+    import star_tracker.basic as basic
 except ImportError:
-    from basic import spherical2catersian
+    import basic
 
 def dat2csv(inputfile, outputfile):
     input = open(inputfile,"r")
@@ -43,7 +43,7 @@ def loadCatalog(inputfile):
         n.append(N[i])
     return n, v, ar, dec
 
-def plotCatalog2D(ar,dec, v, plt,output):
+def plotCatalog2D(ar,dec, v, plt, output):
     plt.figure()
     #mag = [num/10 for num in v]
     ax = plt.axes()
@@ -57,20 +57,21 @@ def plotCatalog2D(ar,dec, v, plt,output):
     plt.savefig(output)
     plt.close('all')
 
-def plot3D(theta, phi, mag, plt, output):
-    x,y,z = spherical2catersian(theta,phi)
-    mag = [num /10 for num in mag]
+def plot3D(ar,dec, v, plt, output):
+    ar = [num*pi/180 for num in ar]
+    dec = [num*pi/180 for num in dec]
+    x,y,z = basic.spherical2catersian(ar, dec)
     plt.figure()
     ax = plt.axes(projection ="3d")
     plt.gca().set_facecolor('k')
     ax.set_axis_off()
     # Creating plot
-    ax.scatter3D(x, y, z, s = mag, color = "white")
+    ax.scatter3D(x, y, z, s = v, color = "white")
     ax.scatter3D(0, 0, 0, s = 1,color = "red")
         
-    #ax.view_init(elev=0, azim=0)
     ax.set_xlabel('X axis')
     ax.set_ylabel('Y axis')
     ax.set_zlabel('Z axis')
-    plt.savefig(output)
+    ax.view_init(elev=35., azim=225)
+    plt.savefig(output,dpi=500)
     plt.close('all')
