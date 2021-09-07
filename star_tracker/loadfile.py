@@ -25,23 +25,23 @@ def dat2csv(inputfile, outputfile):
         except ValueError:
             pass
 
-def loadRawData(inputfile):
-    stars = pandas.read(inputfile)
+def loadCatalog(inputfile):
+    stars = pandas.read_csv(inputfile)
     
-    THETA = stars["theta"]*(pi/180)
-    PHI = stars["phi"]*(pi/180)
-    MAG = stars["Magnitude visual"]
-    NAME = stars["Numero de catalogacao"]
+    DEC = stars["Declinacao (delta)"]
+    AR = stars["Ascensao  reta(alpha)"]
+    V = stars["Magnitude visual(V)"]
+    N = stars["Numero de catalogacao(HIP)"]
     
     size = stars.shape
     size = size[0]
-    theta,phi,mag,name = [],[],[],[]
+    ar,dec,v,n = [],[],[],[]
     for i in range(size):
-        theta.append(THETA[i])
-        phi.append(PHI[i])
-        mag.append(MAG[i])
-        name.append(NAME[i])
-    return name, theta, phi, mag
+        ar.append(AR[i])
+        dec.append(DEC[i])
+        v.append(V[i])
+        n.append(N[i])
+    return n, v, ar, dec
 
 def plotCatalog2D(theta,phi, mag, plt,output):
     plt.figure()

@@ -1,3 +1,4 @@
+from numpy.core.fromnumeric import size
 import pandas
 import pytest
 import star_tracker.loadfile as loadfile
@@ -23,10 +24,15 @@ def test_loadrawdatapair():
     assert id == [0,1,3,5], phi(0) == 1
 
     assert True == True
+"""
 class TestPlotRawData:
     def loadData(self):
-        self.id, self.theta, self.phi, self.mag = loadRawData("data/stars.csv")
-        
+        self.n, self.v, self.ar, self.dec = loadfile.loadCatalog("data/stars.csv")
+
+    def test_loadCatalog(self):
+        self.loadData()
+        assert size(self.n) == size(self.dec)
+"""        
     def test_plot3D(self):
         self.loadData()
         ax = plot3D(self.theta,self.phi,self.mag,plt,"data/Catalog Plot 3D.png")

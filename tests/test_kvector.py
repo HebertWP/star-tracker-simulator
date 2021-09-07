@@ -1,10 +1,10 @@
+"""
 from star_tracker.basic import angleCalculator
 from numpy import pi
 import matplotlib.pyplot as plt
 from star_tracker.kvector import Kvector
 from star_tracker.loadfile import loadRawData, plotCatalog2D
 class TestKvector:
-    """
     def test_generateTriadList(self):
         id,theta,phi,mag = loadRawData("data/stars.csv")
         l = Kvector.generateTriadList(id, theta, phi, 30*np.pi/180)
@@ -24,7 +24,6 @@ class TestKvector:
         k.drawKVector(plt, markersize=0.001)
         plt.savefig("data/k-vector.png", dpi = 1000)
         assert True == True
-    """
     def test_search(self):
         k = Kvector.load()
         theta = [46.0, 44.18, 29.68, 29.84, 27.64, 41.28, 26.96, 34.04, 31.96, 33.51, 50.55]
@@ -39,7 +38,6 @@ class TestKvector:
 
         m = k.search(ang, 0.15*pi/180)
         assert m == [649, 20, 22, 32, 124, 204, 1277, 1456, 256, 1199, 1476]
-    """
     def test_pivoting(self):
         k = Kvector.load()
         k.drawKVector(plt, markersize=0.001, title = 'k-vector')
