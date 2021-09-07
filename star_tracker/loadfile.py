@@ -43,20 +43,19 @@ def loadCatalog(inputfile):
         n.append(N[i])
     return n, v, ar, dec
 
-def plotCatalog2D(theta,phi, mag, plt,output):
+def plotCatalog2D(ar,dec, v, plt,output):
     plt.figure()
-    mag = [num/10 for num in mag]
+    #mag = [num/10 for num in v]
     ax = plt.axes()
     ax.set_facecolor("k")
-    plt.scatter(phi,theta, s=mag,c='white')
-    plt.title("2-Dimensional Star Catalog")
-    plt.xlabel("phi [rad]")
-    plt.xlim(0, 2*pi)
-    plt.ylabel("theta [rad]")
-    plt.ylim(0, pi)
+    plt.scatter(ar, dec, s=v, c='white')
+    plt.title("Catalogo Estrelar 2D")
+    plt.xlabel("Ascensao  reta [deg]")
+    plt.xlim(0, 360)
+    plt.ylabel("Declinacao [deg]")
+    plt.ylim(-90, 90)
     plt.savefig(output)
     plt.close('all')
-    
 
 def plot3D(theta, phi, mag, plt, output):
     x,y,z = spherical2catersian(theta,phi)

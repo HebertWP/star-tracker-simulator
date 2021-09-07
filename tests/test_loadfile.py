@@ -32,14 +32,16 @@ class TestPlotRawData:
     def test_loadCatalog(self):
         self.loadData()
         assert size(self.n) == size(self.dec)
+    
+    def test_plot2D(self):
+        self.loadData()
+        loadfile.plotCatalog2D(self.ar, self.dec, self.v, plt, "data/Catalog Plot 2D.png")
+        assert True == True
 """        
     def test_plot3D(self):
         self.loadData()
         ax = plot3D(self.theta,self.phi,self.mag,plt,"data/Catalog Plot 3D.png")
         assert True == True
 
-    def test_plot2D(self):
-        self.loadData()
-        plotCatalog2D(self.theta, self.phi,self.mag,plt,"data/Catalog Plot 2D.png")
-        assert True == True
+    
 """
