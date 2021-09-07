@@ -4,11 +4,11 @@ import pytest
 
 def test_spherical2catersian_list():
     x, y, z = spherical2catersian([0],[0])
-    assert [x, y, z] == [[0.0], [0.0], [1.0]]
+    assert [x, y, z] == [[1.0], [0.0], [0.0]]
 
 def test_spherical2catersian_num():
     x, y, z = spherical2catersian(0,0)
-    assert [x, y, z] == [0.0, 0.0, 1.0]
+    assert [x, y, z] == [1.0, 0.0, 0.0]
 
 def test_ang_calculator():
     to_rad = (pi/180)

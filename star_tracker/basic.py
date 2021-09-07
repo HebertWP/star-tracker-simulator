@@ -1,16 +1,16 @@
 from numpy import sin, cos, arccos,sqrt
 
-def spherical2catersian(theta,phi):
-    if isinstance(theta,list):
+def spherical2catersian(ar, dec):
+    if isinstance(ar,list):
         x,y,z = [],[],[]
-        for i,j in zip(theta,phi):
-            x.append(sin(i)*cos(j))
-            y.append(sin(i)*sin(j))
-            z.append(cos(i))    
+        for i,j in zip(dec, ar):
+            x.append(cos(i)*cos(j))
+            y.append(cos(i)*sin(j))
+            z.append(sin(i))    
     else:
-        x = sin(theta)*cos(phi)
-        y = sin(theta)*sin(phi)
-        z = cos(theta)
+        x = cos(dec)*cos(ar)
+        y = cos(dec)*sin(ar)
+        z = sin(dec)
     return x, y, z
 
 def angleCalculator(theta1, phi1, theta2, phi2):
