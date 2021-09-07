@@ -239,7 +239,7 @@ class Kvector:
                     aux += 1
             if aux == len(lists) - 1:
                 if res != -1:
-                    return -1
+                    return -2
                 res = lists[0][i]
         return res
 
