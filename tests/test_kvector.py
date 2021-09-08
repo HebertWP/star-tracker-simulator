@@ -56,21 +56,47 @@ class TestKvector:
         k.drawKVector(plt, markersize=0.001)
         plt.savefig("data/k-vector.png", dpi = 1000)
         assert True == True
-"""
-    def test_search(self):
-        k = Kvector.load()
-        theta = [46.0, 44.18, 29.68, 29.84, 27.64, 41.28, 26.96, 34.04, 31.96, 33.51, 50.55]
-        phi = [148.34, 149.06, 164.06, 176.36, 165.86, 152.37, 172.30, 161.17, 157.04,162.52,147.15]
-        theta = [t*pi/180 for t in theta]
-        phi = [p*pi/180 for p in phi]
-        ang = []
-        for i in range(len(theta)):
-            ang.append([])
-            for j in range(len(theta)):
-                ang[i].append(angleCalculator(theta[i],phi[i],theta[j],phi[j]))
+    
+    def test_binarySearch(self):
+        k = kvector.load()
+        l=k.binarySearch(0.11032827368551994, 0.0001, 0, len(k)-1)
+        assert l == 62446
 
-        m = k.search(ang, 0.15*pi/180)
+    def test_search3Stars(self):
+        k = kvector.load()
+        n   = [       54872,       63125,      57632]
+        ar  = basic.deg2rad([168.52671705, 194.00767051, 177.26615977])
+        dec = basic.deg2rad([20.52403384,  38.31824617, 14.57233687])
+        a0 = kvector.angleCalculator([ar[0],dec[0]],[ar[1],dec[1]])
+        a1 = kvector.angleCalculator([ar[1],dec[1]],[ar[2],dec[2]])
+        a2 = kvector.angleCalculator([ar[2],dec[2]],[ar[0],dec[0]])
+        a = kvector.distanceCalculator(a0)
+        b = kvector.distanceCalculator(a1)
+        c = kvector.distanceCalculator(a2)
+        st=kvector.distancesSandardDeviationCalculator(a0, 0.05*pi/180)
+        m = k.search3Stars(a,b,c, st)
+        o = 'len = {},'.format(len(m))
+        for i in m:
+            o +=str(i) 
+        assert o == 'len = 1,| 54872,63125,57632 --> 0.04 0.00 |'
+
+"""           
+    def test_search(self):
+        k = kvector.load()
+        n   = [       8796,       14135,      17847]
+        ar  = [28.27041595, 45.56991279, 57.29054669]
+        dec = [29.57939727,  4.08992539, 24.05352412]
+        ar = [t*pi/180 for t in ar]
+        dec = [p*pi/180 for p in dec]
+        ang = []
+        for i in range(len(n)):
+            ang.append([])
+            for j in range(len(n)):
+                ang[i].append(kvector.angleCalculator([ar[i],dec[i]],[ar[j],dec[j]]))
+
+        m = k.search(ang, 0.5*pi/180)
         assert m == [649, 20, 22, 32, 124, 204, 1277, 1456, 256, 1199, 1476]
+
     def test_pivoting(self):
         k = Kvector.load()
         k.drawKVector(plt, markersize=0.001, title = 'k-vector')
@@ -80,4 +106,4 @@ class TestKvector:
         f3 = k.search(35*np.pi/180, 0.25*np.pi/180)
         f1,f3 = Kvector.Pivoting(f1,f3)
         assert len(f3) >= 100
-    """
+"""

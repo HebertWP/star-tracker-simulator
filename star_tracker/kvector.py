@@ -25,23 +25,23 @@ except ImportError:
 def expandPoints(names,ar, dec, maxAng):
     points = []
     for i in range(len(names)):
-        points.append(Point(ar[i], dec[i], [names[i], dec[i], ar[i]]))
+        points.append(Point(ar[i], dec[i], {"id":names[i], "dec":dec[i], "ar":ar[i]}))
         if ar[i] > 360 - maxAng :
             if dec[i] < -90 + maxAng:
-                points.append(Point(ar[i]-360, dec[i] + 180, [names[i], dec[i], ar[i]]))
+                points.append(Point(ar[i]-360, dec[i] + 180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
             elif dec[i] > 90 - maxAng:
-                points.append(Point(ar[i]-360, dec[i] - 180, [names[i], dec[i], ar[i]]))
-            points.append(Point(ar[i] - 360, dec[i],[names[i], dec[i], ar[i]]))
+                points.append(Point(ar[i]-360, dec[i] - 180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
+            points.append(Point(ar[i] - 360, dec[i],  {"id":names[i], "dec":dec[i], "ar":ar[i]}))
         if ar[i] < maxAng :
             if dec[i] < -90 + maxAng:
-                points.append(Point(ar[i]+360, dec[i]+180, [names[i], dec[i], ar[i]]))
+                points.append(Point(ar[i]+360, dec[i]+180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
             elif dec[i]> 90 - maxAng:
-                points.append(Point(ar[i]+360, dec[i]-180, [names[i], dec[i], ar[i]]))
-            points.append(Point(ar[i] + 360, dec[i], [names[i], dec[i], ar[i]]))
+                points.append(Point(ar[i]+360, dec[i]-180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
+            points.append(Point(ar[i] + 360, dec[i], {"id":names[i], "dec":dec[i], "ar":ar[i]}))
         if dec[i] > 90 - maxAng:
-            points.append(Point(ar[i], dec[i] - 180, [names[i], dec[i], ar[i]]))
+            points.append(Point(ar[i], dec[i] - 180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
         if dec[i] < -90+maxAng :
-            points.append(Point(ar[i], dec[i] + 180, [names[i], dec[i], ar[i]]))
+            points.append(Point(ar[i], dec[i] + 180, {"id":names[i], "dec":dec[i], "ar":ar[i]}))
     return points
     
 def cretequatTree(maxAng, points):
@@ -91,31 +91,34 @@ def removePoint(qtree : QuadTree, point):
 
 def triagleCalculator(list, ref:Point, maxAng):
     maxAng = maxAng*pi/180
-    nameS1 = ref.payload[0]
-    decS1 = ref.payload[1]*pi/180
-    arS1 = ref.payload[2]*pi/180
+    nameS1 = ref.payload["id"]
+    decS1 = deg2rad(ref.payload["dec"])
+    arS1 = deg2rad(ref.payload["ar"])
     kvector = []
-    #if ref in list:
     list.remove(ref)
     for i in range(len(list)):
-        nameS2 = list[i].payload[0]
-        decS2 = list[i].payload[1]*pi/180
-        arS2 = list[i].payload[2]*pi/180
+        nameS2 = list[i].payload["id"]
+        decS2 = deg2rad(list[i].payload["dec"])
+        arS2 = deg2rad(list[i].payload["ar"])
         for j in range(i+1,len(list)):
-            nameS3 = list[j].payload[0]
-            decS3 = list[j].payload[1]*pi/180
-            arS3 = list[j].payload[2]*pi/180
-            ang1 = angleCalculator([arS2, decS2],[arS3, decS3])
-            if ang1 <= maxAng :
-                ang2 = angleCalculator([arS1, decS1], [arS3, decS3])
+            nameS3 = list[j].payload["id"]
+            decS3 = deg2rad(list[j].payload["dec"])
+            arS3 = deg2rad(list[j].payload["ar"])
+            ang1 = angleCalculator([arS1, decS1],[arS2, decS2])
+            if ang1 <= maxAng:
+                ang2 = angleCalculator([arS2, decS2], [arS3, decS3])
                 if ang2 <= maxAng:
-                    ang3 = angleCalculator([arS1, decS1], [arS2, decS2])
+                    ang3 = angleCalculator([arS3, decS3], [arS1, decS1])
                     if ang3 <= maxAng:
                         a = distanceCalculator(ang1)
                         b = distanceCalculator(ang2)
                         c = distanceCalculator(ang3)
                         A = areaCalculator(a, b, c)
                         J = momentCalculator(A,a,b,c)
+                        #if(nameS1 == 54872 and nameS2 == 63125):
+                        #    print('p1.ar = {}, p1.dec = {}'.format(arS1, decS1))    
+                        #    print('a0 = {}, a1 = {}, a2 = {}'.format(ang1, ang2, ang2))    
+                        #    print('A = {}, J = {}, a = {}, b = {}, c = {}'.format(A,J,a,b,c))
                         kvector.append(Triangle([nameS1, nameS2, nameS3],A,J))
     return kvector
 
@@ -127,7 +130,7 @@ def generateTriadList(names, ar, dec, maxAng):
             found_points = []
             region = Rect(ar[i], dec[i], 2*maxAng, 2*maxAng)
             qtree.query(region, found_points)
-            p = Point(ar[i], dec[i], [names[i], ar[i], dec[i]])
+            p = Point(ar[i], dec[i], {"id":names[i], "dec":dec[i], "ar":ar[i]})
             removePoint(qtree, p)
             list += triagleCalculator(found_points,p,maxAng)
         plt.savefig("data/aux.png")
@@ -182,18 +185,34 @@ class Kvector:
         for i in self.list:
             y.append(i.area)
         plt.scatter(x, y)
-"""
-    def binarySearch(self, ang, st, l, r):
+    
+    def binarySearch(self, area, st, l, r):
         m = int((r + l) / 2)
         if l > r:
             return -1
         
-        if self.list[m].valid(ang,st):
+        if self.list[m].valid(area,st):
             return m
-        if self.list[m] < ang:
-            return self.binarySearch(ang,st,m+1,r)
+        if self.list[m] < area:
+            return self.binarySearch(area, st,m+1,r)
         else:
-            return self.binarySearch(ang,st,l,m-1)
+            return self.binarySearch(area, st,l,m-1)
+
+    def search3Stars(self,a,b,c,st):
+        A = areaCalculator(a,b,c)
+        dp_A = areaSandardDeviationCalculator(a, st, b, st, c, st)
+        J = momentCalculator(A,a,b,c)
+        dp_J = momentSandardDeviationCalculator(A,dp_A, a,st, b,st, c,st)
+        m = self.binarySearch(A, dp_A, 0, len(self) - 1)
+        #print('A = {}, J = {}, a = {}, b = {}, c = {}'.format(A,J,a,b,c))
+        if m == -1:
+            return []
+        aux = self.list[self.findMin(A, dp_A, m) : self.findMax(A, dp_A, m)]
+        res=[]
+        for i in aux:
+            if i.validMoment(J,dp_J):
+                res.append(i)
+        return res
 
     def findMin(self,ang,st,m):
         i = m
@@ -239,24 +258,4 @@ class Kvector:
                 res = lists[0][i]
         return res
 
-    def search3Stars(self,ang,st):
-        a = distanceCalculator(ang[0])
-        dp_a = distancesSandardDeviationCalculator(ang[0],st)
-        b = distanceCalculator(ang[1])
-        dp_b = distancesSandardDeviationCalculator(ang[1],st)
-        c = distanceCalculator(ang[2])
-        dp_c = distancesSandardDeviationCalculator(ang[2],st)
-        A = areaCalculator(a,b,c)
-        dp_A = areaSandardDeviationCalculator(a,dp_a,b,dp_b,c,dp_c)
-        J = momentCalculator(A,a,b,c)
-        dp_J = momentSandardDeviationCalculator(A,dp_A,a,dp_a,b,dp_b,c,dp_c)
-        m = self.binarySearch(A, dp_A, 0, len(self) - 1)
-        if m == -1:
-            return []
-        aux = self.list[self.findMin(A, dp_A, m) : self.findMax(A, dp_A, m)]
-        res=[]
-        for i in aux:
-            if i.validMoment(J,dp_J):
-                res.append(i)
-        return res
-"""
+    
