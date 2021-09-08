@@ -1,4 +1,4 @@
-from numpy import sin, cos, arccos,sqrt
+from numpy import sin, cos, arccos,sqrt, pi
 
 def spherical2catersian(ar, dec):
     if isinstance(ar,list):
@@ -12,6 +12,15 @@ def spherical2catersian(ar, dec):
         y = cos(dec)*sin(ar)
         z = sin(dec)
     return x, y, z
+
+def deg2rad(ang):
+    if isinstance(ang,list):
+        out = []
+        for i in ang:
+            out.append(i*pi/180)    
+    else:
+        out = ang*pi/180
+    return out
 
 def angleCalculator(p1, p2):
     x1,y1,z1 = spherical2catersian(p1[0], p1[1])
