@@ -13,15 +13,9 @@ def spherical2catersian(ar, dec):
         z = sin(dec)
     return x, y, z
 
-def angleCalculator(theta1, phi1, theta2, phi2):
-    x1 = sin(theta1)*cos(phi1)
-    x2 = sin(theta2)*cos(phi2)
-    
-    y1 = sin(theta1)*sin(phi1)
-    y2 = sin(theta2)*sin(phi2)
-    
-    z1 = cos(theta1)
-    z2 = cos(theta2)
+def angleCalculator(p1, p2):
+    x1,y1,z1 = spherical2catersian(p1[0], p1[1])
+    x2,y2,z2 = spherical2catersian(p2[0], p2[1])
     
     ang = arccos(x1*x2 + y1*y2 + z1*z2)
     return ang

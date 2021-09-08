@@ -17,19 +17,19 @@ def test_ang_calculator():
     theta2 = 30 * to_rad
     phi2 = 0 * to_rad
 
-    ang = angleCalculator(theta1, phi1, theta2, phi2)
+    ang = angleCalculator([theta1, phi1], [theta2, phi2])
 
     assert ang == pytest.approx(30 * to_rad)
 
 def test_distanceCalculator():
-    ang = angleCalculator(0, 0, 30*pi/180, 0)
+    ang = angleCalculator([0, 0], [30*pi/180, 0])
     d = distanceCalculator(ang)
     assert d == pytest.approx(0.51, 0.1)
 
 def test_areaCalculator():
-    ang1 = angleCalculator(0, 0, pi, 0)
-    ang2 = angleCalculator(0, 0, pi/2, 0)
-    ang3 = angleCalculator(pi, 0, pi/2, 0)
+    ang1 = angleCalculator([0, 0], [pi, 0])
+    ang2 = angleCalculator([0, 0], [pi/2, 0])
+    ang3 = angleCalculator([pi, 0], [pi/2, 0])
     a = distanceCalculator(ang1)
     b = distanceCalculator(ang2)
     c = distanceCalculator(ang3)
@@ -37,9 +37,9 @@ def test_areaCalculator():
     assert 1 == pytest.approx(A)
 
 def test_momentCalculator():
-    ang1 = angleCalculator(0, 0, pi, 0)
-    ang2 = angleCalculator(0, 0, pi/2, 0)
-    ang3 = angleCalculator(pi, 0, pi/2, 0)
+    ang1 = angleCalculator([0, 0], [pi, 0])
+    ang2 = angleCalculator([0, 0], [pi/2, 0])
+    ang3 = angleCalculator([pi, 0], [pi/2, 0])
     a = distanceCalculator(ang1)
     b = distanceCalculator(ang2)
     c = distanceCalculator(ang3)
