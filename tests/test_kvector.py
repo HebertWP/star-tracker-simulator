@@ -1,29 +1,62 @@
-"""
-from star_tracker.basic import angleCalculator
+import star_tracker.basic as basic
 from numpy import pi
 import matplotlib.pyplot as plt
-from star_tracker.kvector import Kvector
-from star_tracker.loadfile import loadRawData, plotCatalog2D
+import star_tracker.kvector as kvector
+import star_tracker.loadfile as loadfile
+import star_tracker.quadtree as quadtree
 class TestKvector:
+    def loadData(self):
+        self.n, self.v, self.ar, self.dec = loadfile.loadCatalog("data/stars.csv")
+    
+    def test_cretequatTree(self):
+        points = [quadtree.Point(10,0),quadtree.Point(10,80),quadtree.Point(10,-80),quadtree.Point(350,0),quadtree.Point(350,80),quadtree.Point(350,-80),quadtree.Point(180,0),quadtree.Point(180,80),quadtree.Point(180,-80)]
+        kvector.cretequatTree(30,points)
+        assert True == True
+    
+    def test_expandPoints(self):
+        self.loadData()
+        #n   = [0,   1,   2,   3,   4,   5,   6,   7, 8]
+        #ar  = [10, 10,  10, 340, 350, 355, 180, 180, 180]
+        #dec = [0,  80, -75, -10,  80, -80,  20,  80, -60]
+        points = kvector.expandPoints(self.n, self.ar, self.dec, 30)
+        kvector.cretequatTree(30,points)
+        assert True == True
+    
+    def test_removePoints(self):
+        self.loadData()
+        points = kvector.expandPoints(self.n, self.ar, self.dec, 30)
+        qtree=kvector.cretequatTree(30,points)
+        for i in range(len(self.n)):
+            p = quadtree.Point(self.ar[i], self.dec[i], [self.n[i], self.ar[i], self.dec[i]])
+            kvector.removePoint(qtree, p)
+        fig = plt.figure()
+        points = []
+        qtree.query(quadtree.Rect(180, 0, 360 + 2*30, 180 + 2 * 30),points)
+        plt.scatter([p.x for p in points], [p.y for p in points], s=10)
+        
+        plt.savefig("data/test_remove_points.png")
+        assert True == True
+        
     def test_generateTriadList(self):
-        id,theta,phi,mag = loadRawData("data/stars.csv")
-        l = Kvector.generateTriadList(id, theta, phi, 30*np.pi/180)
-        k=Kvector(l)
+        self.loadData()
+        
+        self.l = kvector.generateTriadList(self.n, self.ar, self.dec, 30)
+        self.k = kvector.Kvector(self.l)
         assert True == True
         #assert str(k) == '2'
-    
+
     def test_save_load_Kvector(self):
-        id,theta,phi,mag = loadRawData("data/stars.csv")
-        l = Kvector.generateTriadList(id, theta, phi, 30*np.pi/180)
-        k = Kvector(l)
-        k.save()
-        a = Kvector.load()
-        assert str(k) == str(a)
+        self.test_generateTriadList()        
+        self.k.save()
+        a = kvector.load()
+        assert str(self.k) == str(a)
+
     def test_drawKVector(self):
-        k = Kvector.load()
+        k = kvector.load()
         k.drawKVector(plt, markersize=0.001)
         plt.savefig("data/k-vector.png", dpi = 1000)
         assert True == True
+"""
     def test_search(self):
         k = Kvector.load()
         theta = [46.0, 44.18, 29.68, 29.84, 27.64, 41.28, 26.96, 34.04, 31.96, 33.51, 50.55]
