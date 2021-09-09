@@ -225,8 +225,17 @@ class Kvector:
         while i < len(self.list) and self.list[i].valid(area,st):
             i += 1
         return i
-
-    def search(self,ang,st):
+    
+    def pivot(self,lists):
+        for i in lists:
+            for j in list(i):
+                for k in lists:
+                    if not j.isContainedinList(k):
+                        i.remove(j)
+                        break
+                
+"""
+    def search(self,dist,st):
         n = len(ang[0])
         stars = [[] for i in range(n)]
         for i in range(n):
@@ -257,5 +266,4 @@ class Kvector:
                     return -2
                 res = lists[0][i]
         return res
-
-    
+"""

@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import star_tracker.kvector as kvector
 import star_tracker.loadfile as loadfile
 import star_tracker.quadtree as quadtree
+from star_tracker.triangle import *
+
 class TestKvector:
     def loadData(self):
         self.n, self.v, self.ar, self.dec = loadfile.loadCatalog("data/stars.csv")
@@ -79,6 +81,40 @@ class TestKvector:
         for i in m:
             o +=str(i) 
         assert o == 'len = 1,| 54872,63125,57632 --> 0.04 0.00 |'
+    
+    def test_pivot(self):
+        k = kvector.load()
+        lists = []
+        lists.append([
+            Triangle([113, 104, 86],3,5),
+            Triangle([122, 134, 111],3,5),
+            Triangle([172, 154, 175],3,5),
+            Triangle([142, 151, 166],3,5)])
+        lists.append([
+            Triangle([322, 323, 336],3,5), 
+            Triangle([148, 151, 142],3,5),
+            Triangle([70, 63, 66],3,5),
+            Triangle([397, 401, 411],3,5),
+            Triangle([456, 457, 467],3,5)])
+        lists.append([
+            Triangle([339, 330, 371],3,5), 
+            Triangle([142, 148, 166],3,5),
+            Triangle([49, 57, 59],3,5),
+            Triangle([334, 325, 367],3,5),
+            Triangle([167, 181, 109],3,5),
+            Triangle([300, 287, 322],3,5)])
+        lists.append([
+            Triangle([81, 73, 92],3,5), 
+            Triangle([148, 151, 125],3,5),
+            Triangle([151, 148, 166],3,5)])
+        
+        k.pivot(lists)
+        s = ''
+        for i in lists:
+            for j in i:
+                s += str(j)
+            s += '----'
+        assert s == '| 142,151,166 --> 3.00 5.00 |----| 148,151,142 --> 3.00 5.00 |----| 142,148,166 --> 3.00 5.00 |----| 151,148,166 --> 3.00 5.00 |----'
 
 """           
     def test_search(self):
@@ -96,14 +132,4 @@ class TestKvector:
 
         m = k.search(ang, 0.5*pi/180)
         assert m == [649, 20, 22, 32, 124, 204, 1277, 1456, 256, 1199, 1476]
-
-    def test_pivoting(self):
-        k = Kvector.load()
-        k.drawKVector(plt, markersize=0.001, title = 'k-vector')
-        f1 = k.search(10*np.pi/180, 0.25*np.pi/180)
-        f2 = k.search(25*np.pi/180, 0.25*np.pi/180)
-        f1,f2 = Kvector.Pivoting(f1,f2)
-        f3 = k.search(35*np.pi/180, 0.25*np.pi/180)
-        f1,f3 = Kvector.Pivoting(f1,f3)
-        assert len(f3) >= 100
 """
