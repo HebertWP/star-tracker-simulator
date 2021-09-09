@@ -23,7 +23,8 @@ def test_isContained():
     t3 = Triangle([ 70,  63,  66],3,5)
     assert True == t1.isContained(t2)
     assert False == t1.isContained(t3)
-
+    assert True == t1.isContained(t1)
+    
 def test_isContainedinList():
     l1 = [
         Triangle([113, 104, 86],3,5),
@@ -42,3 +43,4 @@ def test_isContainedinList():
     assert False == l1[1].isContainedinList(l2)
     assert False == l1[2].isContainedinList(l2)
     assert True == l1[3].isContainedinList(l2)
+    assert True == l1[3].isContainedinList(l1)
