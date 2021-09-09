@@ -56,6 +56,12 @@ class Triangle:
             return True
         return False
 
+    def isContainedinList(self, other):
+        for i in other:
+            if self.isContained(i):
+                return True
+        return False
+
     @staticmethod
     def triangleListToNumList(list):
         res = []
