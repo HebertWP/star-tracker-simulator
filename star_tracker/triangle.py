@@ -45,6 +45,17 @@ class Triangle:
     
     def validMoment(self, moment, st):
         return (moment - st <= self.moment <= moment + st)
+    
+    def isContained(self, other):
+        cont = 0
+        for i in range(len(self.star)):
+            for j in range(len(self.star)):
+                if(self.star[i] == other.star[j]):
+                    cont += 1
+        if cont >= 2:
+            return True
+        return False
+
     @staticmethod
     def triangleListToNumList(list):
         res = []
