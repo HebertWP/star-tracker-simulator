@@ -63,3 +63,6 @@ target/
 
 #vscode config paste
 .vscode
+
+#GUI auxiliar operation data
+star_tracker/data

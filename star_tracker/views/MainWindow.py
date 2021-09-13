@@ -19,16 +19,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self._model = model
         self._main_controller = main_controller
+        
         #connect to controller
         self.loadStarsFile.clicked.connect(self.openStars)
         self.view3D_icon.clicked.connect(self._main_controller.change_view_plot_mode)
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
+        
         #event signal
         self._model.stars_input_file_changed.connect(self.updade_plot)
         #self._model.view_plot_mode_changed.connect(self.change_mode_view)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
     
+        #load saved data
+        self._model.load()
+
     def openStars(self):
         file = QFileDialog(self)
         file.setNameFilter("*.csv")
@@ -40,8 +45,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._main_controller.change_stars_input_file(fileName)
             
     def updade_plot(self,value):
-        n, v, ar, dec = loadfile.loadCatalog(value)
-        self.viewPlot.plotCatalog2D(ar,dec,v)
+        try:
+            n, v, ar, dec = loadfile.loadCatalog(value)
+            self.viewPlot.plotCatalog2D(ar,dec,v)
+        except FileNotFoundError:
+            pass
     
     def change_mode_view_icon(self,value):
         icon1 = QIcon()

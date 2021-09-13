@@ -5,3 +5,5 @@ http://lsi.fotonica.ufpe.br/fontana/Eletromagnetismo1/EletromagnetismoWebPart01/
 http://fma.if.usp.br/~fleming/diffeo/node4.html
 https://querobolsa.com.br/enem/matematica/produto-escalar
 https://pt.wikipedia.org/wiki/Produto_escalar
+https://stackoverflow.com/questions/26698628/mvc-design-with-qt-designer-and-pyqt-pyside/26699122#26699122
+https://www.cheminformania.com/rdkit-gui-browser-with-mvc-using-pyside/
