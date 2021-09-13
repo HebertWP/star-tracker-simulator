@@ -3,7 +3,9 @@ import csv
 from numpy import sin,cos,pi
 import matplotlib
 try:
-    import star_tracker.basic as basic
+    import sys
+    sys.path.append("..")
+    import modules.basic as basic
 except ImportError:
     import basic
 

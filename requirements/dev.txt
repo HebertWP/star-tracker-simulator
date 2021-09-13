@@ -9,3 +9,5 @@ pandas
 numpy
 matplotlib
 tk
+PySide6
+PySide2
