@@ -26,8 +26,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         
         #event signal
-        self._model.stars_input_file_changed.connect(self.updade_plot)
-        #self._model.view_plot_mode_changed.connect(self.change_mode_view)
+        self._model.stars_input_file_changed.connect(self.update_plot)
+        self._model.view_plot_mode_changed.connect(self.change_mode_view_plot)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
     
@@ -44,10 +44,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             fileName = fileName[0]
             self._main_controller.change_stars_input_file(fileName)
             
-    def updade_plot(self,value):
+    def update_plot(self,value):
         try:
             n, v, ar, dec = loadfile.loadCatalog(value)
-            self.viewPlot.plotCatalog2D(ar,dec,v)
+            self.viewPlot.update_data(ar,dec,v)
         except FileNotFoundError:
             pass
     
@@ -63,3 +63,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def change_mode_view_text(self,value):
         self.view3D_text.setChecked(value)
+    
+    def change_mode_view_plot(self,value):
+        self.viewPlot.view3D(value)
