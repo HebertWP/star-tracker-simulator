@@ -13,3 +13,7 @@ class MainController(QObject):
     @Slot(bool)
     def change_view_plot_mode(self, value):
         self._model.view_plot_mode = value
+    
+    @Slot(bool)
+    def load_stars_dialog(self, value):
+        self._model.load_stars_file = value

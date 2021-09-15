@@ -6,7 +6,7 @@ from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
 import modules.loadfile as loadfile
-from model.model import Model
+from model.main_model import MainModel
 from views.MainWindow_ui import Ui_MainWindow
 try:
     from MainWindow_ui import Ui_MainWindow
@@ -14,14 +14,14 @@ except ImportError:
     from views.MainWindow_ui import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self,  model : Model, main_controller, *args, obj=None, **kwargs):
+    def __init__(self,  model : MainModel, main_controller, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self._model = model
         self._main_controller = main_controller
         
         #connect to controller
-        self.loadStarsFile.clicked.connect(self.openStars)
+        self.loadStarsFile.clicked.connect(self._main_controller.load_stars_dialog)
         self.view3D_icon.clicked.connect(self._main_controller.change_view_plot_mode)
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         
@@ -30,11 +30,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._model.view_plot_mode_changed.connect(self.change_mode_view_plot)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
-    
+        self._model.load_stars_file_changed.connect(self.open_stars)
+
         #load saved data
         self._model.load()
 
-    def openStars(self):
+    def open_stars(self):
         file = QFileDialog(self)
         file.setNameFilter("*.csv")
         file.setFileMode(QFileDialog.ExistingFile)

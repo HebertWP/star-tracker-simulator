@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayoutWidget_4 = QWidget(self.centralwidget)
         self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
-        self.verticalLayoutWidget_4.setGeometry(QRect(10, 210, 451, 101))
+        self.verticalLayoutWidget_4.setGeometry(QRect(10, 160, 451, 101))
         self.verticalLayout_8 = QVBoxLayout(self.verticalLayoutWidget_4)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
@@ -122,35 +122,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addLayout(self.horizontalLayout_4)
 
-        self.horizontalLayoutWidget_2 = QWidget(self.centralwidget)
-        self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
-        self.horizontalLayoutWidget_2.setGeometry(QRect(460, 210, 376, 41))
-        self.horizontalLayout_2 = QHBoxLayout(self.horizontalLayoutWidget_2)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.pushButton_4 = QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-
-        self.horizontalLayout_2.addWidget(self.pushButton_4)
-
-        self.pushButton_5 = QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_5.setObjectName(u"pushButton_5")
-
-        self.horizontalLayout_2.addWidget(self.pushButton_5)
-
-        self.pushButton_6 = QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_6.setObjectName(u"pushButton_6")
-
-        self.horizontalLayout_2.addWidget(self.pushButton_6)
-
-        self.pushButton_7 = QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-
-        self.horizontalLayout_2.addWidget(self.pushButton_7)
-
         self.viewPlot = ViewPlot(self.centralwidget)
         self.viewPlot.setObjectName(u"viewPlot")
-        self.viewPlot.setGeometry(QRect(0, 310, 711, 329))
+        self.viewPlot.setGeometry(QRect(0, 268, 711, 401))
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setGeometry(QRect(0, 0, 831, 161))
@@ -276,7 +250,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.Help, "")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(710, 310, 138, 161))
+        self.layoutWidget.setGeometry(QRect(710, 270, 121, 161))
         self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -333,10 +307,6 @@ class Ui_MainWindow(object):
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Roll", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Pitch", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Yaw", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.loadStarsFile.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Stars", None))
         self.LoadMovmentsFile.setText("")

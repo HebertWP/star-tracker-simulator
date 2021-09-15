@@ -20,7 +20,15 @@ class ViewPlot(QWidget):
         vertical_layout.addWidget(self.canvas)
         self.setLayout(vertical_layout)
         self.view3D(False)
-
+    
+    @property
+    def model(self):
+        return self._model
+    
+    @model.setter
+    def model(self,value):
+        self._model = value
+    
     def update_data(self, ar, dec,v):
         self._ar = ar
         self._dec = dec
