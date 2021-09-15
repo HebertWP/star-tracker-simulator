@@ -17,3 +17,16 @@ class MainController(QObject):
     @Slot(bool)
     def load_stars_dialog(self, value):
         self._model.load_stars_file = value
+    
+    @Slot(float)
+    def change_roll(self, value):
+        self._model.roll = value
+    
+    @Slot(float)
+    def change_ar(self, value):
+        self._model.ar = value
+    
+    @Slot(float)
+    def change_dec(self, value):
+        self._model.dec = value
+    
