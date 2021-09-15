@@ -1,11 +1,8 @@
-#import sys
-#sys.path.append("../views/")
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
-import modules.loadfile as loadfile
 from model.main_model import MainModel
 from views.MainWindow_ui import Ui_MainWindow
 try:
@@ -26,14 +23,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         
         #event signal
-        self._model.stars_input_file_changed.connect(self.update_plot)
-        self._model.view_plot_mode_changed.connect(self.change_mode_view_plot)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
         self._model.load_stars_file_changed.connect(self.open_stars)
-
-        #load saved data
-        self._model.load()
 
     def open_stars(self):
         file = QFileDialog(self)
@@ -44,13 +36,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             fileName = file.selectedFiles()
             fileName = fileName[0]
             self._main_controller.change_stars_input_file(fileName)
-            
-    def update_plot(self,value):
-        try:
-            n, v, ar, dec = loadfile.loadCatalog(value)
-            self.viewPlot.update_data(ar,dec,v)
-        except FileNotFoundError:
-            pass
     
     def change_mode_view_icon(self,value):
         icon1 = QIcon()
@@ -65,5 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def change_mode_view_text(self,value):
         self.view3D_text.setChecked(value)
     
-    def change_mode_view_plot(self,value):
-        self.viewPlot.view3D(value)
+    @property
+    def view_plot_widget(self):
+        return self.viewPlot

@@ -154,7 +154,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="ViewPlot" name="viewPlot" native="true">
+   <widget class="Widget" name="viewPlot" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -447,9 +447,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ViewPlot</class>
+   <class>Widget</class>
    <extends>QWidget</extends>
-   <header>views.widgets.viewPlot.h</header>
+   <header>views.widgets.widget_view.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from views.widgets.viewPlot import ViewPlot
+from views.widgets.widget_view import Widget
 
 import resources_rc
 
@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addLayout(self.horizontalLayout_4)
 
-        self.viewPlot = ViewPlot(self.centralwidget)
+        self.viewPlot = Widget(self.centralwidget)
         self.viewPlot.setObjectName(u"viewPlot")
         self.viewPlot.setGeometry(QRect(0, 268, 711, 401))
         self.tabWidget = QTabWidget(self.centralwidget)
