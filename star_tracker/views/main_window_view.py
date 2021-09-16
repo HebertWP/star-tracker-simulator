@@ -4,6 +4,7 @@ from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
 from model.main_model import MainModel
+from controllers.main_ctrl import MainController
 from views.MainWindow_ui import Ui_MainWindow
 try:
     from MainWindow_ui import Ui_MainWindow
@@ -11,7 +12,7 @@ except ImportError:
     from views.MainWindow_ui import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self,  model : MainModel, main_controller, *args, obj=None, **kwargs):
+    def __init__(self,  model : MainModel, main_controller : MainController, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self._model = model
@@ -19,6 +20,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         #connect to controller
         self.loadStarsFile.clicked.connect(self._main_controller.load_stars_dialog)
+        self._load_movements_file.clicked.connect(self._main_controller.load_movements_dialog)
+        
         self.view3D_icon.clicked.connect(self._main_controller.change_view_plot_mode)
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         self._roll_spin.valueChanged.connect(self._main_controller.change_roll)
@@ -29,9 +32,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
         
         #event signal
+        self._model.load_stars_file_changed.connect(self.open_stars)
+        self._model.load_movements_file_changed.connect(self.open_movements)
+        
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
-        self._model.load_stars_file_changed.connect(self.open_stars)
+        
         self._model.roll_changed.connect(self.change_roll)
         self._model.ar_changed.connect(self.change_ar)
         self._model.dec_changed.connect(self.change_dec)
@@ -45,6 +51,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             fileName = file.selectedFiles()
             fileName = fileName[0]
             self._main_controller.change_stars_input_file(fileName)
+    
+    def open_movements(self):
+        file = QFileDialog(self)
+        file.setNameFilter("*.csv")
+        file.setFileMode(QFileDialog.ExistingFile)
+        file.setWindowTitle('Load Movements File')
+        if file.exec_():
+            fileName = file.selectedFiles()
+            fileName = fileName[0]
+            self._main_controller.change_movements_input_file(fileName)
     
     def change_mode_view_icon(self,value):
         icon1 = QIcon()

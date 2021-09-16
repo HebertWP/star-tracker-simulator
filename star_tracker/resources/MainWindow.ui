@@ -78,6 +78,9 @@
          </item>
          <item>
           <widget class="QScrollBar" name="_roll_scroll">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
            <property name="maximum">
             <number>360</number>
            </property>
@@ -206,7 +209,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>279</width>
+        <width>283</width>
         <height>124</height>
        </rect>
       </property>
@@ -262,7 +265,7 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QPushButton" name="LoadMovmentsFile">
+              <widget class="QPushButton" name="_load_movements_file">
                <property name="text">
                 <string/>
                </property>
@@ -284,7 +287,7 @@
              <item>
               <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>Moviments</string>
+                <string>Movements</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>

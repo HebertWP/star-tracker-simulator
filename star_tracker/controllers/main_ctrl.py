@@ -1,7 +1,7 @@
 from PySide2.QtCore import QObject, Slot
-
+from model.main_model import MainModel
 class MainController(QObject):
-    def __init__(self, model):
+    def __init__(self, model : MainModel):
         super().__init__()
 
         self._model = model
@@ -10,6 +10,10 @@ class MainController(QObject):
     def change_stars_input_file(self, value):
         self._model.stars_input_file = value
     
+    @Slot(str)
+    def change_movements_input_file(self, value):
+        self._model.movements_input_file = value
+    
     @Slot(bool)
     def change_view_plot_mode(self, value):
         self._model.view_plot_mode = value
@@ -17,6 +21,10 @@ class MainController(QObject):
     @Slot(bool)
     def load_stars_dialog(self, value):
         self._model.load_stars_file = value
+    
+    @Slot(bool)
+    def load_movements_dialog(self, value):
+        self._model.load_movements_file = value
     
     @Slot(float)
     def change_roll(self, value):
