@@ -31,7 +31,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._ar_scroll.valueChanged.connect(self._main_controller.change_ar)
         self._dec_spin.valueChanged.connect(self._main_controller.change_dec)
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
-        
+        self._source_button.clicked.connect(self._main_controller.open_source)
+        self._about_button.clicked.connect(self._main_controller.open_about_dialog)
         #event signal
         self._model.load_stars_file_changed.connect(self.open_stars)
         self._model.load_movements_file_changed.connect(self.open_movements)
@@ -88,6 +89,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def change_dec(self, value):
         self._dec_scroll.setValue(value)
         self._dec_spin.setValue(value)
+    
     def enable_manual_controls(self,value):
         self._dec_scroll.setDisabled(not value)
         self._dec_spin.setDisabled(not value)

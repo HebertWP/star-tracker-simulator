@@ -1,5 +1,8 @@
+import webbrowser
+
 from PySide2.QtCore import QObject, Slot
 from model.main_model import MainModel
+from views.about_view import About
 class MainController(QObject):
     def __init__(self, model : MainModel):
         super().__init__()
@@ -38,3 +41,12 @@ class MainController(QObject):
     def change_dec(self, value):
         self._model.dec = value
     
+    @Slot(bool)
+    def open_source(self, value):
+        url = "https://github.com/HebertWP/star_tracker"
+        webbrowser.open(url)
+    
+    @Slot(object)
+    def open_about_dialog(self, value):
+        dlg = About()
+        dlg.exec_()

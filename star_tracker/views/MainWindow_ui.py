@@ -109,6 +109,7 @@ class Ui_MainWindow(object):
 
         self._dec_spin = QDoubleSpinBox(self.verticalLayoutWidget_4)
         self._dec_spin.setObjectName(u"_dec_spin")
+        self._dec_spin.setEnabled(True)
         self._dec_spin.setAlignment(Qt.AlignCenter)
         self._dec_spin.setKeyboardTracking(False)
         self._dec_spin.setMaximum(180.000000000000000)
@@ -247,11 +248,81 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.line_3)
 
         self.tabWidget.addTab(self.File, "")
-        self.Edit = QWidget()
-        self.Edit.setObjectName(u"Edit")
-        self.tabWidget.addTab(self.Edit, "")
         self.Help = QWidget()
         self.Help.setObjectName(u"Help")
+        self.horizontalLayoutWidget_2 = QWidget(self.Help)
+        self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
+        self.horizontalLayoutWidget_2.setGeometry(QRect(0, 0, 283, 101))
+        self.horizontalLayout_5 = QHBoxLayout(self.horizontalLayoutWidget_2)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11 = QVBoxLayout()
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.verticalLayout_12 = QVBoxLayout()
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self._about_button = QPushButton(self.horizontalLayoutWidget_2)
+        self._about_button.setObjectName(u"_about_button")
+        icon4 = QIcon()
+        icon4.addFile(u":/icon/icons/info.png", QSize(), QIcon.Normal, QIcon.Off)
+        self._about_button.setIcon(icon4)
+        self._about_button.setIconSize(QSize(64, 64))
+        self._about_button.setFlat(True)
+
+        self.verticalLayout_12.addWidget(self._about_button)
+
+        self.label_6 = QLabel(self.horizontalLayoutWidget_2)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setTextFormat(Qt.AutoText)
+        self.label_6.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_12.addWidget(self.label_6)
+
+
+        self.horizontalLayout_6.addLayout(self.verticalLayout_12)
+
+        self.line_4 = QFrame(self.horizontalLayoutWidget_2)
+        self.line_4.setObjectName(u"line_4")
+        self.line_4.setFrameShape(QFrame.VLine)
+        self.line_4.setFrameShadow(QFrame.Sunken)
+
+        self.horizontalLayout_6.addWidget(self.line_4)
+
+        self.verticalLayout_14 = QVBoxLayout()
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self._source_button = QPushButton(self.horizontalLayoutWidget_2)
+        self._source_button.setObjectName(u"_source_button")
+        icon5 = QIcon()
+        icon5.addFile(u":/icon/icons/github.png", QSize(), QIcon.Normal, QIcon.Off)
+        self._source_button.setIcon(icon5)
+        self._source_button.setIconSize(QSize(64, 64))
+        self._source_button.setFlat(True)
+
+        self.verticalLayout_14.addWidget(self._source_button)
+
+        self.label_9 = QLabel(self.horizontalLayoutWidget_2)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_14.addWidget(self.label_9)
+
+
+        self.horizontalLayout_6.addLayout(self.verticalLayout_14)
+
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_6)
+
+
+        self.horizontalLayout_5.addLayout(self.verticalLayout_11)
+
+        self.line_6 = QFrame(self.horizontalLayoutWidget_2)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setFrameShape(QFrame.VLine)
+        self.line_6.setFrameShadow(QFrame.Sunken)
+
+        self.horizontalLayout_5.addWidget(self.line_6)
+
         self.tabWidget.addTab(self.Help, "")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
@@ -270,10 +341,10 @@ class Ui_MainWindow(object):
         self.view3D_icon.setObjectName(u"view3D_icon")
         self.view3D_icon.setLayoutDirection(Qt.LeftToRight)
         self.view3D_icon.setText(u"")
-        icon4 = QIcon()
-        icon4.addFile(u":/icon/icons/axis.png", QSize(), QIcon.Normal, QIcon.Off)
-        icon4.addFile(u":/icon/icons/3d.png", QSize(), QIcon.Normal, QIcon.On)
-        self.view3D_icon.setIcon(icon4)
+        icon6 = QIcon()
+        icon6.addFile(u":/icon/icons/axis.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon6.addFile(u":/icon/icons/3d.png", QSize(), QIcon.Normal, QIcon.On)
+        self.view3D_icon.setIcon(icon6)
         self.view3D_icon.setIconSize(QSize(64, 64))
         self.view3D_icon.setCheckable(True)
         self.view3D_icon.setChecked(False)
@@ -318,12 +389,12 @@ class Ui_MainWindow(object):
         self._play_button = QPushButton(self.verticalLayoutWidget)
         self._play_button.setObjectName(u"_play_button")
         self._play_button.setText(u"")
-        icon5 = QIcon()
-        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.Off)
-        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.On)
-        icon5.addFile(u":/icon/icons/stop.png", QSize(), QIcon.Active, QIcon.Off)
-        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Active, QIcon.On)
-        self._play_button.setIcon(icon5)
+        icon7 = QIcon()
+        icon7.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon7.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.On)
+        icon7.addFile(u":/icon/icons/stop.png", QSize(), QIcon.Active, QIcon.Off)
+        icon7.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Active, QIcon.On)
+        self._play_button.setIcon(icon7)
         self._play_button.setIconSize(QSize(24, 24))
         self._play_button.setCheckable(True)
         self._play_button.setChecked(False)
@@ -347,7 +418,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -368,7 +439,10 @@ class Ui_MainWindow(object):
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Controls", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Load File", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.File), QCoreApplication.translate("MainWindow", u"File", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Edit), QCoreApplication.translate("MainWindow", u"Edit", None))
+        self._about_button.setText("")
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"About", None))
+        self._source_button.setText("")
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Source", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Help), QCoreApplication.translate("MainWindow", u"Help", None))
         self.view3D_text.setText(QCoreApplication.translate("MainWindow", u"View Mode", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Camera View", None))
