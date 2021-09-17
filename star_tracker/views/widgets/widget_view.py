@@ -3,7 +3,6 @@ from PySide2.QtWidgets import*
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
-from numpy import pi
 from model.widget_model import *
 
 class Widget(QWidget):

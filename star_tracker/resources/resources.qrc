@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icon">
+    <file>icons/stop.png</file>
+    <file>icons/botao-play.png</file>
     <file>icons/3d.png</file>
     <file>icons/axis.png</file>
     <file>icons/Artboard 3.png</file>

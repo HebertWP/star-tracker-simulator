@@ -4,14 +4,17 @@ from PySide2.QtWidgets import QApplication
 #my models import
 from model.main_model import MainModel
 from model.widget_model import WidgetModel
+from model.frame_model import FrameModel
 
 #my controllers import
 from controllers.main_ctrl import MainController
 from controllers.widget_ctrl import WidgetController
+from controllers.frame_ctrl import FrameController
 
 #my views import
 from views.main_window_view import MainWindow
-from views.widgets.widget_view import Widget
+from views.widgets.widget_view import WidgetModel
+from views.frame_view import AutomaticMovements
 
 class App(QApplication):
     def __init__(self, sys_argv):
@@ -26,6 +29,12 @@ class App(QApplication):
         self._widget_view = self._main_view.view_plot_widget
         self._widget_view.model = self._widget_model
         
+        self._frame_model = FrameModel()
+        self._frame_controller = FrameController(self._main_model, self._frame_model)
+        self._frame_view = self._main_view.view_automatic_control_frame
+        self._frame_view.model  = self._frame_model
+        self._frame_view.controller = self._frame_controller
+
         self._main_model.load()
         self._main_view.show()
 

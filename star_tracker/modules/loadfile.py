@@ -73,7 +73,8 @@ class Movements():
     def move(self):
         out = self._positions[self._current]
         self._current += 1
-        self._playing = False if self._current >= len(self._positions) else True
+        if self._current >= len(self._positions):
+            self.stop()
         return out
     
     @property

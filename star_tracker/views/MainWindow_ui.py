@@ -13,6 +13,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from views.widgets.widget_view import Widget
+from views.frame_view import AutomaticMovements
 
 import resources_rc
 
@@ -291,6 +292,54 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.checkBox_2)
 
+        self._automatic_control_frame = AutomaticMovements(self.centralwidget)
+        self._automatic_control_frame.setObjectName(u"_automatic_control_frame")
+        self._automatic_control_frame.setGeometry(QRect(470, 160, 341, 91))
+        self._automatic_control_frame.setFrameShape(QFrame.StyledPanel)
+        self._automatic_control_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayoutWidget = QWidget(self._automatic_control_frame)
+        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+        self.verticalLayoutWidget.setGeometry(QRect(0, 0, 379, 61))
+        self.verticalLayout_10 = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.label_5 = QLabel(self.verticalLayoutWidget)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_10.addWidget(self.label_5)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self._file = QLabel(self.verticalLayoutWidget)
+        self._file.setObjectName(u"_file")
+
+        self.horizontalLayout_2.addWidget(self._file)
+
+        self._play_button = QPushButton(self.verticalLayoutWidget)
+        self._play_button.setObjectName(u"_play_button")
+        self._play_button.setText(u"")
+        icon5 = QIcon()
+        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Normal, QIcon.On)
+        icon5.addFile(u":/icon/icons/stop.png", QSize(), QIcon.Active, QIcon.Off)
+        icon5.addFile(u":/icon/icons/botao-play.png", QSize(), QIcon.Active, QIcon.On)
+        self._play_button.setIcon(icon5)
+        self._play_button.setIconSize(QSize(24, 24))
+        self._play_button.setCheckable(True)
+        self._play_button.setChecked(False)
+        self._play_button.setFlat(True)
+
+        self.horizontalLayout_2.addWidget(self._play_button)
+
+        self._movement_play_progress_bar = QProgressBar(self.verticalLayoutWidget)
+        self._movement_play_progress_bar.setObjectName(u"_movement_play_progress_bar")
+        self._movement_play_progress_bar.setValue(24)
+
+        self.horizontalLayout_2.addWidget(self._movement_play_progress_bar)
+
+
+        self.verticalLayout_10.addLayout(self.horizontalLayout_2)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -324,5 +373,7 @@ class Ui_MainWindow(object):
         self.view3D_text.setText(QCoreApplication.translate("MainWindow", u"View Mode", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Camera View", None))
         self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Graticule", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Automatic Control ", None))
+        self._file.setText(QCoreApplication.translate("MainWindow", u"No loaded file", None))
     # retranslateUi
 

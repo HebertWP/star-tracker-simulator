@@ -13,7 +13,8 @@ class MainModel(QObject):
     roll_changed = Signal(float)
     ar_changed = Signal(float)
     dec_changed = Signal(float)
-    
+    manual_controls_enable_chaged = Signal(bool)
+
     @property
     def stars_input_file(self):
         return self._stars_input_file
@@ -92,6 +93,14 @@ class MainModel(QObject):
         self.save()
         self.dec_changed.emit(value)
         
+    @property
+    def manual_controls_enable(self):
+        return self._manual_controls_enable
+    @manual_controls_enable.setter
+    def manual_controls_enable(self,value):
+        self._manual_controls_enable = value
+        self.manual_controls_enable_chaged.emit(value)
+        
     def __init__(self):
         super().__init__()
 
@@ -103,6 +112,7 @@ class MainModel(QObject):
         self._ar = 0.0
         self._dec = 0.0
         self._load_movements_file = False
+        self._manual_controls_enable = True
 
     def load(self):
         try:
@@ -127,4 +137,3 @@ class MainModel(QObject):
         data['dec'] = self._dec
         file = open('./data/save.json','w')
         json.dump(data,file)
-        
