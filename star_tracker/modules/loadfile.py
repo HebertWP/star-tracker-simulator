@@ -44,3 +44,52 @@ def loadCatalog(inputfile):
         v.append(V[i])
         n.append(N[i])
     return n, v, ar, dec
+
+class Movements():
+    def __init__(self,file_name) -> None:
+        self.load(file_name)
+        self._playing = 0
+        self._current = 0
+
+    def load(self, file_name):
+        self._file_name = file_name
+        positions = pandas.read_csv(self._file_name)
+        time = positions["time"]
+        roll = positions["roll"]
+        dec = positions["dec"]
+        ar = positions["ar"]
+        self._positions = []
+        for t,r,d,a in zip(time,roll,dec,ar):
+            self._positions.append({'time': t, 'roll': r, 'dec': d, 'ar': a})
+
+    def play(self):
+        self._playing = True
+        self._current = 0
+    
+    def stop(self):
+        self._playing = False
+        self._current = 0
+
+    def move(self):
+        out = self._positions[self._current]
+        self._current += 1
+        self._playing = False if self._current >= len(self._positions) else True
+        return out
+    
+    @property
+    def progress(self):
+        pass_time = 0
+        for i in self._positions[0:self._current]:
+            pass_time += i["time"]
+        total_time = 0
+        for i in self._positions:
+            total_time += i["time"]
+        ret=pass_time/total_time
+        return ret*100
+        
+    @property
+    def playing(self):
+        return self._playing
+    
+    def __len__(self):
+        return len(self._positions)
