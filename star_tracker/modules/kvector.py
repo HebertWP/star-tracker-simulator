@@ -5,16 +5,16 @@ from math import pow,pi
 
 from numpy import generic
 from numpy.core.fromnumeric import searchsorted
-from star_tracker.triangle import Triangle
+from star_tracker.modules.triangle import Triangle
 import pandas
 import importlib
 import copy
 try:
-    from star_tracker.pair import Pair
-    from star_tracker.sort import mergeSort
-    from star_tracker.basic import *
-    from star_tracker.quadtree import *
-    from star_tracker.stars import *
+    from star_tracker.modules.pair import Pair
+    from star_tracker.modules.sort import mergeSort
+    from star_tracker.modules.basic import *
+    from star_tracker.modules.quadtree import *
+    from star_tracker.modules.stars import *
 except ImportError:
     from pair import Pair
     from sort import mergeSort

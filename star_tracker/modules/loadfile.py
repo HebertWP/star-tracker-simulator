@@ -7,7 +7,7 @@ try:
     sys.path.append("..")
     import modules.basic as basic
 except ImportError:
-    import basic
+    import star_tracker.modules.basic
 
 def dat2csv(inputfile, outputfile):
     input = open(inputfile,"r")
@@ -44,36 +44,3 @@ def loadCatalog(inputfile):
         v.append(V[i])
         n.append(N[i])
     return n, v, ar, dec
-
-def plotCatalog2D(ar,dec, v, plt, output):
-    plt.figure()
-    #mag = [num/10 for num in v]
-    ax = plt.axes()
-    ax.set_facecolor("k")
-    plt.scatter(ar, dec, s=v, c='white')
-    plt.title("Catalogo Estrelar 2D")
-    plt.xlabel("Ascensao  reta [deg]")
-    plt.xlim(0, 360)
-    plt.ylabel("Declinacao [deg]")
-    plt.ylim(-90, 90)
-    plt.savefig(output)
-    plt.close('all')
-
-def plot3D(ar,dec, v, plt, output):
-    ar = [num*pi/180 for num in ar]
-    dec = [num*pi/180 for num in dec]
-    x,y,z = basic.spherical2catersian(ar, dec)
-    plt.figure()
-    ax = plt.axes(projection ="3d")
-    plt.gca().set_facecolor('k')
-    ax.set_axis_off()
-    # Creating plot
-    ax.scatter3D(x, y, z, s = v, color = "white")
-    ax.scatter3D(0, 0, 0, s = 1,color = "red")
-        
-    ax.set_xlabel('X axis')
-    ax.set_ylabel('Y axis')
-    ax.set_zlabel('Z axis')
-    ax.view_init(elev=35., azim=225)
-    plt.savefig(output,dpi=500)
-    plt.close('all')

@@ -3,7 +3,7 @@ import pytest
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
-from star_tracker.pair import Pair
+from star_tracker.modules.pair import Pair
 
 def test_minor_than():
     p1 = Pair(0,1,2)

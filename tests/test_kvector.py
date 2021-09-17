@@ -1,10 +1,10 @@
-import star_tracker.basic as basic
+import star_tracker.modules.basic as basic
 from numpy import pi
 import matplotlib.pyplot as plt
-import star_tracker.kvector as kvector
-import star_tracker.loadfile as loadfile
-import star_tracker.quadtree as quadtree
-from star_tracker.triangle import *
+import star_tracker.modules.kvector as kvector
+import star_tracker.modules.loadfile as loadfile
+import star_tracker.modules.quadtree as quadtree
+from star_tracker.modules.triangle import *
 
 class TestKvector:
     def loadData(self):
@@ -116,6 +116,26 @@ class TestKvector:
             s += '----'
         assert s == '| 142,151,166 --> 3.00 5.00 |----| 148,151,142 --> 3.00 5.00 |----| 142,148,166 --> 3.00 5.00 |----| 151,148,166 --> 3.00 5.00 |----'
 
+    def test_search(self):
+        k = kvector.load()
+        n   =               [       54872,       63125,         57632,        57399]
+        ar  = basic.deg2rad([168.52671705, 194.00767051, 177.26615977, 176.51305887])
+        dec = basic.deg2rad([ 20.52403384,  38.31824617,  14.57233687,  47.77933701])
+        dist = []
+        
+        a0 = kvector.angleCalculator([ar[0],dec[0]],[ar[1],dec[1]])
+        a1 = kvector.angleCalculator([ar[1],dec[1]],[ar[2],dec[2]])
+        a2 = kvector.angleCalculator([ar[2],dec[2]],[ar[0],dec[0]])
+        a = kvector.distanceCalculator(a0)
+        b = kvector.distanceCalculator(a1)
+        c = kvector.distanceCalculator(a2)
+        st=kvector.distancesSandardDeviationCalculator(a0, 0.05*pi/180)
+        m = k.search3Stars(a,b,c, st)
+        o = 'len = {},'.format(len(m))
+        for i in m:
+            o +=str(i) 
+        assert o == 'len = 1,| 54872,63125,57632 --> 0.04 0.00 |'
+    
 """           
     def test_search(self):
         k = kvector.load()

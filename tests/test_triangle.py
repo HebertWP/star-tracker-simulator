@@ -1,4 +1,4 @@
-from star_tracker.triangle import Triangle
+from star_tracker.modules.triangle import Triangle
 from numpy import pi
 import pytest
 

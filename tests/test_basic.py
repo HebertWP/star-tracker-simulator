@@ -1,4 +1,4 @@
-from star_tracker.basic import *
+from star_tracker.modules.basic import *
 from numpy import pi
 import pytest
 
