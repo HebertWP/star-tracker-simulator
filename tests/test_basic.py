@@ -9,6 +9,29 @@ def test_spherical2catersian_list():
 def test_spherical2catersian_num():
     x, y, z = spherical2catersian(0,0)
     assert [x, y, z] == [1.0, 0.0, 0.0]
+def test_generate_rotation_matrix():
+    m = generate_rotation_matrix(0,0,0)
+    assert m[0][0] == m[1][1] == m[2][2] == 1
+
+def test_euler2quartenus():
+    m = [[0,-1, 0],
+         [1, 0, 0],
+         [0, 0, 1]]
+    q=euler2quartenus(m)
+    assert q == pytest.approx([0.70,0,0,0.70],0.1)
+
+def test_calculate_quaternion_conjugate():
+    q=[0,1,1,1]
+    a=calculate_quaternion_conjugate(q)
+    assert a == [0,-1,-1,-1]
+
+def test_quaternus_rotation():
+    m = [[0,-1, 0],
+         [1, 0, 0],
+         [0, 0, 1]]
+    q=euler2quartenus(m)
+    l=quaternus_rotation(q,[1,0,0])
+    assert l == pytest.approx([0,1,0])
 
 def test_ang_calculator():
     to_rad = (pi/180)
