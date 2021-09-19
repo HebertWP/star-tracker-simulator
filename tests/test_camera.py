@@ -13,7 +13,9 @@ class TestCamera():
     def test_rotation(self):
         self.load()
         ang = deg2rad(180)
-        self._camera.rotate_dots(ang, ang, ang)
+        self._camera.ar = ang
+        self._camera.dec = ang
+        self._camera.roll = ang
         aux=self._camera.dots
         ang = deg2rad(540)
         self._camera.rotate_dots(ang, ang, ang)
