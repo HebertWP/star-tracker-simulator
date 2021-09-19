@@ -174,7 +174,7 @@
      <rect>
       <x>0</x>
       <y>268</y>
-      <width>711</width>
+      <width>701</width>
       <height>401</height>
      </rect>
     </property>
@@ -192,7 +192,7 @@
      <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="movable">
      <bool>true</bool>
@@ -205,14 +205,14 @@
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <attribute name="title">
-      <string>File</string>
+      <string>Files</string>
      </attribute>
      <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>283</width>
+        <width>570</width>
         <height>124</height>
        </rect>
       </property>
@@ -224,7 +224,7 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QPushButton" name="loadStarsFile">
+              <widget class="QPushButton" name="_load_stars_file">
                <property name="text">
                 <string/>
                </property>
@@ -309,7 +309,7 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <widget class="QPushButton" name="loadCameraFile">
+              <widget class="QPushButton" name="_load_camera_file">
                <property name="text">
                 <string/>
                </property>
@@ -331,7 +331,7 @@
              <item>
               <widget class="QLabel" name="label_3">
                <property name="text">
-                <string>Controls</string>
+                <string>Camera</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -356,6 +356,150 @@
        </item>
        <item>
         <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_15">
+             <item>
+              <widget class="QPushButton" name="_create_stars_file">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icon/icons/Artboard 1.png</normaloff>:/icon/icons/Artboard 1.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>64</width>
+                 <height>64</height>
+                </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Stars</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::AutoText</enum>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="Line" name="line_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_16">
+             <item>
+              <widget class="QPushButton" name="_create_movements_file">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icon/icons/Artboard 2.png</normaloff>:/icon/icons/Artboard 2.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>64</width>
+                 <height>64</height>
+                </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Movements</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="Line" name="line_7">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_17">
+             <item>
+              <widget class="QPushButton" name="_create_camera_file">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icon/icons/Artboard 3.png</normaloff>:/icon/icons/Artboard 3.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>64</width>
+                 <height>64</height>
+                </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Camera</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Create File</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_8">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -478,10 +622,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>700</x>
       <y>270</y>
-      <width>121</width>
-      <height>161</height>
+      <width>137</width>
+      <height>190</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -532,16 +676,23 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="_camera_view">
        <property name="text">
         <string>Camera View</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox_2">
+      <widget class="QCheckBox" name="_graticule_control">
        <property name="text">
         <string>Graticule</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_3">
+       <property name="text">
+        <string>View Simulation</string>
        </property>
       </widget>
      </item>
@@ -550,10 +701,10 @@
    <widget class="AutomaticMovements" name="_automatic_control_frame">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>460</x>
       <y>160</y>
-      <width>341</width>
-      <height>91</height>
+      <width>371</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -567,13 +718,19 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>379</width>
-       <height>61</height>
+       <width>371</width>
+       <height>80</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_10">
       <item>
        <widget class="QLabel" name="label_5">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>22</height>
+         </size>
+        </property>
         <property name="text">
          <string>Automatic Control </string>
         </property>
@@ -622,6 +779,12 @@
         </item>
         <item>
          <widget class="QProgressBar" name="_movement_play_progress_bar">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="value">
            <number>24</number>
           </property>
@@ -631,6 +794,41 @@
       </item>
      </layout>
     </widget>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>240</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_13">
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Camera:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="_camera_file">
+       <property name="text">
+        <string>No loaded file</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

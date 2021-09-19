@@ -5,9 +5,13 @@ import json
 class MainModel(QObject):
     stars_input_file_changed = Signal(str)
     movements_input_file_changed = Signal(str)
-    
-    load_stars_file_changed = Signal(bool)
-    load_movements_file_changed = Signal(bool)
+    camera_input_file_changed = Signal(str)
+
+    camera_name_changed = Signal(str)
+
+    load_stars_file_changed = Signal()
+    load_movements_file_changed = Signal()
+    load_camera_file_changed = Signal()
     
     view_plot_mode_changed = Signal(bool)
     roll_changed = Signal(float)
@@ -36,6 +40,26 @@ class MainModel(QObject):
         self.movements_input_file_changed.emit(value)
     
     @property
+    def camera_input_file(self):
+        return self._camera_input_file
+
+    @camera_input_file.setter
+    def camera_input_file(self,value):
+        self._camera_input_file = value
+        self.save()
+        self.camera_input_file_changed.emit(value)
+
+    @property
+    def camera_name(self):
+        return self._camera_name
+    
+    @camera_name.setter
+    def camera_name(self,value):
+        self._camera_name = value
+        self.save()
+        self.camera_name_changed.emit(value)
+    
+    @property
     def view_plot_mode(self):
         return self._view_plot_mode
 
@@ -52,7 +76,7 @@ class MainModel(QObject):
     @load_stars_file.setter
     def load_stars_file(self, value):
         self._load_stars_file = value
-        self.load_stars_file_changed.emit(value)
+        self.load_stars_file_changed.emit()
     
     @property
     def load_movements_file(self):
@@ -61,8 +85,17 @@ class MainModel(QObject):
     @load_movements_file.setter
     def load_movements_file(self, value):
         self._load_movements_file = value
-        self.load_movements_file_changed.emit(value)
+        self.load_movements_file_changed.emit()
     
+    @property
+    def load_camera_file(self):
+        return self._load_camera_file
+
+    @load_camera_file.setter
+    def load_camera_file(self, value):
+        self._load_camera_file = value
+        self.load_camera_file_changed.emit()
+
     @property
     def roll(self):
         return self._roll
@@ -106,11 +139,17 @@ class MainModel(QObject):
 
         self._stars_input_file = ''
         self._movements_input_file = ''
+        self._camera_input_file = ''
+
+        self._camera_name = 'No Loaded File'
+
         self._view_plot_mode = False
         self._load_stars_file = False
+        
         self._roll = 0.0
         self._ar = 0.0
         self._dec = 0.0
+        
         self._load_movements_file = False
         self._manual_controls_enable = True
 
@@ -118,8 +157,12 @@ class MainModel(QObject):
         try:
             f = open('./data/save.json','r')
             data = json.load(f)
+            
             self.stars_input_file = data['stars_input_file']
             self.movements_input_file = data['movements_input_file']
+            self.camera_input_file = data['camera_input_file']
+
+            self.camera_name = data['camera_name']    
             self.view_plot_mode = data['view_plot_mode']
             self.roll = data['roll']
             self.dec = data['dec']
@@ -131,6 +174,8 @@ class MainModel(QObject):
         data = {}
         data['stars_input_file'] = self._stars_input_file
         data['movements_input_file'] = self._movements_input_file
+        data['camera_input_file'] = self._camera_input_file
+        data['camera_name'] = self._camera_name
         data['view_plot_mode'] = self._view_plot_mode
         data['roll'] = self._roll
         data['ar'] = self._ar

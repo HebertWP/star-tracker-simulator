@@ -17,6 +17,15 @@ class MainController(QObject):
     def change_movements_input_file(self, value):
         self._model.movements_input_file = value
     
+    @Slot(str)
+    def change_camera_input_file(self, value):
+        self._model.camera_input_file = value
+        if value == '':
+            self._model.camera_name = "No Loaded File"
+        else:
+            v = value.split(sep="/")
+            self._model.camera_name = v[-1]    
+    
     @Slot(bool)
     def change_view_plot_mode(self, value):
         self._model.view_plot_mode = value
@@ -50,3 +59,7 @@ class MainController(QObject):
     def open_about_dialog(self, value):
         dlg = About()
         dlg.exec_()
+    
+    @Slot(bool)
+    def load_camera_dialog(self,value):
+        self._model.load_camera_file = value

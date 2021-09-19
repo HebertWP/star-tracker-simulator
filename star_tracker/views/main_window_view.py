@@ -20,9 +20,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._main_controller = main_controller
         
         #connect to controller
-        self.loadStarsFile.clicked.connect(self._main_controller.load_stars_dialog)
+        self._load_stars_file.clicked.connect(self._main_controller.load_stars_dialog)
         self._load_movements_file.clicked.connect(self._main_controller.load_movements_dialog)
-        
+        self._load_camera_file.clicked.connect(self._main_controller.load_camera_dialog)
+
         self.view3D_icon.clicked.connect(self._main_controller.change_view_plot_mode)
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         self._roll_spin.valueChanged.connect(self._main_controller.change_roll)
@@ -33,10 +34,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
         self._source_button.clicked.connect(self._main_controller.open_source)
         self._about_button.clicked.connect(self._main_controller.open_about_dialog)
+        
         #event signal
         self._model.load_stars_file_changed.connect(self.open_stars)
         self._model.load_movements_file_changed.connect(self.open_movements)
-        
+        self._model.load_camera_file_changed.connect(self.open_camera)
+
+        self._model.camera_name_changed.connect(self.load_camera)
+
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
         
@@ -64,6 +69,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             fileName = file.selectedFiles()
             fileName = fileName[0]
             self._main_controller.change_movements_input_file(fileName)
+    
+    def open_camera(self):
+        file = QFileDialog(self)
+        file.setNameFilter("*.json")
+        file.setFileMode(QFileDialog.ExistingFile)
+        file.setWindowTitle('Load Camera File')
+        if file.exec_():
+            fileName = file.selectedFiles()
+            fileName = fileName[0]
+            self._main_controller.change_camera_input_file(fileName)
+    
+    def load_camera(self,value):
+        self._camera_file.setText(value)
     
     def change_mode_view_icon(self,value):
         icon1 = QIcon()
