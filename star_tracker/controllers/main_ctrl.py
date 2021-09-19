@@ -31,6 +31,10 @@ class MainController(QObject):
         self._model.view_plot_mode = value
     
     @Slot(bool)
+    def change_camera_view(self, value):
+        self._model.change_camera_view = value
+     
+    @Slot(bool)
     def load_stars_dialog(self, value):
         self._model.load_stars_file = value
     

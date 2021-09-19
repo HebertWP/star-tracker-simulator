@@ -18,7 +18,25 @@ class TestCamera():
         self._camera.roll = ang
         aux=self._camera.dots
         ang = deg2rad(540)
-        self._camera.rotate_dots(ang, ang, ang)
+        self._camera.ar = ang
+        self._camera.dec = ang
+        self._camera.roll = ang
         aux1=self._camera.dots
+
+        assert aux == aux1
+    
+    def test_position_dic(self):
+        self.load()
+        
+        ang = deg2rad(180)
+        self._camera.ar = ang
+        self._camera.dec = ang
+        self._camera.roll = ang
+        aux = self._camera.position_dict
+        ang = deg2rad(540)
+        self._camera.ar = ang
+        self._camera.dec = ang
+        self._camera.roll = ang
+        aux1 = self._camera.position_dict
 
         assert aux == aux1

@@ -6,7 +6,7 @@ class MainModel(QObject):
     stars_input_file_changed = Signal(str)
     movements_input_file_changed = Signal(str)
     camera_input_file_changed = Signal(str)
-
+    
     camera_name_changed = Signal(str)
 
     load_stars_file_changed = Signal()
@@ -14,6 +14,8 @@ class MainModel(QObject):
     load_camera_file_changed = Signal()
     
     view_plot_mode_changed = Signal(bool)
+    show_camera_changed = Signal(bool)
+    
     roll_changed = Signal(float)
     ar_changed = Signal(float)
     dec_changed = Signal(float)
@@ -68,6 +70,16 @@ class MainModel(QObject):
         self._view_plot_mode = value
         self.save()
         self.view_plot_mode_changed.emit(value)
+    
+    @property
+    def change_camera_view(self):
+        return self._change_camera_view
+    
+    @change_camera_view.setter
+    def change_camera_view(self,value):
+        self._change_camera_view = value
+        self.save()
+        self.show_camera_changed.emit(value)
     
     @property
     def load_stars_file(self):
@@ -145,6 +157,7 @@ class MainModel(QObject):
 
         self._view_plot_mode = False
         self._load_stars_file = False
+        self._change_camera_view = False
         
         self._roll = 0.0
         self._ar = 0.0
@@ -163,7 +176,10 @@ class MainModel(QObject):
             self.camera_input_file = data['camera_input_file']
 
             self.camera_name = data['camera_name']    
+            
             self.view_plot_mode = data['view_plot_mode']
+            self.change_camera_view = data['show_camera']
+
             self.roll = data['roll']
             self.dec = data['dec']
             self.ar = data['ar']
@@ -176,7 +192,10 @@ class MainModel(QObject):
         data['movements_input_file'] = self._movements_input_file
         data['camera_input_file'] = self._camera_input_file
         data['camera_name'] = self._camera_name
+        
         data['view_plot_mode'] = self._view_plot_mode
+        data['show_camera'] = self._change_camera_view
+        
         data['roll'] = self._roll
         data['ar'] = self._ar
         data['dec'] = self._dec

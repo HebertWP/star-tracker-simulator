@@ -32,7 +32,7 @@ class TestLoad:
     
     def test_loadMovements(self):
         self.loadMovements()
-        assert 2 == len(self._m)
+        assert 4 == len(self._m)
     
     def test_Movements_play(self):
         self.loadMovements()

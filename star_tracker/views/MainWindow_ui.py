@@ -112,12 +112,14 @@ class Ui_MainWindow(object):
         self._dec_spin.setEnabled(True)
         self._dec_spin.setAlignment(Qt.AlignCenter)
         self._dec_spin.setKeyboardTracking(False)
-        self._dec_spin.setMaximum(180.000000000000000)
+        self._dec_spin.setMinimum(-90.000000000000000)
+        self._dec_spin.setMaximum(90.000000000000000)
 
         self.verticalLayout_7.addWidget(self._dec_spin)
 
         self._dec_scroll = QScrollBar(self.verticalLayoutWidget_4)
         self._dec_scroll.setObjectName(u"_dec_scroll")
+        self._dec_scroll.setMinimum(-90)
         self._dec_scroll.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_7.addWidget(self._dec_scroll)
@@ -448,10 +450,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.view3D_icon)
 
-        self._camera_view = QCheckBox(self.layoutWidget)
-        self._camera_view.setObjectName(u"_camera_view")
+        self._show_camera = QCheckBox(self.layoutWidget)
+        self._show_camera.setObjectName(u"_show_camera")
 
-        self.verticalLayout_4.addWidget(self._camera_view)
+        self.verticalLayout_4.addWidget(self._show_camera)
 
         self._graticule_control = QCheckBox(self.layoutWidget)
         self._graticule_control.setObjectName(u"_graticule_control")
@@ -572,7 +574,7 @@ class Ui_MainWindow(object):
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Source", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Help), QCoreApplication.translate("MainWindow", u"Help", None))
         self.view3D_text.setText(QCoreApplication.translate("MainWindow", u"View Mode", None))
-        self._camera_view.setText(QCoreApplication.translate("MainWindow", u"Camera View", None))
+        self._show_camera.setText(QCoreApplication.translate("MainWindow", u"Show camera", None))
         self._graticule_control.setText(QCoreApplication.translate("MainWindow", u"Graticule", None))
         self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"View Simulation", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Automatic Control ", None))

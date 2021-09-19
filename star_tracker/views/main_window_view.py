@@ -23,17 +23,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._load_stars_file.clicked.connect(self._main_controller.load_stars_dialog)
         self._load_movements_file.clicked.connect(self._main_controller.load_movements_dialog)
         self._load_camera_file.clicked.connect(self._main_controller.load_camera_dialog)
-
+        
+        self._source_button.clicked.connect(self._main_controller.open_source)
+        self._about_button.clicked.connect(self._main_controller.open_about_dialog)
+        
         self.view3D_icon.clicked.connect(self._main_controller.change_view_plot_mode)
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
+        self._show_camera.clicked.connect(self._main_controller.change_camera_view)
+
         self._roll_spin.valueChanged.connect(self._main_controller.change_roll)
         self._roll_scroll.valueChanged.connect(self._main_controller.change_roll)
         self._ar_spin.valueChanged.connect(self._main_controller.change_ar)
         self._ar_scroll.valueChanged.connect(self._main_controller.change_ar)
         self._dec_spin.valueChanged.connect(self._main_controller.change_dec)
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
-        self._source_button.clicked.connect(self._main_controller.open_source)
-        self._about_button.clicked.connect(self._main_controller.open_about_dialog)
         
         #event signal
         self._model.load_stars_file_changed.connect(self.open_stars)
@@ -44,7 +47,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
-        
+        self._model.show_camera_changed.connect(self.change_camera_vew)
+
         self._model.manual_controls_enable_chaged.connect(self.enable_manual_controls)
         self._model.roll_changed.connect(self.change_roll)
         self._model.ar_changed.connect(self.change_ar)
@@ -96,6 +100,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def change_mode_view_text(self,value):
         self.view3D_text.setChecked(value)
     
+    def change_camera_vew(self, value):
+        self._show_camera.setChecked(value)
+
     def change_roll(self, value):
         self._roll_scroll.setValue(value)
         self._roll_spin.setValue(value)

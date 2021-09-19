@@ -7,13 +7,19 @@ class ViewMode(Enum):
     VIEW2D = 1
 
 class WidgetModel(QObject):
-    update_view = Signal(dict)
+    update = Signal()
     
     def __init__(self):
         super().__init__()
 
         self._stars = {}
+        self._camera_position = {}
         self._mode = ViewMode.VIEW2D
+        self._show_camera = False
+        self._roll = 0
+        self._ar = 0
+        self._dec = 0
+        self.update.emit()
     
     @property
     def stars(self):
@@ -21,11 +27,18 @@ class WidgetModel(QObject):
 
     @stars.setter
     def stars(self, value):
-        if value == {}:
-            return
         self._stars = value
-        self._stars['mode'] = self._mode
-        self.update_view.emit(self._stars)
+        if not value == {}:
+            self.update.emit()
+    
+    @property
+    def camera_position(self) -> dict:
+        return self._camera_position
+    
+    @camera_position.setter
+    def camera_position(self, value):
+        self._camera_position = value
+        self.update.emit()
     
     @property
     def mode(self):
@@ -34,7 +47,40 @@ class WidgetModel(QObject):
     @mode.setter
     def view_mode(self, value):
         self._mode = value
-        if self._stars == {}:
-            return
-        self._stars['mode'] = value
-        self.update_view.emit(self._stars)
+        self.update.emit()
+    
+    @property
+    def show_camera(self):
+        return self._show_camera
+    
+    @show_camera.setter
+    def show_camera(self, value):
+        self._show_camera = value
+        self.update.emit()
+    
+    @property
+    def roll(self):
+        return self._roll
+    
+    @roll.setter
+    def roll(self, value):
+        self._roll = value
+        self.update.emit()
+    
+    @property
+    def ar(self):
+        return self._ar
+    
+    @ar.setter
+    def ar(self, value):
+        self._ar = value
+        self.update.emit()
+    
+    @property
+    def dec(self):
+        return self._dec
+    
+    @dec.setter
+    def dec(self, value):
+        self._dec = value
+        self.update.emit()

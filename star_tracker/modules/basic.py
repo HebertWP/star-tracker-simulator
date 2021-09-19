@@ -13,25 +13,6 @@ def spherical2catersian(ar, dec):
         z = sin(dec)
     return x, y, z
 
-def generate_rotation_matrix(roll,ar,dec):
-    out=[[cos(roll)*cos(dec), cos(roll)*sin(dec)*sin(ar)-sin(roll)*cos(ar), cos(roll)*sin(dec)*cos(ar)+sin(roll)*sin(ar)],
-         [sin(roll)*cos(dec), sin(roll)*sin(dec)*sin(ar)+cos(roll)*cos(ar), sin(roll)*sin(dec)*cos(ar)-cos(roll)*sin(ar)],
-         [-sin(dec),cos(dec)*sin(ar),cos(dec)*cos(ar)]]
-    return out
-
-def euler2quartenus(matrix):
-    tc = matrix[0][0] + matrix[1][1]+ matrix[2][2]
-    
-    q0 = sqrt((tc+1)/4)
-    q1 = sqrt(matrix[0][0]/2+(1-tc)/4)
-    q2 = sqrt(matrix[1][1]/2+(1-tc)/4)
-    q3 = sqrt(matrix[2][2]/2+(1-tc)/4)
-
-    return [q0, q1, q2, q3]
-
-def calculate_quaternion_conjugate(q):
-    return (q[0],-q[1],-q[2],-q[3])
-
 def quaternus_rotation(q,v):
     out =[]
     out.append(v[0]*(q[0]*q[0]+q[1]*q[1]-q[2]*q[2]-q[3]*q[3])+2*v[1]*(q[1]*q[2]-q[0]*q[3])+2*v[2]*(q[0]*q[2]+q[1]*q[3]))
