@@ -7,19 +7,20 @@ class ViewMode(Enum):
     VIEW2D = 1
 
 class WidgetModel(QObject):
-    update = Signal()
-    
+    update_all = Signal(ViewMode)
+    update_camera = Signal(dict)
+
     def __init__(self):
         super().__init__()
 
         self._stars = {}
         self._camera_position = {}
-        self._mode = ViewMode.VIEW2D
+        self._view_mode = ViewMode.VIEW2D
         self._show_camera = False
         self._roll = 0
         self._ar = 0
         self._dec = 0
-        self.update.emit()
+        self.update_all.emit(ViewMode.VIEW2D)
     
     @property
     def stars(self):
@@ -29,7 +30,7 @@ class WidgetModel(QObject):
     def stars(self, value):
         self._stars = value
         if not value == {}:
-            self.update.emit()
+            self.update_all.emit(self.view_mode)
     
     @property
     def camera_position(self) -> dict:
@@ -38,16 +39,16 @@ class WidgetModel(QObject):
     @camera_position.setter
     def camera_position(self, value):
         self._camera_position = value
-        self.update.emit()
+        self.update_camera.emit(value)
     
     @property
-    def mode(self):
-        return self._mode
+    def view_mode(self):
+        return self._view_mode
     
-    @mode.setter
+    @view_mode.setter
     def view_mode(self, value):
-        self._mode = value
-        self.update.emit()
+        self._view_mode = value
+        self.update_all.emit(value)
     
     @property
     def show_camera(self):
@@ -56,7 +57,7 @@ class WidgetModel(QObject):
     @show_camera.setter
     def show_camera(self, value):
         self._show_camera = value
-        self.update.emit()
+        self.update_camera.emit(self._camera_position)
     
     @property
     def roll(self):
@@ -65,7 +66,6 @@ class WidgetModel(QObject):
     @roll.setter
     def roll(self, value):
         self._roll = value
-        self.update.emit()
     
     @property
     def ar(self):
@@ -74,7 +74,6 @@ class WidgetModel(QObject):
     @ar.setter
     def ar(self, value):
         self._ar = value
-        self.update.emit()
     
     @property
     def dec(self):
@@ -83,4 +82,3 @@ class WidgetModel(QObject):
     @dec.setter
     def dec(self, value):
         self._dec = value
-        self.update.emit()

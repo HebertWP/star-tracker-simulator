@@ -32,6 +32,7 @@ class WidgetController(QObject):
         self._widget_model.show_camera = value
 
     def load_file(self, value):
+        pass
         try:
             n, v, ar, dec = loadfile.loadCatalog(value)
             x,y,z = basic.spherical2catersian(basic.deg2rad(ar), basic.deg2rad(dec))
@@ -39,9 +40,8 @@ class WidgetController(QObject):
             self._widget_model.stars = d
         except FileNotFoundError:
             pass
-    
+
     def camera_file(self, value):
-        print("camera={}".format(value))
         try:
             self._camera = Camera(value)
             self._widget_model.camera_position = self._camera.position_dict
@@ -50,12 +50,15 @@ class WidgetController(QObject):
     
     def roll(self,value):
         self._camera.roll= basic.deg2rad(value)
+        self._widget_model.roll = basic.deg2rad(value)
         self._widget_model.camera_position = self._camera.position_dict
         
     def ar(self,value):
         self._camera.ar = basic.deg2rad(value)
+        self._widget_model.ar = basic.deg2rad(value)
         self._widget_model.camera_position = self._camera.position_dict
-        
+
     def dec(self,value):
         self._camera.dec = basic.deg2rad(value)
+        self._widget_model.dec = basic.deg2rad(value)
         self._widget_model.camera_position = self._camera.position_dict

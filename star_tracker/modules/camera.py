@@ -41,8 +41,9 @@ class Camera():
     @dec.setter
     def dec(self, value):
         diff = value - self._dec
-        self._dec = value 
-        q=[cos(diff/2), 0, sin(diff/2), 0]
+        self._dec = value
+        x,y,z = spherical2catersian(self._ar-pi/2,0)
+        q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
         self.rotate_dots(q)
 
     @property
