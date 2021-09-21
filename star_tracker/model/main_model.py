@@ -15,7 +15,8 @@ class MainModel(QObject):
     
     view_plot_mode_changed = Signal(bool)
     show_camera_changed = Signal(bool)
-    
+    graticule_view_changed = Signal(bool)
+
     roll_changed = Signal(float)
     ar_changed = Signal(float)
     dec_changed = Signal(float)
@@ -80,6 +81,16 @@ class MainModel(QObject):
         self._change_camera_view = value
         self.save()
         self.show_camera_changed.emit(value)
+    
+    @property
+    def change_graticule_view(self):
+        return self._change_graticule_view
+    
+    @change_graticule_view.setter
+    def change_graticule_view(self,value):
+        self._change_graticule_view = value
+        self.save()
+        self.graticule_view_changed.emit(value)
     
     @property
     def load_stars_file(self):
@@ -158,7 +169,8 @@ class MainModel(QObject):
         self._view_plot_mode = False
         self._load_stars_file = False
         self._change_camera_view = False
-        
+        self._change_graticule_view = False
+
         self._roll = 0.0
         self._ar = 0.0
         self._dec = 0.0
@@ -179,6 +191,7 @@ class MainModel(QObject):
             
             self.view_plot_mode = data['view_plot_mode']
             self.change_camera_view = data['show_camera']
+            self.change_graticule_view = data['show_graticule']
 
             self.roll = data['roll']
             self.dec = data['dec']
@@ -195,6 +208,7 @@ class MainModel(QObject):
         
         data['view_plot_mode'] = self._view_plot_mode
         data['show_camera'] = self._change_camera_view
+        data['show_graticule'] = self._change_graticule_view
         
         data['roll'] = self._roll
         data['ar'] = self._ar
