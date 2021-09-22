@@ -4,7 +4,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from model.widget_model import *
-from modules.basic import spherical2catersian
+from modules.basic import deg2rad, spherical2catersian
 
 class Widget(QWidget):
     
@@ -100,33 +100,47 @@ class Widget(QWidget):
         self._model.update_graticule.connect(self.plotGraticule)
 
     def plotGraticule(self, show):
+        self.remove_graticule()
         if show == True:
             self.plot_2D_graticule()
             self.plot_3D_graticule()
-        else:
-            self.remove_3D_graticule()
-            self.remove_2D_graticule()
-
+        
     def plot_2D_graticule(self):
-        self.remove_2D_graticule()
         for i in range(-90, 91, 30):
             self._graticule_plots.append(self._canvas_2D.axes.plot([0, 360], [i, i], color='blue', linewidth = 0.4))
         for i in range(0, 361, 30):
             self._graticule_plots.append(self._canvas_2D.axes.plot([i, i], [-90, 90], color='blue', linewidth = 0.4))
         self._canvas_2D.draw()
 
-    def remove_2D_graticule(self):
+    def remove_graticule(self):
         while self._graticule_plots:
             self._graticule_plots[0].pop(0).remove()
             del self._graticule_plots[0] 
         self._canvas_2D.draw()
+        self._canvas_3D.draw()
 
     def plot_3D_graticule(self):
-        self.remove_3D_graticule()
+        ar, dec = [], []
+        for j in range(0,360,60):
+            for i in range(-90,91, 5):
+                ar.append(deg2rad(j))
+                dec.append(deg2rad(i))
+            for i in range(90,-91, -5):
+                ar.append(deg2rad(j+30))
+                dec.append(deg2rad(i))
         
-    def remove_3D_graticule(self):
-        pass
+        x,y,z=spherical2catersian(ar, dec)
+        self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color='blue', linewidth = 0.4))
+        self._canvas_3D.draw()
         
+        for i in range(-60, 90, 30):
+            ar, dec = [], []
+            for j in range(0, 361, 5):
+                ar.append(deg2rad(j))
+                dec.append(deg2rad(i))
+            x,y,z=spherical2catersian(ar, dec)
+            self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color='blue', linewidth = 0.4))
+            
     def plot_stars(self, stars):
         self._canvas_3D.axes.scatter3D(stars['x'], stars['y'], stars['z'], s = stars['v'], color = "white")
         self._canvas_2D.axes.scatter(stars['ar'], stars['dec'], s = stars['v'], c = 'white')
