@@ -18,6 +18,7 @@ class WidgetController(QObject):
         
         self._main_model.view_plot_mode_changed.connect(self.change_view_mode)
         self._main_model.show_camera_changed.connect(self.change_camera_view)
+        self._main_model.graticule_view_changed.connect(self.change_graticule_view)
 
         self._main_model.stars_input_file_changed.connect(self.load_file)
         self._main_model.camera_input_file_changed.connect(self.camera_file)
@@ -31,6 +32,9 @@ class WidgetController(QObject):
     def change_camera_view(self, value):
         self._widget_model.show_camera = value
 
+    def change_graticule_view(self, value):
+        self._widget_model.show_graticule = value
+        
     def load_file(self, value):
         pass
         try:

@@ -32,7 +32,8 @@ class Widget(QWidget):
         #events signal
         self._model.update_all.connect(self.update_all)
         self._model.update_camera.connect(self.plotCamera3D)
-    
+        self._model.update_graticule.connect(self.plotGraticule)
+
     def set2D(self):
         self._mode = ViewMode.VIEW2D
         if hasattr(self.canvas,'axes'):
@@ -90,11 +91,42 @@ class Widget(QWidget):
         if not value == {}:
             self.canvas.axes.scatter(value['ar'], value['dec'], s = value['v'], c = 'white')
         self.canvas.draw()
-
+            
     def plot3D(self):
         value = self._model.stars
         if not value == {}:
             self.canvas.axes.scatter3D(value['x'], value['y'], value['z'], s = value['v'], color = "white")
+        self.canvas.draw()
+    
+    def plotGraticule(self,value):
+        print(value)
+        print(self._mode)
+        if self._mode == ViewMode.VIEW2D:
+            self.plot_2D_graticule(value)
+
+    def plot_2D_graticule(self, value):
+        if value:
+            self.canvas.axes.plot([0, 360], [0, 0], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [30, 30], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [60, 60], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [-30, -30], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [-60, -60], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([0, 360], [-90, -90], color='blue', linewidth = 0.4)
+
+            self.canvas.axes.plot([0, 0], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([30, 30], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([60, 60], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([90, 90], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([120, 120], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([150, 150], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([180, 180], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([210, 210], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([240, 240], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([270, 270], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([300, 300], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([330, 330], [-90, 90], color='blue', linewidth = 0.4)
+            self.canvas.axes.plot([360, 360], [-90, 90], color='blue', linewidth = 0.4)
         self.canvas.draw()
 
     def plotCamera3D(self, camera):

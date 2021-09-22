@@ -1,5 +1,5 @@
 from os import error
-from PySide2.QtCore import QObject, Signal
+from PySide2.QtCore import SIGNAL, QObject, Signal
 from enum import Enum
 
 class ViewMode(Enum):
@@ -9,6 +9,7 @@ class ViewMode(Enum):
 class WidgetModel(QObject):
     update_all = Signal(ViewMode)
     update_camera = Signal(dict)
+    update_graticule = Signal(bool)
 
     def __init__(self):
         super().__init__()
@@ -16,6 +17,7 @@ class WidgetModel(QObject):
         self._stars = {}
         self._camera_position = {}
         self._view_mode = ViewMode.VIEW2D
+        self._show_camera = False
         self._show_camera = False
         self._roll = 0
         self._ar = 0
@@ -59,6 +61,15 @@ class WidgetModel(QObject):
         self._show_camera = value
         self.update_camera.emit(self._camera_position)
     
+    @property
+    def show_graticule(self):
+        return self._show_graticule
+    
+    @show_graticule.setter
+    def show_graticule(self, value):
+        self._show_graticule = value
+        self.update_graticule.emit(value)
+
     @property
     def roll(self):
         return self._roll
