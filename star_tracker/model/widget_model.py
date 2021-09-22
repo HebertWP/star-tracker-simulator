@@ -7,23 +7,24 @@ class ViewMode(Enum):
     VIEW2D = 1
 
 class WidgetModel(QObject):
-    update_all = Signal(ViewMode)
-    update_camera = Signal(dict)
+    view_mode_changed = Signal(ViewMode)
+    stars_changed = Signal(dict)
+    camera_position_changed = Signal(dict)
     update_graticule = Signal(bool)
-
+    
     def __init__(self):
         super().__init__()
 
+        self._view_mode = ViewMode.VIEW2D
+        self.view_mode_changed.emit(self._view_mode)
         self._stars = {}
         self._camera_position = {}
-        self._view_mode = ViewMode.VIEW2D
         self._show_camera = False
         self._show_camera = False
         self._roll = 0
         self._ar = 0
         self._dec = 0
-        self.update_all.emit(ViewMode.VIEW2D)
-    
+        
     @property
     def stars(self):
         return self._stars
@@ -31,8 +32,7 @@ class WidgetModel(QObject):
     @stars.setter
     def stars(self, value):
         self._stars = value
-        if not value == {}:
-            self.update_all.emit(self.view_mode)
+        self.stars_changed.emit(value)
     
     @property
     def camera_position(self) -> dict:
@@ -41,7 +41,7 @@ class WidgetModel(QObject):
     @camera_position.setter
     def camera_position(self, value):
         self._camera_position = value
-        self.update_camera.emit(value)
+        self.camera_position_changed.emit(value)
     
     @property
     def view_mode(self):
@@ -50,7 +50,7 @@ class WidgetModel(QObject):
     @view_mode.setter
     def view_mode(self, value):
         self._view_mode = value
-        self.update_all.emit(value)
+        self.view_mode_changed.emit(value)
     
     @property
     def show_camera(self):
@@ -59,7 +59,7 @@ class WidgetModel(QObject):
     @show_camera.setter
     def show_camera(self, value):
         self._show_camera = value
-        self.update_camera.emit(self._camera_position)
+        self.camera_position_changed.emit(self.camera_position)
     
     @property
     def show_graticule(self):

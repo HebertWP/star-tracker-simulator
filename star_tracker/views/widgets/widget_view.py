@@ -11,16 +11,80 @@ class Widget(QWidget):
     def __init__(self, parent = None):
 
         QWidget.__init__(self, parent)
+
+        self._vertical_layout = QVBoxLayout()
+        self._graticule_plots = []
+        self._camera_position = []
+
+        self.set_2D_view()
+        self.set_3D_view()
         
-        self.canvas = FigureCanvas(Figure())
-        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.set_view(ViewMode.VIEW2D)
+        self.setLayout(self._vertical_layout)
         
-        vertical_layout = QVBoxLayout()
-        vertical_layout.addWidget(self.toolbar)
-        vertical_layout.addWidget(self.canvas)
-        self.setLayout(vertical_layout)
-        self.set3D()
+    def set_2D_view(self):
+        self._canvas_2D = FigureCanvas(Figure())
+        self._toolbar_2D = NavigationToolbar(self._canvas_2D, self)
+        
+        self._vertical_layout.addWidget(self._toolbar_2D)
+        self._vertical_layout.addWidget(self._canvas_2D)
+        self.config_2D_plot()
+        
+    def config_2D_plot(self):
+        self._canvas_2D.axes = self._canvas_2D.figure.add_subplot(111)
+        self._canvas_2D.axes.set_facecolor("k")
+        self._canvas_2D.figure.set_facecolor("white")
+        self._canvas_2D.axes.set_title("Star Catalog 2D")
+        self._canvas_2D.axes.set_xlabel("Ascensao  reta [deg]")
+        self._canvas_2D.axes.set_ylabel("Declinacao [deg]")
+        self._canvas_2D.axes.set_xlim(0, 360)
+        self._canvas_2D.axes.set_ylim(-90, 90)
+        self._canvas_2D.draw()
     
+    def set_3D_view(self):
+        self._canvas_3D = FigureCanvas(Figure())
+        self._toolbar_3D = NavigationToolbar(self._canvas_3D, self)
+    
+        self._vertical_layout.addWidget(self._toolbar_3D)
+        self._vertical_layout.addWidget(self._canvas_3D)
+        self.config_3D_plot()
+    
+    def config_3D_plot(self):
+        self._canvas_3D.axes = self._canvas_3D.figure.add_subplot(projection = '3d')    
+        self._canvas_3D.axes.set_title("Star Catalog 3D",{'color': 'blue'})
+        self._canvas_3D.axes.scatter3D(0, 0, 0, s = 1,color = "red")
+        self._canvas_3D.axes.set_facecolor("black")
+        self._canvas_3D.figure.set_facecolor("black")
+        self._canvas_3D.axes.grid(False)
+        self._canvas_3D.axes.w_xaxis.pane.fill = False
+        self._canvas_3D.axes.w_yaxis.pane.fill = False
+        self._canvas_3D.axes.w_zaxis.pane.fill = False
+        self._canvas_3D.axes.tick_params(axis='x', colors='blue')
+        self._canvas_3D.axes.tick_params(axis='y', colors='blue')
+        self._canvas_3D.axes.tick_params(axis='z', colors='blue')
+        self._canvas_3D.axes.yaxis.label.set_color('blue')
+        self._canvas_3D.axes.xaxis.label.set_color('blue')
+        self._canvas_3D.axes.zaxis.label.set_color('blue')
+        self._canvas_3D.axes.set_xlim(-1, 1)
+        self._canvas_3D.axes.set_ylim(-1, 1)
+        self._canvas_3D.axes.set_zlim(-1, 1)
+        self._canvas_3D.axes.set_xlabel('X axis')
+        self._canvas_3D.axes.set_ylabel('Y axis')
+        self._canvas_3D.axes.set_zlabel('Z axis')
+        self._canvas_3D.draw()   
+        
+    def set_view(self, mode):
+        if mode == ViewMode.VIEW2D:
+            self._canvas_2D.setVisible(True)
+            self._toolbar_2D.setVisible(True)
+            self._canvas_3D.setVisible(False)
+            self._toolbar_3D.setVisible(False)
+        else:
+            self._canvas_2D.setVisible(False)
+            self._toolbar_2D.setVisible(False)
+            self._canvas_3D.setVisible(True)
+            self._toolbar_3D.setVisible(True)
+        
     @property
     def model(self):
         return self._model
@@ -30,124 +94,59 @@ class Widget(QWidget):
         self._model = value
     
         #events signal
-        self._model.update_all.connect(self.update_all)
-        self._model.update_camera.connect(self.plotCamera3D)
+        self._model.view_mode_changed.connect(self.set_view)
+        self._model.stars_changed.connect(self.plot_stars)
+        self._model.camera_position_changed.connect(self.plot_camera_3D)
         self._model.update_graticule.connect(self.plotGraticule)
 
-    def set2D(self):
-        self._mode = ViewMode.VIEW2D
-        if hasattr(self.canvas,'axes'):
-            self.canvas.axes.remove()
-        self.canvas.axes = self.canvas.figure.add_subplot(111)
-        self.canvas.axes.set_facecolor("k")
-        self.canvas.figure.set_facecolor("white")
-        self.canvas.axes.set_title("Star Catalog 2D")
-        self.canvas.axes.set_xlabel("Ascensao  reta [deg]")
-        self.canvas.axes.set_ylabel("Declinacao [deg]")
-        self.canvas.axes.set_xlim(0, 360)
-        self.canvas.axes.set_ylim(-90, 90)
-        self.canvas.draw()
-    
-    def set3D(self):
-        self._mode = ViewMode.VIEW3D
-        if hasattr(self.canvas,'axes'):
-            self.canvas.axes.remove()
-        self.canvas.axes = self.canvas.figure.add_subplot(projection = '3d')    
-        self.canvas.axes.set_title("Star Catalog 3D",{'color': 'blue'})
-        self.canvas.axes.scatter3D(0, 0, 0, s = 1,color = "red")
-        self.canvas.axes.set_facecolor("black")
-        self.canvas.figure.set_facecolor("black")
-        self.canvas.axes.grid(False)
-        self.canvas.axes.w_xaxis.pane.fill = False
-        self.canvas.axes.w_yaxis.pane.fill = False
-        self.canvas.axes.w_zaxis.pane.fill = False
-        self.canvas.axes.tick_params(axis='x', colors='blue')
-        self.canvas.axes.tick_params(axis='y', colors='blue')
-        self.canvas.axes.tick_params(axis='z', colors='blue')
-        self.canvas.axes.yaxis.label.set_color('blue')
-        self.canvas.axes.xaxis.label.set_color('blue')
-        self.canvas.axes.zaxis.label.set_color('blue')
-        self.canvas.axes.set_xlim(-1, 1)
-        self.canvas.axes.set_ylim(-1, 1)
-        self.canvas.axes.set_zlim(-1, 1)
-        self.canvas.axes.set_xlabel('X axis')
-        self.canvas.axes.set_ylabel('Y axis')
-        self.canvas.axes.set_zlabel('Z axis')
-        self.canvas.draw()   
-    
-    def update_all(self,value):
-        if value == ViewMode.VIEW2D and self._mode != value:
-            self.set2D()
-        elif value == ViewMode.VIEW3D and self._mode != value:
-            self.set3D()
-        if value == ViewMode.VIEW3D:
-            self.plotCamera3D(self._model.camera_position)
-            self.plot3D()
+    def plotGraticule(self, show):
+        if show == True:
+            self.plot_2D_graticule()
+            self.plot_3D_graticule()
         else:
-            self.plot2D()
+            self.remove_3D_graticule()
+            self.remove_2D_graticule()
 
-    def plot2D(self):
-        value = self._model.stars
-        if not value == {}:
-            self.canvas.axes.scatter(value['ar'], value['dec'], s = value['v'], c = 'white')
-        self.canvas.draw()
-            
-    def plot3D(self):
-        value = self._model.stars
-        if not value == {}:
-            self.canvas.axes.scatter3D(value['x'], value['y'], value['z'], s = value['v'], color = "white")
-        self.canvas.draw()
-    
-    def plotGraticule(self,value):
-        print(value)
-        print(self._mode)
-        if self._mode == ViewMode.VIEW2D:
-            self.plot_2D_graticule(value)
+    def plot_2D_graticule(self):
+        self.remove_2D_graticule()
+        for i in range(-90, 91, 30):
+            self._graticule_plots.append(self._canvas_2D.axes.plot([0, 360], [i, i], color='blue', linewidth = 0.4))
+        for i in range(0, 361, 30):
+            self._graticule_plots.append(self._canvas_2D.axes.plot([i, i], [-90, 90], color='blue', linewidth = 0.4))
+        self._canvas_2D.draw()
 
-    def plot_2D_graticule(self, value):
-        if value:
-            self.canvas.axes.plot([0, 360], [0, 0], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [30, 30], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [60, 60], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [-30, -30], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [-60, -60], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([0, 360], [-90, -90], color='blue', linewidth = 0.4)
+    def remove_2D_graticule(self):
+        while self._graticule_plots:
+            self._graticule_plots[0].pop(0).remove()
+            del self._graticule_plots[0] 
+        self._canvas_2D.draw()
 
-            self.canvas.axes.plot([0, 0], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([30, 30], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([60, 60], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([90, 90], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([120, 120], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([150, 150], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([180, 180], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([210, 210], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([240, 240], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([270, 270], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([300, 300], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([330, 330], [-90, 90], color='blue', linewidth = 0.4)
-            self.canvas.axes.plot([360, 360], [-90, 90], color='blue', linewidth = 0.4)
-        self.canvas.draw()
-
-    def plotCamera3D(self, camera):
-        if camera == {} or not self._model.show_camera:
-            self.set3D()
-            self.plot3D()
+    def plot_3D_graticule(self):
+        self.remove_3D_graticule()
+        
+    def remove_3D_graticule(self):
+        pass
+        
+    def plot_stars(self, stars):
+        self._canvas_3D.axes.scatter3D(stars['x'], stars['y'], stars['z'], s = stars['v'], color = "white")
+        self._canvas_2D.axes.scatter(stars['ar'], stars['dec'], s = stars['v'], c = 'white')
+        self._canvas_3D.draw()
+        self._canvas_2D.draw()
+        
+    def plot_camera_3D(self, camera):
+        self.remove_camera_3D()
+        if not self._model.show_camera:
             return
-        
-        if hasattr(self,'_camera_line0'):
-            self._camera_line0.pop(0).remove()
-            self._camera_line1.pop(0).remove()
-            self._camera_line2.pop(0).remove()
-            self._camera_line3.pop(0).remove()
-            self._camera_line4.pop(0).remove()
-        
-        #x,y,z = spherical2catersian(self._model.ar,self._model.dec)
-        #self._camera_dots = self.canvas.axes.scatter3D(x, y, z, s = 5, color = "g")
-        #self._camera_dots = self.canvas.axes.scatter3D(camera['x'], camera['y'], camera['z'], s = 5, color = "g")
-        self._camera_line0 = self.canvas.axes.plot( camera['x'], camera['y'], camera['z'], color = 'g', linewidth = 5)
-        self._camera_line1 = self.canvas.axes.plot( [0,camera['x'][0],camera['x'][3]], [0,camera['y'][0],camera['y'][3]], [0,camera['z'][0],camera['z'][3]], color = 'g', linewidth = 5)
-        self._camera_line2 = self.canvas.axes.plot( [0,camera['x'][1]], [0,camera['y'][1]], [0,camera['z'][1]], color = 'y', linewidth = 5)
-        self._camera_line3 = self.canvas.axes.plot( [0,camera['x'][2]], [0,camera['y'][2]], [0,camera['z'][2]], color = 'r', linewidth = 5)
-        self._camera_line4 = self.canvas.axes.plot( [0,camera['x'][3]], [0,camera['y'][3]], [0,camera['z'][3]], color = 'b', linewidth = 5)
-        self.canvas.draw()
+        if self._model.show_camera:
+            self._camera_position.append(self._canvas_3D.axes.plot( camera['x'], camera['y'], camera['z'], color = 'g', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][0],camera['x'][3]], [0,camera['y'][0],camera['y'][3]], [0,camera['z'][0],camera['z'][3]], color = 'g', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][1]], [0,camera['y'][1]], [0,camera['z'][1]], color = 'y', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][2]], [0,camera['y'][2]], [0,camera['z'][2]], color = 'r', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][3]], [0,camera['y'][3]], [0,camera['z'][3]], color = 'b', linewidth = 5))
+        self._canvas_3D.draw()        
+    
+    def remove_camera_3D(self):
+        while self._camera_position:
+            self._camera_position[0].pop(0).remove()
+            del self._camera_position[0] 
+        self._canvas_3D.draw()

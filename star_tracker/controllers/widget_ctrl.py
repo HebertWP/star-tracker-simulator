@@ -34,9 +34,8 @@ class WidgetController(QObject):
 
     def change_graticule_view(self, value):
         self._widget_model.show_graticule = value
-        
+
     def load_file(self, value):
-        pass
         try:
             n, v, ar, dec = loadfile.loadCatalog(value)
             x,y,z = basic.spherical2catersian(basic.deg2rad(ar), basic.deg2rad(dec))
