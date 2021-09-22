@@ -10,6 +10,23 @@ def test_spherical2catersian_num():
     x, y, z = spherical2catersian(0,0)
     assert [x, y, z] == [1.0, 0.0, 0.0]
 
+def test_catersian2spherical_num():
+    ar, dec = deg2rad(33),deg2rad(44)
+    x,y,z=spherical2catersian(ar,dec)
+    dec1, ar1 = catersian2spherical(x,y,z)
+    
+    assert dec == dec1
+    assert ar == ar1
+
+def test_catersian2spherical_list():
+    ar = [0, deg2rad(33), deg2rad(90), deg2rad(180), deg2rad(360)]
+    dec = [deg2rad(90), deg2rad(45), deg2rad(0), deg2rad(-33), deg2rad(-90)] 
+    x,y,z=spherical2catersian(ar[0:4], dec[0:4])
+    dec1, ar1 = catersian2spherical(x,y,z)
+    
+    assert ar[0:4] == pytest.approx(ar1)
+    assert dec[0:4] == pytest.approx(dec1)
+
 def test_ang_calculator():
     to_rad = (pi/180)
     theta1 = 60  * to_rad
