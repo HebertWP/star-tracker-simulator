@@ -74,3 +74,9 @@ class Camera():
     @property
     def position_dict(self) -> dict:
         return self._position_dict
+
+    @property
+    def position_dict_spherical(self) -> dict:
+        dec, ar = catersian2spherical(self.position_dict['x'],self.position_dict['y'],self.position_dict['z'])
+        out = {'dec':dec,'ar':ar}
+        return out

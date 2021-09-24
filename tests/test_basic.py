@@ -1,5 +1,5 @@
 from star_tracker.modules.basic import *
-from numpy import pi
+from numpy import pi, rad2deg
 import pytest
 
 def test_spherical2catersian_list():
@@ -11,21 +11,33 @@ def test_spherical2catersian_num():
     assert [x, y, z] == [1.0, 0.0, 0.0]
 
 def test_catersian2spherical_num():
-    ar, dec = deg2rad(33),deg2rad(44)
-    x,y,z=spherical2catersian(ar,dec)
-    dec1, ar1 = catersian2spherical(x,y,z)
-    
-    assert dec == dec1
-    assert ar == ar1
+    for i in range(0,360,1):
+        for j in range(-90,90,1):
+            ar  = deg2rad(i)
+            dec = deg2rad(j)
+            x, y, z = spherical2catersian(ar,dec)
+            dec1, ar1 = catersian2spherical(x,y,z)
+            assert rad2deg(ar)  == pytest.approx(rad2deg(ar1))
+            assert rad2deg(dec) == pytest.approx(rad2deg(dec1))
 
+    ar  = deg2rad(300)
+    dec = deg2rad(91)
+    x, y, z = spherical2catersian(ar,dec)
+    dec1, ar1 = catersian2spherical(x,y,z)
+    assert [rad2deg(dec)-2* (rad2deg(dec) % 90), (rad2deg(ar)+180) % 360] == [pytest.approx(rad2deg(dec1)), pytest.approx(rad2deg(ar1))]
+    
 def test_catersian2spherical_list():
-    ar = [0, deg2rad(33), deg2rad(90), deg2rad(180), deg2rad(360)]
-    dec = [deg2rad(90), deg2rad(45), deg2rad(0), deg2rad(-33), deg2rad(-90)] 
-    x,y,z=spherical2catersian(ar[0:4], dec[0:4])
+    ar, dec = [],[]
+    for i in range(0,360,1):
+        for j in range(-90,90,1):
+            ar.append(deg2rad(i))
+            dec.append(deg2rad(j))
+    x,y,z=spherical2catersian(deg2rad(ar), deg2rad(dec))
     dec1, ar1 = catersian2spherical(x,y,z)
     
-    assert ar[0:4] == pytest.approx(ar1)
-    assert dec[0:4] == pytest.approx(dec1)
+    for i,j,k,l in zip(ar,ar1, dec, dec1):
+        assert i == pytest.approx(rad2deg(j))
+        assert k == pytest.approx(rad2deg(l))
 
 def test_ang_calculator():
     to_rad = (pi/180)

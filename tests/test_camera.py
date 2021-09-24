@@ -25,7 +25,7 @@ class TestCamera():
 
         assert aux == aux1
     
-    def test_position_dic(self):
+    def test_position_dict(self):
         self.load()
         
         ang = deg2rad(180)
@@ -40,3 +40,11 @@ class TestCamera():
         aux1 = self._camera.position_dict
 
         assert aux == aux1
+    
+    def test_position_dict_spherical(self):
+        self.load()
+        
+        aux = self._camera.position_dict_spherical
+        print(aux)
+        assert True == False
+        

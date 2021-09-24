@@ -47,21 +47,21 @@ class WidgetController(QObject):
     def camera_file(self, value):
         try:
             self._camera = Camera(value)
-            self._widget_model.camera_position = self._camera.position_dict
+            self._widget_model.camera_position = {'3D':self._camera.position_dict,'2D': self._camera.position_dict_spherical}
         except FileNotFoundError:
             pass
     
     def roll(self,value):
         self._camera.roll= basic.deg2rad(value)
         self._widget_model.roll = basic.deg2rad(value)
-        self._widget_model.camera_position = self._camera.position_dict
+        self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical}
         
     def ar(self,value):
         self._camera.ar = basic.deg2rad(value)
         self._widget_model.ar = basic.deg2rad(value)
-        self._widget_model.camera_position = self._camera.position_dict
+        self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical}
 
     def dec(self,value):
         self._camera.dec = basic.deg2rad(value)
         self._widget_model.dec = basic.deg2rad(value)
-        self._widget_model.camera_position = self._camera.position_dict
+        self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical}

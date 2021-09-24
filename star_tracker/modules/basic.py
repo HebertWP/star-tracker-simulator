@@ -1,4 +1,4 @@
-from numpy import sin, cos, arccos,sqrt, pi, arccos, arcsin, arctan
+from numpy import rad2deg, sin, cos, arccos,sqrt, pi, arccos, arcsin, arctan
 
 def spherical2catersian(ar, dec):
     if isinstance(ar,list):
@@ -17,19 +17,19 @@ def catersian2spherical(x, y, z):
     if isinstance(x,list):
         ar, dec = [], []
         for i, j, k in zip(x, y, z):
-            if j <= 0.001:
-                dec.append(arcsin(k))
-                ar.append(arccos(i/cos(dec[-1])))
-            else:
-                ar.append(arctan(j/i))
-                dec.append(arcsin(k))
+            ar.append(arctan(j/i))
+            if i <= 0:
+                ar[-1] = pi + ar[-1]
+            elif j < 0:
+                ar[-1] = 2*pi + ar[-1]
+            dec.append(arcsin(k))
     else:
-        if y <= 0.001:
-            dec = arcsin(z)
-            ar = arccos(x/cos(dec))
-        else:
-            ar = arctan(y/x)
-            dec = arcsin(z)
+        ar = arctan(y/x)
+        dec = arcsin(z)
+        if x <= 0:
+            ar = pi + ar
+        elif y < 0:
+            ar = 2*pi +ar
     return dec, ar
 
 def quaternus_rotation(q,v):

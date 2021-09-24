@@ -3,6 +3,7 @@ from PySide2.QtWidgets import*
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
+from numpy import rad2deg
 from model.widget_model import *
 from modules.basic import deg2rad, spherical2catersian
 
@@ -96,7 +97,7 @@ class Widget(QWidget):
         #events signal
         self._model.view_mode_changed.connect(self.set_view)
         self._model.stars_changed.connect(self.plot_stars)
-        self._model.camera_position_changed.connect(self.plot_camera_3D)
+        self._model.camera_position_changed.connect(self.plot_camera)
         self._model.update_graticule.connect(self.plotGraticule)
 
     def plotGraticule(self, show):
@@ -147,20 +148,31 @@ class Widget(QWidget):
         self._canvas_3D.draw()
         self._canvas_2D.draw()
         
-    def plot_camera_3D(self, camera):
+    def plot_camera(self, camera):
+        camera_3D = camera['3D']
+        camera_2D = camera['2D']
         self.remove_camera_3D()
         if not self._model.show_camera:
             return
         if self._model.show_camera:
-            self._camera_position.append(self._canvas_3D.axes.plot( camera['x'], camera['y'], camera['z'], color = 'g', linewidth = 5))
-            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][0],camera['x'][3]], [0,camera['y'][0],camera['y'][3]], [0,camera['z'][0],camera['z'][3]], color = 'g', linewidth = 5))
-            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][1]], [0,camera['y'][1]], [0,camera['z'][1]], color = 'y', linewidth = 5))
-            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][2]], [0,camera['y'][2]], [0,camera['z'][2]], color = 'r', linewidth = 5))
-            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera['x'][3]], [0,camera['y'][3]], [0,camera['z'][3]], color = 'b', linewidth = 5))
-        self._canvas_3D.draw()        
+            self._camera_position.append(self._canvas_3D.axes.plot( camera_3D['x'], camera_3D['y'], camera_3D['z'], color = 'g', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][0],camera_3D['x'][3]], [0,camera_3D['y'][0],camera_3D['y'][3]], [0,camera_3D['z'][0],camera_3D['z'][3]], color = 'g', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][1]], [0,camera_3D['y'][1]], [0,camera_3D['z'][1]], color = 'y', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][2]], [0,camera_3D['y'][2]], [0,camera_3D['z'][2]], color = 'r', linewidth = 5))
+            self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][3]], [0,camera_3D['y'][3]], [0,camera_3D['z'][3]], color = 'b', linewidth = 5))
+
+            ar = rad2deg(camera_2D['ar'])
+            dec = rad2deg(camera_2D['dec'])
+            self._camera_position.append(self._canvas_2D.axes.scatter( ar,dec ,s=7,color='red'))
+        self._canvas_3D.draw()
+        self._canvas_2D.draw()
     
     def remove_camera_3D(self):
         while self._camera_position:
-            self._camera_position[0].pop(0).remove()
+            try:
+                self._camera_position[0].pop(0).remove()
+            except :
+                self._camera_position[0].remove()
+                
             del self._camera_position[0] 
         self._canvas_3D.draw()
