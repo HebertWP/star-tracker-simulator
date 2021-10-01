@@ -80,3 +80,28 @@ class Camera():
         dec, ar = catersian2spherical(self.position_dict['x'],self.position_dict['y'],self.position_dict['z'])
         out = {'dec':dec,'ar':ar}
         return out
+    
+    @property
+    def coordinates(self):
+        out = {}
+        x, y, z = spherical2catersian(self._ar, self._dec)
+        z_axle = [-x, -y, -z] 
+        out['z'] = [ z_axle[0], z_axle[1], z_axle[2]]
+
+        x,y,z = spherical2catersian(self._ar-pi/2, self._dec)
+        
+        q = [cos(self._roll/2), sin(self._roll/2)*-z_axle[0], sin(self._roll/2)*-z_axle[1], sin(self._roll/2)*-z_axle[2]]
+        x,y,z=quaternus_rotation(q, [x,y,z])
+    
+        self._roll
+        out['x'] = [ x, y, z]
+
+        x,y,z = spherical2catersian(self._ar, self._dec+pi/2)
+        
+        q = [cos(self._roll/2), sin(self._roll/2)*-z_axle[0], sin(self._roll/2)*-z_axle[1], sin(self._roll/2)*-z_axle[2]]
+        x,y,z=quaternus_rotation(q, [x,y,z])
+    
+        self._roll
+        out['y'] = [ x, y, z]
+
+        return out

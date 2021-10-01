@@ -157,14 +157,16 @@ class Widget(QWidget):
     def plot_camera(self, camera):
         camera_3D = camera['3D']
         camera_2D = camera['2D']
+        position_3D = camera['3D_pos']
+
         self.remove_camera()
         if self._model.show_camera:
             if self._model.view_mode == ViewMode.VIEW3D:
-                self.plot_camera_3D(camera_3D)
+                self.plot_camera_3D(camera_3D,position_3D)
             else:
                 self.plot_camera_2D(camera_2D)
         
-    def plot_camera_3D(self,camera_3D):
+    def plot_camera_3D(self,camera_3D, position):
         came_linewidth = 1 
         self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][0]], [0,camera_3D['y'][0]], [0,camera_3D['z'][0]], color = 'g', linewidth = came_linewidth))
         self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][1]], [0,camera_3D['y'][1]], [0,camera_3D['z'][1]], color = 'g', linewidth = came_linewidth))
@@ -180,6 +182,13 @@ class Widget(QWidget):
         self._camera_position.append(self._canvas_3D.axes.plot( camera_3D['x'][1:3], camera_3D['y'][1:3], camera_3D['z'][1:3], color = 'y', linewidth = came_linewidth))
         self._camera_position.append(self._canvas_3D.axes.plot( [camera_3D['x'][0],camera_3D['x'][3]], [camera_3D['y'][0],camera_3D['y'][3]], [camera_3D['z'][0],camera_3D['z'][3]], color = 'b', linewidth = came_linewidth))
         self._camera_position.append(self._canvas_3D.axes.plot( [camera_3D['x'][2],camera_3D['x'][3]], [camera_3D['y'][2],camera_3D['y'][3]], [camera_3D['z'][2],camera_3D['z'][3]], color = 'r', linewidth = came_linewidth))
+        
+        z=position['z']
+        x=position['x']
+        y=position['y']
+        self._camera_position.append(self._canvas_3D.axes.quiver(0, 0, 0, z[0], z[1], z[2], color="blue"))
+        self._camera_position.append(self._canvas_3D.axes.quiver(0, 0, 0, x[0], x[1], x[2], color="red"))
+        self._camera_position.append(self._canvas_3D.axes.quiver(0, 0, 0, y[0], y[1], y[2], color="green"))
         
         self._canvas_3D.draw()
 
