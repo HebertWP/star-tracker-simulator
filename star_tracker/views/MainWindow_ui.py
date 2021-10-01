@@ -21,9 +21,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(832, 672)
-        MainWindow.setMinimumSize(QSize(832, 672))
-        MainWindow.setMaximumSize(QSize(832, 672))
+        MainWindow.resize(850, 722)
+        MainWindow.setMinimumSize(QSize(850, 722))
+        MainWindow.setMaximumSize(QSize(850, 722))
         MainWindow.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.actionOpen_Star_File = QAction(MainWindow)
         self.actionOpen_Star_File.setObjectName(u"actionOpen_Star_File")
@@ -120,6 +120,7 @@ class Ui_MainWindow(object):
         self._dec_scroll = QScrollBar(self.verticalLayoutWidget_4)
         self._dec_scroll.setObjectName(u"_dec_scroll")
         self._dec_scroll.setMinimum(-90)
+        self._dec_scroll.setMaximum(90)
         self._dec_scroll.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_7.addWidget(self._dec_scroll)
@@ -132,10 +133,10 @@ class Ui_MainWindow(object):
 
         self.viewPlot = Widget(self.centralwidget)
         self.viewPlot.setObjectName(u"viewPlot")
-        self.viewPlot.setGeometry(QRect(0, 268, 701, 401))
+        self.viewPlot.setGeometry(QRect(0, 268, 701, 431))
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setGeometry(QRect(0, 0, 831, 161))
+        self.tabWidget.setGeometry(QRect(0, 0, 851, 161))
         self.tabWidget.setCursor(QCursor(Qt.ArrowCursor))
         self.tabWidget.setMovable(True)
         self.File = QWidget()
@@ -423,7 +424,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.Help, "")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(700, 270, 137, 190))
+        self.layoutWidget.setGeometry(QRect(700, 270, 151, 190))
         self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
