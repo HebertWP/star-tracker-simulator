@@ -9,6 +9,7 @@ class Camera():
         self._input_file = input_file
         self.load()
         self._dots = []
+        self._axles = {'z':[-1,0,0],'y':[0,0,1],'x':[0,-1,0]}
         self._dots.append(spherical2catersian( 1*self._view_ang, self._view_ang))
         self._dots.append(spherical2catersian(-1*self._view_ang, self._view_ang))
         self._dots.append(spherical2catersian(-1*self._view_ang, -1*self._view_ang))
@@ -32,8 +33,10 @@ class Camera():
         diff = value - self._roll
         self._roll = value
         x,y,z = spherical2catersian(self._ar, self._dec)
-        self.rotate_dots([cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z])
-    
+        q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
+        self.rotate_dots(q)
+        self.rotate_axles(q)
+        
     @property
     def dec(self):
         return self._dec
@@ -45,7 +48,8 @@ class Camera():
         x,y,z = spherical2catersian(self._ar-pi/2,0)
         q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
         self.rotate_dots(q)
-
+        self.rotate_axles(q)
+        
     @property
     def ar(self):
         return self._ar
@@ -56,6 +60,12 @@ class Camera():
         self._ar = value
         q=[cos(diff/2),0,0,sin(diff/2)]
         self.rotate_dots(q)
+        self.rotate_axles(q)
+        
+    def rotate_axles(self,q):
+        self._axles['z'] = quaternus_rotation(q,self._axles['z'])
+        self._axles['y'] = quaternus_rotation(q,self._axles['y'])
+        self._axles['x'] = quaternus_rotation(q,self._axles['x'])
 
     def rotate_dots(self, q):
         
@@ -83,25 +93,4 @@ class Camera():
     
     @property
     def coordinates(self):
-        out = {}
-        x, y, z = spherical2catersian(self._ar, self._dec)
-        z_axle = [-x, -y, -z] 
-        out['z'] = [ z_axle[0], z_axle[1], z_axle[2]]
-
-        x,y,z = spherical2catersian(self._ar-pi/2, self._dec)
-        
-        q = [cos(self._roll/2), sin(self._roll/2)*-z_axle[0], sin(self._roll/2)*-z_axle[1], sin(self._roll/2)*-z_axle[2]]
-        x,y,z=quaternus_rotation(q, [x,y,z])
-    
-        self._roll
-        out['x'] = [ x, y, z]
-
-        x,y,z = spherical2catersian(self._ar, self._dec+pi/2)
-        
-        q = [cos(self._roll/2), sin(self._roll/2)*-z_axle[0], sin(self._roll/2)*-z_axle[1], sin(self._roll/2)*-z_axle[2]]
-        x,y,z=quaternus_rotation(q, [x,y,z])
-    
-        self._roll
-        out['y'] = [ x, y, z]
-
-        return out
+        return self._axles

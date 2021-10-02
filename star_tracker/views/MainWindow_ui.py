@@ -424,7 +424,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.Help, "")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(700, 270, 151, 190))
+        self.layoutWidget.setGeometry(QRect(700, 270, 163, 219))
         self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -465,6 +465,11 @@ class Ui_MainWindow(object):
         self.checkBox_3.setObjectName(u"checkBox_3")
 
         self.verticalLayout_4.addWidget(self.checkBox_3)
+
+        self._view_stars = QCheckBox(self.layoutWidget)
+        self._view_stars.setObjectName(u"_view_stars")
+
+        self.verticalLayout_4.addWidget(self._view_stars)
 
         self._automatic_control_frame = AutomaticMovements(self.centralwidget)
         self._automatic_control_frame.setObjectName(u"_automatic_control_frame")
@@ -578,6 +583,7 @@ class Ui_MainWindow(object):
         self._show_camera.setText(QCoreApplication.translate("MainWindow", u"Show camera", None))
         self._graticule_control.setText(QCoreApplication.translate("MainWindow", u"Graticule", None))
         self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"View Simulation", None))
+        self._view_stars.setText(QCoreApplication.translate("MainWindow", u"View Stars", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Automatic Control ", None))
         self._file.setText(QCoreApplication.translate("MainWindow", u"No loaded file", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Camera:", None))
