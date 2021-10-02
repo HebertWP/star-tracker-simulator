@@ -75,3 +75,9 @@ def test_momentCalculator():
     A = areaCalculator(a,b,c)
     J = momentCalculator(A,a,b,c)
     assert J == pytest.approx(0.22, 0.1)
+
+def test_quaternions_product():
+    q1=[3,5,6,8]
+    q2=[3,5,6,8]
+    q = quaternions_product(q1,q2)
+    assert q == [-116, 30, 36, 48]
