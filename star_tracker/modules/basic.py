@@ -32,6 +32,15 @@ def catersian2spherical(x, y, z):
             ar = 2*pi +ar
     return dec, ar
 
+def quaternions_product(q1,q2):
+    q = []
+    q.append(q1[0]*q2[0] - (q1[1]*q2[1] + q1[2]*q2[2] + q1[3]*q2[3]))
+    
+    q.append(q1[0]*q2[1] + q2[0]*q1[1] + (q1[2]*q2[3] - q1[3]*q2[2]))
+    q.append(q1[0]*q2[2] + q2[0]*q1[2] + (q1[3]*q2[1] - q1[1]*q2[3]))
+    q.append(q1[0]*q2[3] + q2[0]*q1[3] + (q1[1]*q2[2] - q1[2]*q2[1]))
+    return q
+
 def quaternus_rotation(q,v):
     out =[]
     out.append(v[0]*(q[0]*q[0]+q[1]*q[1]-q[2]*q[2]-q[3]*q[3])+2*v[1]*(q[1]*q[2]-q[0]*q[3])+2*v[2]*(q[0]*q[2]+q[1]*q[3]))
