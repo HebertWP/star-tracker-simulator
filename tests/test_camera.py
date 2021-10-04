@@ -4,7 +4,8 @@ import pytest
 
 class TestCamera():
     def load(self):
-        self._camera = Camera("data/camera.json")
+        self._camera = Camera()
+        self._camera.config = "data/camera.json"
     
     def test_load_camera(self):
         self.load()
@@ -46,7 +47,7 @@ class TestCamera():
         self.load()
         
         aux = self._camera.position_dict_spherical
-        print(aux)
+        #print(aux)
         assert True == False
     
     def test_coordinates_z(self):
