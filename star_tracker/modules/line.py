@@ -16,3 +16,6 @@ class Line:
         y = self._equation_y['a']*var + self._equation_y['b']
         z = self._equation_z['a']*var + self._equation_z['b']
         return {'x':x, 'y':y, 'z':z}
+
+    def __str__(self):
+        return("Line, from={} : to={}".format(self._dot_int,self._dot_end))
