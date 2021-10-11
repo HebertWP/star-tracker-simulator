@@ -42,11 +42,7 @@ class Stars:
             self._x[i], self._y[i], self._z[i] = quaternus_rotation(q,[self._x[i], self._y[i], self._z[i]])
             self._dec[i], self._ar[i] = catersian2spherical(self._x[i], self._y[i], self._z[i])
         aux = Canvas2D(Figure())
-        aux1  = self.getDict()
-        del aux1['x']
-        del aux1['y']
-        del aux1['z']        
-        aux.stars = aux1
+        aux.stars = self.getDict()
         aux.show_stars(True)
         aux.draw()
         os.remove('./ola.png')

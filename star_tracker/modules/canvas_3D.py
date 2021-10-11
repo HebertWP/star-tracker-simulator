@@ -105,7 +105,8 @@ class Canvas3D(FigureCanvas):
             except :
                 self._camera_position[0].remove()
             del self._camera_position[0]
-        
+        if not show:
+            return
         self._camera_position.append(self.axes.plot( [0,camera_3d['x'][0]], [0,camera_3d['y'][0]], [0,camera_3d['z'][0]], color = 'g', linewidth =self._camera_linewidth))
         self._camera_position.append(self.axes.plot( [0,camera_3d['x'][1]], [0,camera_3d['y'][1]], [0,camera_3d['z'][1]], color = 'g', linewidth =self._camera_linewidth))
         self._camera_position.append(self.axes.plot( [0,camera_3d['x'][2]], [0,camera_3d['y'][2]], [0,camera_3d['z'][2]], color = 'g', linewidth =self._camera_linewidth))
