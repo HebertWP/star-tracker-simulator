@@ -25,6 +25,7 @@ class WidgetController(QObject):
         self._main_model.roll_changed.connect(self.roll)
         self._main_model.ar_changed.connect(self.ar)
         self._main_model.dec_changed.connect(self.dec)
+        self._camera = Camera()
         
     def change_view_mode(self,value):
         self._widget_model.view_mode = ViewMode.VIEW3D if value else ViewMode.VIEW2D
@@ -46,8 +47,12 @@ class WidgetController(QObject):
 
     def camera_file(self, value):
         try:
-            self._camera = Camera(value)
-            self._widget_model.camera_position = {'3D':self._camera.position_dict,'2D': self._camera.position_dict_spherical,'3D_pos':self._camera.coordinates}
+            self._camera.config = value
+            data = {}
+            data['3D'] = self._camera.position_dict
+            data['2D'] = self._camera.position_dict_spherical
+            data['3D_pos'] = self._camera.coordinates
+            self._widget_model.camera_position = data
         except FileNotFoundError:
             pass
     

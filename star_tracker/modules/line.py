@@ -10,7 +10,7 @@ class Line:
         self._equation_z = {'a': self._dot_end['z'] - self._dot_int['z'], 'b': self._dot_int['z']}
         self._equation_y = {'a': self._dot_end['y'] - self._dot_int['y'], 'b': self._dot_int['y']}
         self._equation_x = {'a': self._dot_end['x'] - self._dot_int['x'], 'b': self._dot_int['x']}
-    
+
     def get_dot(self,var):
         x = self._equation_x['a']*var + self._equation_x['b']
         y = self._equation_y['a']*var + self._equation_y['b']

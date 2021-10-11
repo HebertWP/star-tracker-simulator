@@ -56,8 +56,8 @@ class Camera():
         self._roll = value
         x,y,z = spherical2catersian(self._ar, self._dec)
         q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
-        self.rotate_dots(q)
         self.rotate_axles(q)
+        self.rotate_dots(q)
         
     @property
     def dec(self):
@@ -69,8 +69,8 @@ class Camera():
         self._dec = value
         x,y,z = spherical2catersian(self._ar-pi/2,0)
         q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
-        self.rotate_dots(q)
         self.rotate_axles(q)
+        self.rotate_dots(q)
         
     @property
     def ar(self):
@@ -81,8 +81,8 @@ class Camera():
         diff = value - self._ar
         self._ar = value
         q=[cos(diff/2),0,0,sin(diff/2)]
-        self.rotate_dots(q)
         self.rotate_axles(q)
+        self.rotate_dots(q)
         
     def rotate_axles(self,q):
         self._axles['z'] = quaternus_rotation(q,self._axles['z'])
@@ -90,6 +90,9 @@ class Camera():
         self._axles['x'] = quaternus_rotation(q,self._axles['x'])
 
     def rotate_dots(self, q):
+        q[1]=-q[1]
+        q[2]=-q[2]
+        q[3]=-q[3]
         if not self._configured:
             return
         self._dots[0] = quaternus_rotation(q,self._dots[0])
@@ -123,7 +126,7 @@ class Camera():
         for i in range(0,4):
             out['ar'].append([])
             out['dec'].append([])
-            for j in np.linspace(0,1,21):
+            for j in np.linspace(0,1,1001):
                 dot = line[i].get_dot(j)
                 dec, ar = catersian2spherical(dot['x'], dot['y'], dot['z'])
                 out['ar'][i].append(ar)

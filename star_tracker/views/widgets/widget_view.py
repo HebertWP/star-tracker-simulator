@@ -7,6 +7,11 @@ from numpy import rad2deg
 from model.widget_model import *
 from modules.basic import deg2rad, spherical2catersian
 
+try:
+    from modules.canvas_2D import *
+except ImportError:
+    from star_tracker.modules.canvas_2D import *
+
 class Widget(QWidget):
     
     def __init__(self, parent = None):
@@ -22,24 +27,14 @@ class Widget(QWidget):
         
         self.set_view(ViewMode.VIEW2D)
         self.setLayout(self._vertical_layout)
+        self._graticule_color = "yellow"
         
     def set_2D_view(self):
-        self._canvas_2D = FigureCanvas(Figure())
+        self._canvas_2D = Canvas2D(Figure())
         self._toolbar_2D = NavigationToolbar(self._canvas_2D, self)
         
         self._vertical_layout.addWidget(self._toolbar_2D)
         self._vertical_layout.addWidget(self._canvas_2D)
-        self.config_2D_plot()
-        
-    def config_2D_plot(self):
-        self._canvas_2D.axes = self._canvas_2D.figure.add_subplot(111)
-        self._canvas_2D.axes.set_facecolor("k")
-        self._canvas_2D.figure.set_facecolor("white")
-        self._canvas_2D.axes.set_title("Star Catalog 2D")
-        self._canvas_2D.axes.set_xlabel("Ascensao  reta [deg]")
-        self._canvas_2D.axes.set_ylabel("Declinacao [deg]")
-        self._canvas_2D.axes.set_xlim(0, 360)
-        self._canvas_2D.axes.set_ylim(-90, 90)
         self._canvas_2D.draw()
     
     def set_3D_view(self):
@@ -102,30 +97,22 @@ class Widget(QWidget):
         self._model.update_graticule.connect(self.plotGraticule)
 
     def plotGraticule(self, show):
-        self.remove_graticule()
-        if show == True:
-            self.plot_2D_graticule()
-            self.plot_3D_graticule()
-        
-    def plot_2D_graticule(self):
-        if self._model.view_mode == ViewMode.VIEW3D:
-            return
-        for i in range(-90, 91, 30):
-            self._graticule_plots.append(self._canvas_2D.axes.plot([0, 360], [i, i], color='blue', linewidth = 0.4))
-        for i in range(0, 361, 30):
-            self._graticule_plots.append(self._canvas_2D.axes.plot([i, i], [-90, 90], color='blue', linewidth = 0.4))
+        self._canvas_2D.showGraticule(show)
         self._canvas_2D.draw()
-
+        
+        self.remove_graticule()
+        if show == True:    
+            self.plot_3D_graticule()
+    
     def remove_graticule(self):
         while self._graticule_plots:
             self._graticule_plots[0].pop(0).remove()
             del self._graticule_plots[0] 
-        self._canvas_2D.draw()
         self._canvas_3D.draw()
 
     def plot_3D_graticule(self):
-        if self._model.view_mode == ViewMode.VIEW2D:
-            return
+        #if self._model.view_mode == ViewMode.VIEW2D:
+        #    return
         ar, dec = [], []
         for j in range(0,360,60):
             for i in range(-90,91, 5):
@@ -136,7 +123,7 @@ class Widget(QWidget):
                 dec.append(deg2rad(i))
         
         x,y,z=spherical2catersian(ar, dec)
-        self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color='blue', linewidth = 0.4))
+        self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color=self._graticule_color, linewidth = 0.4))
         self._canvas_3D.draw()
         
         for i in range(-60, 90, 30):
@@ -145,11 +132,12 @@ class Widget(QWidget):
                 ar.append(deg2rad(j))
                 dec.append(deg2rad(i))
             x,y,z=spherical2catersian(ar, dec)
-            self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color='blue', linewidth = 0.4))
+            self._graticule_plots.append(self._canvas_3D.axes.plot(x,y,z, color=self._graticule_color, linewidth = 0.4))
         self._canvas_3D.draw()
 
     def plot_stars(self, stars):
-        self._canvas_2D.axes.scatter(stars['ar'], stars['dec'], s = stars['v'], c = 'white')
+        self._canvas_2D.stars = stars
+        self._canvas_2D.show_stars(True)
         self._canvas_2D.draw()
         self._canvas_3D.axes.scatter3D(stars['x'], stars['y'], stars['z'], s = stars['v'], color = "white")
         self._canvas_3D.draw()
@@ -160,12 +148,14 @@ class Widget(QWidget):
         position_3D = camera['3D_pos']
 
         self.remove_camera()
+        self._canvas_2D.camera = camera_2D
+        self._canvas_2D.show_camera(self._model.show_camera)
+        self._canvas_2D.draw()
         if self._model.show_camera:
-            if self._model.view_mode == ViewMode.VIEW3D:
-                self.plot_camera_3D(camera_3D,position_3D)
-            else:
-                self.plot_camera_2D(camera_2D)
-        
+            #if self._model.view_mode == ViewMode.VIEW3D:
+            self.plot_camera_3D(camera_3D,position_3D)
+            #else:
+            
     def plot_camera_3D(self,camera_3D, position):
         came_linewidth = 1 
         self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][0]], [0,camera_3D['y'][0]], [0,camera_3D['z'][0]], color = 'g', linewidth = came_linewidth))
@@ -174,13 +164,13 @@ class Widget(QWidget):
         self._camera_position.append(self._canvas_3D.axes.plot( [0,camera_3D['x'][3]], [0,camera_3D['y'][3]], [0,camera_3D['z'][3]], color = 'g', linewidth = came_linewidth))
         
         self._camera_position.append(self._canvas_3D.axes.scatter3D( camera_3D['x'][0], camera_3D['y'][0], camera_3D['z'][0], color='red'))
-        self._camera_position.append(self._canvas_3D.axes.scatter3D( camera_3D['x'][1], camera_3D['y'][1], camera_3D['z'][1], color='blue'))
+        self._camera_position.append(self._canvas_3D.axes.scatter3D( camera_3D['x'][1], camera_3D['y'][1], camera_3D['z'][1], color='green'))
         self._camera_position.append(self._canvas_3D.axes.scatter3D( camera_3D['x'][2], camera_3D['y'][2], camera_3D['z'][2], color='orange'))
         self._camera_position.append(self._canvas_3D.axes.scatter3D( camera_3D['x'][3], camera_3D['y'][3], camera_3D['z'][3], color='yellow'))
     
         self._camera_position.append(self._canvas_3D.axes.plot( camera_3D['x'][0:2], camera_3D['y'][0:2], camera_3D['z'][0:2], color = 'orange', linewidth = came_linewidth))
         self._camera_position.append(self._canvas_3D.axes.plot( camera_3D['x'][1:3], camera_3D['y'][1:3], camera_3D['z'][1:3], color = 'y', linewidth = came_linewidth))
-        self._camera_position.append(self._canvas_3D.axes.plot( [camera_3D['x'][0],camera_3D['x'][3]], [camera_3D['y'][0],camera_3D['y'][3]], [camera_3D['z'][0],camera_3D['z'][3]], color = 'b', linewidth = came_linewidth))
+        self._camera_position.append(self._canvas_3D.axes.plot( [camera_3D['x'][0],camera_3D['x'][3]], [camera_3D['y'][0],camera_3D['y'][3]], [camera_3D['z'][0],camera_3D['z'][3]], color = 'green', linewidth = came_linewidth))
         self._camera_position.append(self._canvas_3D.axes.plot( [camera_3D['x'][2],camera_3D['x'][3]], [camera_3D['y'][2],camera_3D['y'][3]], [camera_3D['z'][2],camera_3D['z'][3]], color = 'r', linewidth = came_linewidth))
         
         z=position['z']
@@ -192,23 +182,6 @@ class Widget(QWidget):
         
         self._canvas_3D.draw()
 
-    def plot_camera_2D(self, camera_2D):
-        came_linewidth = 1 
-        ar = rad2deg(camera_2D['ar'])
-        dec = rad2deg(camera_2D['dec'])
-
-        self._camera_position.append(self._canvas_2D.axes.scatter( ar[0], dec[0] ,s=7, color='red'))
-        self._camera_position.append(self._canvas_2D.axes.scatter( ar[1], dec[1] ,s=7, color='blue'))
-        self._camera_position.append(self._canvas_2D.axes.scatter( ar[2], dec[2] ,s=7, color='orange'))
-        self._camera_position.append(self._canvas_2D.axes.scatter( ar[3], dec[3] ,s=7, color='yellow'))
-    
-        self._camera_position.append(self._canvas_2D.axes.plot( [ar[0], ar[1]], [dec[0], dec[1]], color = 'orange', linewidth = came_linewidth))
-        self._camera_position.append(self._canvas_2D.axes.plot( [ar[1], ar[2]], [dec[1], dec[2]], color = 'y', linewidth = came_linewidth))
-        self._camera_position.append(self._canvas_2D.axes.plot( [ar[2], ar[3]], [dec[2], dec[3]], color = 'r', linewidth = came_linewidth))
-        self._camera_position.append(self._canvas_2D.axes.plot( [ar[0], ar[3]], [dec[0], dec[3]], color = 'b', linewidth = came_linewidth))
-        
-        self._canvas_2D.draw()
-
     def remove_camera(self):
         while self._camera_position:
             try:
@@ -216,5 +189,4 @@ class Widget(QWidget):
             except :
                 self._camera_position[0].remove()
             del self._camera_position[0]
-        self._canvas_2D.draw()
         self._canvas_3D.draw()
