@@ -3,9 +3,11 @@ import numpy as np
 try:
     from modules.basic import *
     from modules.line import *
+    from modules.stars import * 
 except ImportError:
     from star_tracker.modules.basic import *
     from star_tracker.modules.line import *
+    from star_tracker.modules.stars import *
 
 class Camera():
     def __init__(self):
@@ -16,6 +18,7 @@ class Camera():
         self._ar = 0
         self._dec = 0
         self._roll = 0 
+        self.stars = Stars()
         
     @property
     def config(self):
@@ -39,12 +42,12 @@ class Camera():
         self._position_dict = {'x' : [aux[0][0], aux[1][0], aux[2][0], aux[3][0]], 'y': [aux[0][1], aux[1][1], aux[2][1], aux[3][1]],'z': [aux[0][2], aux[1][2], aux[2][2], aux[3][2]]}
     
     @property
-    def stars(self):
+    def stars(self) -> Stars:
         return self._stars
     
     @stars.setter
-    def stars(self,input_file):
-        pass
+    def stars(self, value):
+        self._stars = value
 
     @property
     def roll(self):
@@ -58,6 +61,8 @@ class Camera():
         q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
         self.rotate_axles(q)
         self.rotate_dots(q)
+        #q = [q[0], -q[1], -q[2], -q[3]]
+        #self.stars.rotate(q)
         
     @property
     def dec(self):
@@ -71,6 +76,8 @@ class Camera():
         q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
+        q = [q[0], -q[1], -q[2], -q[3]]
+        self.stars.rotate(q)
         
     @property
     def ar(self):
@@ -83,6 +90,8 @@ class Camera():
         q=[cos(diff/2),0,0,sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
+        q = [q[0], -q[1], -q[2], -q[3]]
+        self.stars.rotate(q)
         
     def rotate_axles(self,q):
         self._axles['z'] = quaternus_rotation(q,self._axles['z'])
@@ -90,9 +99,6 @@ class Camera():
         self._axles['x'] = quaternus_rotation(q,self._axles['x'])
 
     def rotate_dots(self, q):
-        q[1]=-q[1]
-        q[2]=-q[2]
-        q[3]=-q[3]
         if not self._configured:
             return
         self._dots[0] = quaternus_rotation(q,self._dots[0])

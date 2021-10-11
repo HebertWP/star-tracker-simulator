@@ -59,7 +59,7 @@ class Canvas2D(FigureCanvas):
             del self._stars_plots[0]
         if show:
             self._stars_plots.append(self.axes.scatter(value['ar'], value['dec'], s = value['v'], c = 'white'))
-
+        
     @property
     def camera(self):
         return self._camera

@@ -8,6 +8,7 @@ from model.main_model import *
 import modules.loadfile as loadfile
 import modules.basic as basic
 from modules.camera import Camera
+from modules.stars import Stars
 
 class WidgetController(QObject):
     def __init__(self, main_model : MainModel, widget_model : WidgetModel):
@@ -25,8 +26,10 @@ class WidgetController(QObject):
         self._main_model.roll_changed.connect(self.roll)
         self._main_model.ar_changed.connect(self.ar)
         self._main_model.dec_changed.connect(self.dec)
-        self._camera = Camera()
         
+        self._camera = Camera()
+        self._stars = Stars()
+            
     def change_view_mode(self,value):
         self._widget_model.view_mode = ViewMode.VIEW3D if value else ViewMode.VIEW2D
     
@@ -38,10 +41,11 @@ class WidgetController(QObject):
 
     def load_file(self, value):
         try:
-            n, v, ar, dec = loadfile.loadCatalog(value)
-            x,y,z = basic.spherical2catersian(basic.deg2rad(ar), basic.deg2rad(dec))
-            d = {"v" : v, "ar" : ar, "dec" : dec, "x" : x, "y" : y, "z" : z}
-            self._widget_model.stars = d
+            self._stars.load_catalog(value)
+            aux = Stars()
+            aux.load_catalog(value)
+            self._camera.stars = aux
+            self._widget_model.stars = self._stars.getDict()
         except FileNotFoundError:
             pass
 
