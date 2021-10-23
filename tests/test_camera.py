@@ -1,4 +1,5 @@
 from star_tracker.modules.camera import Camera
+from star_tracker.modules.stars import *
 from star_tracker.modules.basic import *
 import pytest
 
@@ -40,8 +41,7 @@ class TestCamera():
         self._camera.dec = ang
         self._camera.roll = ang
         aux1 = self._camera.position_dict
-
-        assert aux == aux1
+        assert pytest.approx(aux['x']) == pytest.approx(aux1['x'])
     
     def test_position_dict_spherical(self):
         self.load()
@@ -89,3 +89,13 @@ class TestCamera():
         aux = self._camera.coordinates
         la = aux['y']
         assert la == pytest.approx([ 0, -1, 0])
+    
+    def test_take_frame(self):
+        self.load()
+
+        aux = Stars()
+        aux.load_catalog('./data/stars copy.csv')
+        self._camera.stars = aux
+        al = self._camera.take_frame()
+        assert True == al
+        

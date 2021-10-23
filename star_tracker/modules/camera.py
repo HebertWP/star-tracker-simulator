@@ -1,13 +1,18 @@
 import json
 import numpy as np
+import os
 try:
     from modules.basic import *
     from modules.line import *
     from modules.stars import * 
+    from modules.canvas_3D import *
+    from modules.camera_view import *
 except ImportError:
     from star_tracker.modules.basic import *
     from star_tracker.modules.line import *
     from star_tracker.modules.stars import *
+    from star_tracker.modules.canvas_3D import *
+    from star_tracker.modules.camera_view import *
 
 class Camera():
     def __init__(self):
@@ -30,13 +35,16 @@ class Camera():
         self._input_file = input_file
         f = open(self._input_file)
         data = json.load(f)
-        self._view_ang = deg2rad(data['ang'])/2
         
+        self._view_ang = deg2rad(data['ang'])
+        self._w = data['w']
+        self._h = data['h']
+
         self._dots = []
-        self._dots.append(spherical2catersian( 1*self._view_ang, self._view_ang))
-        self._dots.append(spherical2catersian(-1*self._view_ang, self._view_ang))
-        self._dots.append(spherical2catersian(-1*self._view_ang, -1*self._view_ang))
-        self._dots.append(spherical2catersian(1*self._view_ang, -1*self._view_ang))
+        self._dots.append(spherical2catersian( 1*self._view_ang/2, self._view_ang/2))
+        self._dots.append(spherical2catersian(-1*self._view_ang/2, self._view_ang/2))
+        self._dots.append(spherical2catersian(-1*self._view_ang/2, -1*self._view_ang/2))
+        self._dots.append(spherical2catersian( 1*self._view_ang/2, -1*self._view_ang/2))
     
         aux = self._dots
         self._position_dict = {'x' : [aux[0][0], aux[1][0], aux[2][0], aux[3][0]], 'y': [aux[0][1], aux[1][1], aux[2][1], aux[3][1]],'z': [aux[0][2], aux[1][2], aux[2][2], aux[3][2]]}
@@ -61,8 +69,8 @@ class Camera():
         q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        #q = [q[0], -q[1], -q[2], -q[3]]
-        #self.stars.rotate(q)
+        q = [q[0], -q[1], -q[2], -q[3]]
+        self.stars.rotate(q)
         
     @property
     def dec(self):
@@ -138,6 +146,34 @@ class Camera():
                 out['ar'][i].append(ar)
                 out['dec'][i].append(dec)
         return out
+    
+    def take_frame(self):
+        n = np.cos(self._view_ang/2)
+        f = 1
+        stars = self._stars.getDict()
+        res = {'x':[], 'y':[], 'z':[],'v':[]}
+        perspective = [[1/((self._w/self._h)*np.tan(self._view_ang/2)), 0                         , 0        , 0],
+                       [0                                             , 1/np.tan(self._view_ang/2), 0        , 0],
+                       [0                                             , 0                         , f/(f-n), -f*n/(f-n)],
+                       [0                                             , 0                         , 1        , 0]]
+        for i in range(len(stars['x'])):
+            star =[[stars['x'][i]],[stars['y'][i]],[stars['z'][i]],[1]]
+            aux = np.dot(perspective, star)
+            if(aux[3][0] > 0):
+                aux = aux/aux[3][0]
+                res['x'].append(float(aux[0]))
+                res['y'].append(float(aux[1]))
+                res['z'].append(float(aux[2]))
+                res['v'].append(stars['v'][i])
+        la = CameraView(Figure())
+        la.stars  = res
+        try:
+            os.remove('./ol.png')
+        except:
+            pass
+        la.figure.savefig('./ol.png')
+
+        return res
     
     @property
     def coordinates(self):

@@ -67,6 +67,7 @@ class WidgetController(QObject):
         
     def ar(self,value):
         self._camera.ar = basic.deg2rad(value)
+        self._camera.take_frame()
         self._widget_model.ar = basic.deg2rad(value)
         self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical,'3D_pos':self._camera.coordinates}
 
