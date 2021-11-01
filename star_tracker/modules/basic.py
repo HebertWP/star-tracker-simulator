@@ -1,4 +1,4 @@
-from numpy import rad2deg, sin, cos, arccos,sqrt, pi, arccos, arcsin, arctan
+from numpy import rad2deg, sin, cos, arccos,sqrt, pi, arccos, arcsin, arctan, linalg, array
 
 def spherical2catersian(ar, dec):
     if isinstance(ar,list):
@@ -47,7 +47,31 @@ def quaternus_rotation(q,v):
     out.append(2*v[0]*(q[0]*q[3]+q[1]*q[2]) + v[1]*(q[0]*q[0]-q[1]*q[1]+q[2]*q[2]-q[3]*q[3])+2*v[2]*(q[2]*q[3]-q[0]*q[1]))
     out.append(2*v[0]*(q[1]*q[3]-q[0]*q[2]) + 2*v[1]*(q[0]*q[1]+q[2]*q[3]) + v[2]*(q[0]*q[0]-q[1]*q[1]-q[2]*q[2]+q[3]*q[3]))
     return out
-    
+
+def positions_to_quaternus(initial_position,final_position):
+    b_list = []
+    for i in range(0,4):
+        for j in range(0,3):
+            b_list.append(final_position[i][j])
+    a_list = []
+    for i in range(0,4):
+        x = initial_position[i][0]
+        y = initial_position[i][1]
+        z = initial_position[i][2]
+        ##       | q0^2 | q1^2 | q2^2 | q3^2 | q0q1 | q0q2 | q0q3 | q1q2 | q1q3 |  q2q3 |  
+        a_list.append([      x,     x,    -x,    -x,     0,   2*z,  -2*y,   2*y,   2*z,     0])
+        a_list.append([      y,    -y,     y,    -y,  -2*z,     0,   2*x,   2*x,     0,   2*z])
+        a_list.append([      z,    -z,    -z,     z,   2*y,  -2*x,     0,     0,   2*x,   2*y]) 
+    print(b_list)
+    del a_list[-1]
+    del a_list[-1]
+    for i in a_list:
+        print(i)
+    a = array(a_list)
+    b = array(b_list)
+    x = linalg.solve(a,b)
+    print(x)
+
 def deg2rad(ang):
     if isinstance(ang,list):
         out = []

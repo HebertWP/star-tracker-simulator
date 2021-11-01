@@ -62,6 +62,7 @@ class WidgetController(QObject):
     
     def roll(self,value):
         self._camera.roll= basic.deg2rad(value)
+        self._camera.take_frame()
         self._widget_model.roll = basic.deg2rad(value)
         self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical,'3D_pos':self._camera.coordinates}
         
@@ -73,5 +74,6 @@ class WidgetController(QObject):
 
     def dec(self,value):
         self._camera.dec = basic.deg2rad(value)
+        self._camera.take_frame()
         self._widget_model.dec = basic.deg2rad(value)
         self._widget_model.camera_position = {'3D':self._camera.position_dict, '2D': self._camera.position_dict_spherical,'3D_pos':self._camera.coordinates}

@@ -38,7 +38,8 @@ class CameraView(FigureCanvas):
         while self._stars_plots:
             self._stars_plots[0].remove()
             del self._stars_plots[0]
-        
-        self._stars_plots.append(self.axes.scatter(value['x'], value['y'], s = value['v'], c = 'white'))
+        for i in range(len(value['y'])):
+            value['y'][i]=-value['y'][i]
+        self._stars_plots.append(self.axes.scatter(value['y'], value['z'], s = value['v'], c = 'white'))
         
         self.draw()

@@ -81,3 +81,9 @@ def test_quaternions_product():
     q2=[3,5,6,8]
     q = quaternions_product(q1,q2)
     assert q == [-116, 30, 36, 48]
+
+def test_position_to_quartenius():
+    final=[[0,1,0],[-1,0,0],[0,-1,0],[1,0,0]]
+    initial=[[1,0,0],[0,1,0],[-1,0,0],[0,-1,0]]
+    positions_to_quaternus(initial, final)
+    assert True == True 

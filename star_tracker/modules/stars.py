@@ -54,16 +54,6 @@ class Stars:
         d3.stars = self.getDict()
         d3.show_stars(True)
         d3.draw()
-        
-        """
-        try:
-            os.remove('./ola.png')
-            os.remove('./oi.png')
-        except:
-            pass
-        d2.figure.savefig('./ola.png')
-        d3.figure.savefig('./oi.png')
-        """
             
     def __len__(self):
         return len(self._n)

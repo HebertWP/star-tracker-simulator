@@ -1,6 +1,8 @@
 import json
 import numpy as np
 import os
+import copy
+
 try:
     from modules.basic import *
     from modules.line import *
@@ -23,7 +25,7 @@ class Camera():
         self._ar = 0
         self._dec = 0
         self._roll = 0 
-        self.stars = Stars()
+        self._stars = Stars()
         
     @property
     def config(self):
@@ -45,7 +47,15 @@ class Camera():
         self._dots.append(spherical2catersian(-1*self._view_ang/2, self._view_ang/2))
         self._dots.append(spherical2catersian(-1*self._view_ang/2, -1*self._view_ang/2))
         self._dots.append(spherical2catersian( 1*self._view_ang/2, -1*self._view_ang/2))
-    
+        
+        #print(self._dots[0])
+        #print(self._dots[1])
+        #print(self._dots[2])
+        #print(self._dots[3])
+        self._n = self._dots[0][0]
+        self._t = self._dots[0][1]
+        self._l = self._dots[0][1]
+        
         aux = self._dots
         self._position_dict = {'x' : [aux[0][0], aux[1][0], aux[2][0], aux[3][0]], 'y': [aux[0][1], aux[1][1], aux[2][1], aux[3][1]],'z': [aux[0][2], aux[1][2], aux[2][2], aux[3][2]]}
     
@@ -55,8 +65,8 @@ class Camera():
     
     @stars.setter
     def stars(self, value):
-        self._stars = value
-
+        self._stars = value   
+        
     @property
     def roll(self):
         return self._roll
@@ -69,7 +79,7 @@ class Camera():
         q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        q = [q[0], -q[1], -q[2], -q[3]]
+        q = [q[0],-q[1],-q[2],-q[3]]
         self.stars.rotate(q)
         
     @property
@@ -84,7 +94,7 @@ class Camera():
         q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        q = [q[0], -q[1], -q[2], -q[3]]
+        q = [q[0],-q[1],-q[2],-q[3]]
         self.stars.rotate(q)
         
     @property
@@ -98,7 +108,8 @@ class Camera():
         q=[cos(diff/2),0,0,sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        q = [q[0], -q[1], -q[2], -q[3]]
+        
+        q = [q[0],-q[1],-q[2],-q[3]]
         self.stars.rotate(q)
         
     def rotate_axles(self,q):
@@ -147,24 +158,47 @@ class Camera():
                 out['dec'][i].append(dec)
         return out
     
-    def take_frame(self):
-        n = np.cos(self._view_ang/2)
+    def perspective(self,stars,n,t,r):
         f = 1
-        stars = self._stars.getDict()
-        res = {'x':[], 'y':[], 'z':[],'v':[]}
-        perspective = [[1/((self._w/self._h)*np.tan(self._view_ang/2)), 0                         , 0        , 0],
-                       [0                                             , 1/np.tan(self._view_ang/2), 0        , 0],
-                       [0                                             , 0                         , f/(f-n), -f*n/(f-n)],
-                       [0                                             , 0                         , 1        , 0]]
-        for i in range(len(stars['x'])):
-            star =[[stars['x'][i]],[stars['y'][i]],[stars['z'][i]],[1]]
+        b = -t
+        l = -r
+        
+        #"""
+        perspective = [[ (f+n),         0,         0, -f*n],
+                       [     0,         n,         0,    0],
+                       [     0,         0,         n,    0],
+                       [     1,         0,         0,    0]]
+        #"""
+        perspective = [[ (f+n)/(f-n),         0,         0, -2*f*n/(f-n)],
+                       [-(r+l)/(r-l), 2*n/(r-l),         0,            0],
+                       [-(t+b)/(t-b),         0, 2*n/(t-b),            0],
+                       [           1,         0,         0,            0]]
+        #"""
+        res =[]
+        for i in (stars):
+            star =[[i[0]],[i[1]],[i[2]],[1]]
             aux = np.dot(perspective, star)
-            if(aux[3][0] > 0):
+            #if(aux[1][0] > 0):
+            if True:
                 aux = aux/aux[3][0]
-                res['x'].append(float(aux[0]))
-                res['y'].append(float(aux[1]))
-                res['z'].append(float(aux[2]))
-                res['v'].append(stars['v'][i])
+                res.append([])
+                res[-1].append(float(aux[0]))
+                res[-1].append(float(aux[1]))
+                res[-1].append(float(aux[2]))
+        return res
+
+    def take_frame(self):
+        stars = self.stars.getDict()
+        st=[]
+        for i in range(len(stars['x'])):
+            st.append([stars['x'][i],stars['y'][i],stars['z'][i]])
+        res = {'x':[], 'y':[], 'z':[],'v':[]}
+        aux = self.perspective(st,self._n,self._t,self._l)
+        for i in range(len(aux)):
+            res['x'].append(aux[i][0])
+            res['y'].append(aux[i][1])
+            res['z'].append(aux[i][2])
+            res['v'].append(stars['v'][i]) 
         la = CameraView(Figure())
         la.stars  = res
         try:
