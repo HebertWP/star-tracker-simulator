@@ -1,12 +1,16 @@
 from star_tracker.modules.camera import Camera
 from star_tracker.modules.stars import *
 from star_tracker.modules.basic import *
+
 import pytest
 
 class TestCamera():
     def load(self):
         self._camera = Camera()
         self._camera.config = "data/camera.json"
+        aux = Stars()
+        aux.load_catalog('data/stars copy.csv')
+        self._camera.stars = aux
     
     def test_load_camera(self):
         self.load()
@@ -104,7 +108,21 @@ class TestCamera():
     """
     def test_perspective(self):
         self.load()
-
-        res=self._camera.perspective([[0.5,0,0],[0.5,-0.1,0],[1,1,1],[0.5,0.5,0.5],[1,0.5,0.5]],0.5,0.5,0.5)
-
-        assert res == True
+        st = []
+        expected = []
+        
+        st.append([0.5,0,0])
+        expected.append([-1,0,0])
+        
+        st.append([0.5,-0.1,0])
+        expected.append([1,1,1])
+        
+        st.append([1,1,1])
+        st.append([0.5,0.5,0.5])
+        st.append([1,0.5,0.5])
+        
+        res = self._camera.perspective(st)
+        
+        for i,j in zip(res[0:1],expected):
+            #assert i == pytest.approx(j)
+            assert i == j

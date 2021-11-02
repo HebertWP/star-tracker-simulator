@@ -42,19 +42,15 @@ class Camera():
         self._w = data['w']
         self._h = data['h']
 
-        self._dots = []
-        self._dots.append(spherical2catersian( 1*self._view_ang/2, self._view_ang/2))
-        self._dots.append(spherical2catersian(-1*self._view_ang/2, self._view_ang/2))
-        self._dots.append(spherical2catersian(-1*self._view_ang/2, -1*self._view_ang/2))
-        self._dots.append(spherical2catersian( 1*self._view_ang/2, -1*self._view_ang/2))
+        n = np.cos(self._view_ang/2)
+        t = n * np.tan(self._view_ang/2)
+        l = (self._w/self._h)*n * np.tan(self._view_ang/2)
         
-        #print(self._dots[0])
-        #print(self._dots[1])
-        #print(self._dots[2])
-        #print(self._dots[3])
-        self._n = self._dots[0][0]
-        self._t = self._dots[0][1]
-        self._l = self._dots[0][1]
+        self._dots = []
+        self._dots.append([n,l,t])
+        self._dots.append([n,-l,t])
+        self._dots.append([n,-l,-t])
+        self._dots.append([n,l,-t])
         
         aux = self._dots
         self._position_dict = {'x' : [aux[0][0], aux[1][0], aux[2][0], aux[3][0]], 'y': [aux[0][1], aux[1][1], aux[2][1], aux[3][1]],'z': [aux[0][2], aux[1][2], aux[2][2], aux[3][2]]}
@@ -158,22 +154,18 @@ class Camera():
                 out['dec'][i].append(dec)
         return out
     
-    def perspective(self,stars,n,t,r):
+    def perspective(self,stars):
+        theta = self._view_ang
+        n= np.cos(theta/2)
+        w = self._w
+        h = self._h
         f = 1
-        b = -t
-        l = -r
         
-        #"""
-        perspective = [[ (f+n),         0,         0, -f*n],
-                       [     0,         n,         0,    0],
-                       [     0,         0,         n,    0],
-                       [     1,         0,         0,    0]]
-        #"""
-        perspective = [[ (f+n)/(f-n),         0,         0, -2*f*n/(f-n)],
-                       [-(r+l)/(r-l), 2*n/(r-l),         0,            0],
-                       [-(t+b)/(t-b),         0, 2*n/(t-b),            0],
-                       [           1,         0,         0,            0]]
-        #"""
+        perspective = [[ (f+n)/(f-n),                       0,                  0, -2*f*n/(f-n)],
+                       [           0, 1/(w*np.tan(theta/2)/h),                  0,            0],
+                       [           0,                        0, 1/np.tan(theta/2),            0],
+                       [           1,                        0,                 0,            0]]
+        
         res =[]
         for i in (stars):
             star =[[i[0]],[i[1]],[i[2]],[1]]
@@ -191,14 +183,15 @@ class Camera():
         stars = self.stars.getDict()
         st=[]
         for i in range(len(stars['x'])):
-            st.append([stars['x'][i],stars['y'][i],stars['z'][i]])
+            if(stars['x'][i]>= 0):
+                st.append([stars['x'][i],stars['y'][i],stars['z'][i],stars['v'][i]])
         res = {'x':[], 'y':[], 'z':[],'v':[]}
-        aux = self.perspective(st,self._n,self._t,self._l)
+        aux = self.perspective(st)
         for i in range(len(aux)):
             res['x'].append(aux[i][0])
             res['y'].append(aux[i][1])
             res['z'].append(aux[i][2])
-            res['v'].append(stars['v'][i]) 
+            res['v'].append(st[i][3])
         la = CameraView(Figure())
         la.stars  = res
         try:
