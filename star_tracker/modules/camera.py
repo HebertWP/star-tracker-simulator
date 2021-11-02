@@ -193,6 +193,8 @@ class Camera():
             res['z'].append(aux[i][2])
             res['v'].append(st[i][3])
         la = CameraView(Figure())
+        la.w = self._w
+        la.h = self._h
         la.stars  = res
         try:
             os.remove('./ol.png')
