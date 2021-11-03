@@ -634,7 +634,7 @@
       <x>700</x>
       <y>250</y>
       <width>163</width>
-      <height>219</height>
+      <height>250</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -699,7 +699,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox_3">
+      <widget class="QCheckBox" name="_view_simulation">
        <property name="text">
         <string>View Simulation</string>
        </property>
@@ -709,6 +709,13 @@
       <widget class="QCheckBox" name="_view_stars">
        <property name="text">
         <string>View Stars</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="_save_frame_button">
+       <property name="text">
+        <string>Save Frame</string>
        </property>
       </widget>
      </item>

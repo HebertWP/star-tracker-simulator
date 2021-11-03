@@ -75,8 +75,6 @@ class Camera():
         q = [cos(diff/2), sin(diff/2)*x, sin(diff/2)*y, sin(diff/2)*z]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        q = [q[0],-q[1],-q[2],-q[3]]
-        self.stars.rotate(q)
         
     @property
     def dec(self):
@@ -90,8 +88,6 @@ class Camera():
         q=[cos(diff/2), x*sin(diff/2), y*sin(diff/2), z*sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        q = [q[0],-q[1],-q[2],-q[3]]
-        self.stars.rotate(q)
         
     @property
     def ar(self):
@@ -104,9 +100,6 @@ class Camera():
         q=[cos(diff/2),0,0,sin(diff/2)]
         self.rotate_axles(q)
         self.rotate_dots(q)
-        
-        q = [q[0],-q[1],-q[2],-q[3]]
-        self.stars.rotate(q)
         
     def rotate_axles(self,q):
         self._axles['z'] = quaternus_rotation(q,self._axles['z'])
@@ -170,20 +163,26 @@ class Camera():
         for i in (stars):
             star =[[i[0]],[i[1]],[i[2]],[1]]
             aux = np.dot(perspective, star)
-            #if(aux[1][0] > 0):
-            if True:
-                aux = aux/aux[3][0]
-                res.append([])
-                res[-1].append(float(aux[0]))
-                res[-1].append(float(aux[1]))
-                res[-1].append(float(aux[2]))
+            aux = aux/aux[3][0]
+            res.append([])
+            res[-1].append(float(aux[0]))
+            res[-1].append(float(aux[1]))
+            res[-1].append(float(aux[2]))
         return res
 
-    def take_frame(self):
+    def take_frame(self, value):
+        q_ar   = [  -cos(self._ar/2),                 0,                0, sin(self._ar/2)]
+        q_dec  = [  cos(self._dec/2),                 0, sin(self._dec/2),               0]
+        q_roll = [-cos(self._roll/2), sin(self._roll/2),                0,               0]
+        
+        self.stars.rotate(q_ar)
+        self.stars.rotate(q_dec)
+        self.stars.rotate(q_roll)
+        
         stars = self.stars.getDict()
         st=[]
         for i in range(len(stars['x'])):
-            if(stars['x'][i]>= 0):
+            if(stars['x'][i] >= 0):#np.cos(self._view_ang/2)):
                 st.append([stars['x'][i],stars['y'][i],stars['z'][i],stars['v'][i]])
         res = {'x':[], 'y':[], 'z':[],'v':[]}
         aux = self.perspective(st)
@@ -197,12 +196,18 @@ class Camera():
         la.h = self._h
         la.stars  = res
         try:
-            os.remove('./ol.png')
+            os.remove(value)
         except:
             pass
-        la.figure.savefig('./ol.png')
+        la.figure.savefig(value)
 
-        return res
+        q_ar[0] = -q_ar[0]
+        q_dec[0] = -q_dec[0]
+        q_roll[0] = -q_roll[0]
+
+        self.stars.rotate(q_roll)
+        self.stars.rotate(q_dec)
+        self.stars.rotate(q_ar)
     
     @property
     def coordinates(self):

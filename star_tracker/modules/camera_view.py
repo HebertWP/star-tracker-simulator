@@ -60,6 +60,7 @@ class CameraView(FigureCanvas):
         for i in range(len(value['y'])):
             value['y'][i] =-value['y'][i]*self.w/2
             value['z'][i] = value['z'][i]*self.h/2
+            value['v'][i] = value['v'][i]*10
             
         self._stars_plots.append(self.axes.scatter(value['y'], value['z'], s = value['v'], c = 'white'))
         

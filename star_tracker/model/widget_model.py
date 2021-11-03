@@ -1,6 +1,8 @@
 from os import error
 from PySide2.QtCore import SIGNAL, QObject, Signal
 from enum import Enum
+from modules.camera import Camera
+from modules.stars import Stars
 
 class ViewMode(Enum):
     VIEW3D = 0
@@ -24,7 +26,8 @@ class WidgetModel(QObject):
         self._roll = 0
         self._ar = 0
         self._dec = 0
-        
+        self.camera = Camera()
+    
     @property
     def stars(self):
         return self._stars
@@ -34,6 +37,14 @@ class WidgetModel(QObject):
         self._stars = value
         self.stars_changed.emit(value)
     
+    @property
+    def camera(self):
+        return self._camera
+
+    @camera.setter
+    def camera(self, value):
+        self._camera = value
+
     @property
     def camera_position(self) -> dict:
         return self._camera_position

@@ -424,7 +424,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.Help, "")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(700, 250, 163, 219))
+        self.layoutWidget.setGeometry(QRect(700, 250, 163, 250))
         self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -461,15 +461,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self._graticule_control)
 
-        self.checkBox_3 = QCheckBox(self.layoutWidget)
-        self.checkBox_3.setObjectName(u"checkBox_3")
+        self._view_simulation = QCheckBox(self.layoutWidget)
+        self._view_simulation.setObjectName(u"_view_simulation")
 
-        self.verticalLayout_4.addWidget(self.checkBox_3)
+        self.verticalLayout_4.addWidget(self._view_simulation)
 
         self._view_stars = QCheckBox(self.layoutWidget)
         self._view_stars.setObjectName(u"_view_stars")
 
         self.verticalLayout_4.addWidget(self._view_stars)
+
+        self._save_frame_button = QPushButton(self.layoutWidget)
+        self._save_frame_button.setObjectName(u"_save_frame_button")
+
+        self.verticalLayout_4.addWidget(self._save_frame_button)
 
         self._automatic_control_frame = AutomaticMovements(self.centralwidget)
         self._automatic_control_frame.setObjectName(u"_automatic_control_frame")
@@ -582,8 +587,9 @@ class Ui_MainWindow(object):
         self.view3D_text.setText(QCoreApplication.translate("MainWindow", u"View Mode", None))
         self._show_camera.setText(QCoreApplication.translate("MainWindow", u"Show camera", None))
         self._graticule_control.setText(QCoreApplication.translate("MainWindow", u"Graticule", None))
-        self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"View Simulation", None))
+        self._view_simulation.setText(QCoreApplication.translate("MainWindow", u"View Simulation", None))
         self._view_stars.setText(QCoreApplication.translate("MainWindow", u"View Stars", None))
+        self._save_frame_button.setText(QCoreApplication.translate("MainWindow", u"Save Frame", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Automatic Control ", None))
         self._file.setText(QCoreApplication.translate("MainWindow", u"No loaded file", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Camera:", None))

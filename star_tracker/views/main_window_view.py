@@ -31,6 +31,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         self._show_camera.clicked.connect(self._main_controller.change_camera_view)
         self._graticule_control.clicked.connect(self._main_controller.change_graticule_view)
+        self._view_simulation.clicked.connect(self._main_controller.change_view_simulation)
+        self._save_frame_button.clicked.connect(self._main_controller.save_frame)
 
         self._roll_spin.valueChanged.connect(self._main_controller.change_roll)
         self._roll_scroll.valueChanged.connect(self._main_controller.change_roll)
@@ -43,6 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._model.load_stars_file_changed.connect(self.open_stars)
         self._model.load_movements_file_changed.connect(self.open_movements)
         self._model.load_camera_file_changed.connect(self.open_camera)
+        self._model.save_frame_changed.connect(self.save_frame)
 
         self._model.camera_name_changed.connect(self.load_camera)
 
@@ -86,6 +89,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             fileName = fileName[0]
             self._main_controller.change_camera_input_file(fileName)
     
+    def save_frame(self):
+        file = QFileDialog(self)
+        file.setNameFilter("*.png")
+        file.setWindowTitle('Save Frame')
+        name = file.getSaveFileName(self, 'Save File')
+        if(name[1] != ''):
+            self._main_controller.save_frame_name(name[0])
+        
     def load_camera(self,value):
         self._camera_file.setText(value)
     
