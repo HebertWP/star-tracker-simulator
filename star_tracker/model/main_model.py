@@ -3,9 +3,7 @@ from PySide2.QtCore import QObject, Signal
 import json
 
 class MainModel(QObject):
-    stars_input_file_changed = Signal(str)
-    movements_input_file_changed = Signal(str)
-    camera_input_file_changed = Signal(str)
+    
     change_graticule_view_changed = Signal(bool)
     frame_name_changed = Signal(str)
     camera_name_changed = Signal(str)
@@ -25,36 +23,66 @@ class MainModel(QObject):
     dec_changed = Signal(float)
     manual_controls_enable_chaged = Signal(bool)
 
+    ################################################################
+    # Load stars file to simulation.
+    # The file is a .csv file, with the following format:
+    # |Numero de catalogacao(HIP)        |Ascensao  reta(alpha)              | Declinacao (delta)                  |Magnitude visual(V)                                 |
+    # |Interger number represent the star|Float number from 0 to 260 degrees | Float number from -90 to 90 degrees |Float number representing the brightness of the star|
+    # Note: the separation between values are done my commas
+    ################################################################
+    stars_input_file_changed = Signal(str)
     @property
     def stars_input_file(self):
         return self._stars_input_file
-
     @stars_input_file.setter
     def stars_input_file(self, value):
         self._stars_input_file = value
         self.save()
         self.stars_input_file_changed.emit(value)
     
+    ################################################################
+    # Load a pre set movements file.
+    # The file is a .csv file, with the following format:
+    # |time                                                       |roll                    |dec                    |ar                    |
+    # |time in seconds that the simulation will keep this position|roll position in degrees|dec position in degrees|ar position in degrees| 
+    # Note: the separation between values are in reality commas
+    ################################################################
+    movements_input_file_changed = Signal(str)
     @property
     def movements_input_file(self):
         return self._movements_input_file
-
     @movements_input_file.setter
     def movements_input_file(self, value):
         self._movements_input_file = value
         self.save()
         self.movements_input_file_changed.emit(value)
     
+
+    ################################################################
+    # A file with Characteristics of Camera.
+    # The file is a json file, with the following format:
+    #   {
+    #       "ang": "interger number in degrees",
+    #       "w": camera width in pixels,
+    #       "h": camera height in pixels
+    #   }
+    # Example:
+    #   {
+    #       "ang": 30,
+    #       "w": 1280,
+    #       "h": 720
+    #   }
+    ################################################################
+    camera_input_file_changed = Signal(str)
     @property
     def camera_input_file(self):
         return self._camera_input_file
-
     @camera_input_file.setter
     def camera_input_file(self,value):
         self._camera_input_file = value
         self.save()
         self.camera_input_file_changed.emit(value)
-
+    
     @property
     def frame_name(self):
         return self._frame_name
