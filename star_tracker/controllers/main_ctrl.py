@@ -47,10 +47,6 @@ class MainController(QObject):
     def change_view_simulation(self, value):
         print("Not implemented")
 
-    @Slot(bool)
-    def save_frame(self, value):
-        self._model.save_frame = value
-
     @Slot(float)
     def change_roll(self, value):
         self._model.roll = value

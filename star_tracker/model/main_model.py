@@ -8,8 +8,6 @@ class MainModel(QObject):
     frame_name_changed = Signal(str)
     camera_name_changed = Signal(str)
 
-    save_frame_changed = Signal()
-
     roll_changed = Signal(float)
     ar_changed = Signal(float)
     dec_changed = Signal(float)
@@ -74,10 +72,12 @@ class MainModel(QObject):
         self.save()
         self.camera_input_file_changed.emit(value)
 
+    ####################################################################
+    # Save frame with the given location and name in png
+    ####################################################################
     @property
     def frame_name(self):
         return self._frame_name
-
     @frame_name.setter
     def frame_name(self, value):
         self._frame_name = value
@@ -147,16 +147,7 @@ class MainModel(QObject):
         self._change_graticule_view = value
         self.save()
         self.change_graticule_view_changed.emit(value)
-        
-    @property
-    def save_frame(self):
-        return self._save_frame
     
-    @save_frame.setter
-    def save_frame(self, value):
-        self._save_frame = value
-        self.save_frame_changed.emit()
-
     @property
     def roll(self):
         return self._roll

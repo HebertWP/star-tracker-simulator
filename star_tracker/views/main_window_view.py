@@ -31,7 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._show_camera.clicked.connect(self._main_controller.change_camera_view)
         self._graticule_control.clicked.connect(self._main_controller.change_graticule_view)
         self._view_simulation.clicked.connect(self._main_controller.change_view_simulation)
-        self._save_frame_button.clicked.connect(self._main_controller.save_frame)
+        self._save_frame_button.clicked.connect(self.save_frame)
 
         self._roll_spin.valueChanged.connect(self._main_controller.change_roll)
         self._roll_scroll.valueChanged.connect(self._main_controller.change_roll)
@@ -41,8 +41,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
         
         #event signal
-        self._model.save_frame_changed.connect(self.save_frame)
-
         self._model.camera_name_changed.connect(self.load_camera)
 
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
