@@ -45,7 +45,7 @@ class MainController(QObject):
     
     @Slot(bool)
     def change_view_simulation(self, value):
-        self._model.change_graticule_view = value
+        print("Not implemented")
 
     @Slot(bool)
     def save_frame(self, value):

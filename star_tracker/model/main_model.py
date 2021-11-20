@@ -10,9 +10,6 @@ class MainModel(QObject):
 
     save_frame_changed = Signal()
 
-    show_camera_changed = Signal(bool)
-    graticule_view_changed = Signal(bool)
-
     roll_changed = Signal(float)
     ar_changed = Signal(float)
     dec_changed = Signal(float)
@@ -105,27 +102,36 @@ class MainModel(QObject):
     @property
     def view_plot_mode(self):
         return self._view_plot_mode
-
     @view_plot_mode.setter
     def view_plot_mode(self, value):
         self._view_plot_mode = value
         self.save()
         self.view_plot_mode_changed.emit(value)
     
+    ################################################################
+    # Show or hide camera
+    # Show: True
+    # Hide: False
+    ################################################################
+    show_camera_changed = Signal(bool)
     @property
     def change_camera_view(self):
         return self._change_camera_view
-    
     @change_camera_view.setter
     def change_camera_view(self,value):
         self._change_camera_view = value
         self.save()
         self.show_camera_changed.emit(value)
     
+    ################################################################
+    # Show or hide graticule in pre view
+    # Show: True
+    # Hide: False
+    ################################################################
+    graticule_view_changed = Signal(bool)
     @property
     def change_graticule_view(self):
         return self._change_graticule_view
-    
     @change_graticule_view.setter
     def change_graticule_view(self,value):
         self._change_graticule_view = value
@@ -141,8 +147,7 @@ class MainModel(QObject):
         self._change_graticule_view = value
         self.save()
         self.change_graticule_view_changed.emit(value)
-        print("v={}".format(value))
-    
+        
     @property
     def save_frame(self):
         return self._save_frame
