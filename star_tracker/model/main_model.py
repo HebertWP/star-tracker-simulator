@@ -10,7 +10,6 @@ class MainModel(QObject):
 
     save_frame_changed = Signal()
 
-    view_plot_mode_changed = Signal(bool)
     show_camera_changed = Signal(bool)
     graticule_view_changed = Signal(bool)
 
@@ -53,7 +52,6 @@ class MainModel(QObject):
         self.save()
         self.movements_input_file_changed.emit(value)
     
-
     ################################################################
     # A file with Characteristics of Camera.
     # The file is a json file, with the following format:
@@ -98,6 +96,12 @@ class MainModel(QObject):
         self.save()
         self.camera_name_changed.emit(value)
     
+    ################################################################
+    # Set view mode 3D or 2D
+    # 3D: True
+    # 2D: False
+    ################################################################
+    view_plot_mode_changed = Signal(bool)
     @property
     def view_plot_mode(self):
         return self._view_plot_mode
