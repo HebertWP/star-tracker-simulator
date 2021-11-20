@@ -4,13 +4,8 @@ import json
 
 class MainModel(QObject):
     
-    change_graticule_view_changed = Signal(bool)
-    frame_name_changed = Signal(str)
     camera_name_changed = Signal(str)
 
-    roll_changed = Signal(float)
-    ar_changed = Signal(float)
-    dec_changed = Signal(float)
     manual_controls_enable_chaged = Signal(bool)
 
     ################################################################
@@ -69,12 +64,19 @@ class MainModel(QObject):
     @camera_input_file.setter
     def camera_input_file(self,value):
         self._camera_input_file = value
-        self.save()
         self.camera_input_file_changed.emit(value)
-
+    
+        if value == '':
+            self.camera_name = "No Loaded File"
+        else:
+            v = value.split(sep="/")
+            self.camera_name = v[-1]    
+        self.save()
+        
     ####################################################################
     # Save frame with the given location and name in png
     ####################################################################
+    frame_name_changed = Signal(str)
     @property
     def frame_name(self):
         return self._frame_name
@@ -90,7 +92,6 @@ class MainModel(QObject):
     @camera_name.setter
     def camera_name(self,value):
         self._camera_name = value
-        self.save()
         self.camera_name_changed.emit(value)
     
     ################################################################
@@ -138,30 +139,25 @@ class MainModel(QObject):
         self.save()
         self.graticule_view_changed.emit(value)
     
-    @property
-    def change_graticule_view(self):
-        return self._change_graticule_view
-    
-    @change_graticule_view.setter
-    def change_graticule_view(self, value):
-        self._change_graticule_view = value
-        self.save()
-        self.change_graticule_view_changed.emit(value)
-    
+    ################################################################
+    # roll in degrees
+    ################################################################
+    roll_changed = Signal(float)
     @property
     def roll(self):
         return self._roll
-    
     @roll.setter
     def roll(self, value):
         self._roll = value
         self.save()
         self.roll_changed.emit(value)
 
+    ar_changed = Signal(float)
     @property
     def ar(self):
         return self._ar
     
+    dec_changed = Signal(float)
     @ar.setter
     def ar(self, value):
         self._ar = value

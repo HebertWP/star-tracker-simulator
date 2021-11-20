@@ -21,12 +21,7 @@ class MainController(QObject):
     @Slot(str)
     def change_camera_input_file(self, value):
         self._model.camera_input_file = value
-        if value == '':
-            self._model.camera_name = "No Loaded File"
-        else:
-            v = value.split(sep="/")
-            self._model.camera_name = v[-1]    
-    
+        
     @Slot(str)
     def save_frame_name(self, value):
         self._model.frame_name = value
