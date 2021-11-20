@@ -72,7 +72,3 @@ class MainController(QObject):
     def open_about_dialog(self, value):
         dlg = About()
         dlg.exec_()
-
-    @Slot(bool)
-    def load_camera_dialog(self,value):
-        self._model.load_camera_file = value

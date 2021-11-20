@@ -8,8 +8,6 @@ class MainModel(QObject):
     frame_name_changed = Signal(str)
     camera_name_changed = Signal(str)
 
-    load_camera_file_changed = Signal()
-    
     save_frame_changed = Signal()
 
     view_plot_mode_changed = Signal(bool)
@@ -149,15 +147,6 @@ class MainModel(QObject):
     def save_frame(self, value):
         self._save_frame = value
         self.save_frame_changed.emit()
-
-    @property
-    def load_camera_file(self):
-        return self._load_camera_file
-
-    @load_camera_file.setter
-    def load_camera_file(self, value):
-        self._load_camera_file = value
-        self.load_camera_file_changed.emit()
 
     @property
     def roll(self):
