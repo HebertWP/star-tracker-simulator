@@ -3,8 +3,6 @@ from PySide2.QtCore import QObject, Signal
 import json
 
 class MainModel(QObject):
-    
-    camera_name_changed = Signal(str)
 
     manual_controls_enable_chaged = Signal(bool)
 
@@ -72,6 +70,14 @@ class MainModel(QObject):
             v = value.split(sep="/")
             self.camera_name = v[-1]    
         self.save()
+    camera_name_changed = Signal(str)
+    @property
+    def camera_name(self):
+        return self._camera_name
+    @camera_name.setter
+    def camera_name(self,value):
+        self._camera_name = value
+        self.camera_name_changed.emit(value)
         
     ####################################################################
     # Save frame with the given location and name in png
@@ -84,15 +90,6 @@ class MainModel(QObject):
     def frame_name(self, value):
         self._frame_name = value
         self.frame_name_changed.emit(value)
-        
-    @property
-    def camera_name(self):
-        return self._camera_name
-    
-    @camera_name.setter
-    def camera_name(self,value):
-        self._camera_name = value
-        self.camera_name_changed.emit(value)
     
     ################################################################
     # Set view mode 3D or 2D
@@ -152,22 +149,26 @@ class MainModel(QObject):
         self.save()
         self.roll_changed.emit(value)
 
+    ################################################################
+    # ar in degrees
+    ################################################################
     ar_changed = Signal(float)
     @property
     def ar(self):
         return self._ar
-    
-    dec_changed = Signal(float)
     @ar.setter
     def ar(self, value):
         self._ar = value
         self.save()
         self.ar_changed.emit(value)
     
+    ################################################################
+    # dec in degrees
+    ################################################################
+    dec_changed = Signal(float)
     @property
     def dec(self):
         return self._dec
-    
     @dec.setter
     def dec(self, value):
         self._dec = value
