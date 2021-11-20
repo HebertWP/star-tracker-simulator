@@ -48,10 +48,6 @@ class MainController(QObject):
         self._model.change_graticule_view = value
 
     @Slot(bool)
-    def load_movements_dialog(self, value):
-        self._model.load_movements_file = value
-    
-    @Slot(bool)
     def save_frame(self, value):
         self._model.save_frame = value
 
