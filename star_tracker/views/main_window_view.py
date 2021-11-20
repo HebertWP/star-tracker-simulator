@@ -20,7 +20,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._main_controller = main_controller
         
         #connect to controller
-        self._load_stars_file.clicked.connect(self._main_controller.load_stars_dialog)
+        self._load_stars_file.clicked.connect(self.open_stars)
         self._load_movements_file.clicked.connect(self._main_controller.load_movements_dialog)
         self._load_camera_file.clicked.connect(self._main_controller.load_camera_dialog)
         
@@ -42,7 +42,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
         
         #event signal
-        self._model.load_stars_file_changed.connect(self.open_stars)
         self._model.load_movements_file_changed.connect(self.open_movements)
         self._model.load_camera_file_changed.connect(self.open_camera)
         self._model.save_frame_changed.connect(self.save_frame)

@@ -8,7 +8,6 @@ class MainModel(QObject):
     frame_name_changed = Signal(str)
     camera_name_changed = Signal(str)
 
-    load_stars_file_changed = Signal()
     load_movements_file_changed = Signal()
     load_camera_file_changed = Signal()
     
@@ -82,7 +81,7 @@ class MainModel(QObject):
         self._camera_input_file = value
         self.save()
         self.camera_input_file_changed.emit(value)
-    
+
     @property
     def frame_name(self):
         return self._frame_name
@@ -142,15 +141,6 @@ class MainModel(QObject):
         self.save()
         self.change_graticule_view_changed.emit(value)
         print("v={}".format(value))
-        
-    @property
-    def load_stars_file(self):
-        return self._load_stars_file
-    
-    @load_stars_file.setter
-    def load_stars_file(self, value):
-        self._load_stars_file = value
-        self.load_stars_file_changed.emit()
     
     @property
     def load_movements_file(self):
