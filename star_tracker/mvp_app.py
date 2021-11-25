@@ -3,7 +3,6 @@ from PySide2.QtWidgets import QApplication
 
 #my models import
 from model.main_model import MainModel
-from model.widget_model import WidgetModel
 from model.frame_model import FrameModel
 from model.camera_window_model import CameraWindowModel
 
@@ -15,7 +14,7 @@ from controllers.camera_window_ctrl import CameraWindowController
 
 #my views import
 from views.main_window_view import MainWindow
-from views.widgets.widget_view import WidgetModel
+from views.widgets.widget_view import Widget
 from views.frame_view import AutomaticMovements
 from views.camera_window_view import CameraWindowView 
 
@@ -27,10 +26,9 @@ class App(QApplication):
         self._main_controller = MainController(self._main_model)
         self._main_view = MainWindow(self._main_model, self._main_controller)
         
-        self._widget_model = WidgetModel()
-        self._widget_controller = WidgetController(self._main_model,self._widget_model)
+        self._widget_controller = WidgetController(self._main_model)
         self._widget_view = self._main_view.view_plot_widget
-        self._widget_view.model = self._widget_model
+        self._widget_view.model = self._main_model
         
         self._frame_model = FrameModel()
         self._frame_controller = FrameController(self._main_model, self._frame_model)

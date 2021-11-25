@@ -3,7 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
-from model.main_model import MainModel
+from model.main_model import MainModel, ViewMode
 from controllers.main_ctrl import MainController
 from views.MainWindow_ui import Ui_MainWindow
 from views.frame_view import AutomaticMovements
@@ -52,6 +52,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._model.roll_changed.connect(self.change_roll)
         self._model.ar_changed.connect(self.change_ar)
         self._model.dec_changed.connect(self.change_dec)
+    
+        self._model.fire()
         
     def open_stars(self):
         file = QFileDialog(self)
@@ -96,16 +98,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     def change_mode_view_icon(self,value):
         icon1 = QIcon()
-        if value:
+        if value == ViewMode.VIEW3D:
             icon1.addFile(u":/icon/icons/3d.png", QSize(), QIcon.Normal)
+            self.view3D_icon.setChecked(True)
         else:
             icon1.addFile(u":/icon/icons/axis.png", QSize(), QIcon.Normal)
+            self.view3D_icon.setChecked(False)
         self.view3D_icon.setIcon(icon1)
         self.view3D_icon.setIconSize(QSize(64, 64))
-        self.view3D_icon.setChecked(value)
 
     def change_mode_view_text(self,value):
-        self.view3D_text.setChecked(value)
+        if(value == ViewMode.VIEW2D):
+            self.view3D_text.setChecked(False)
+        else:
+            self.view3D_text.setChecked(True)
+            
     
     def change_camera_vew(self, value):
         self._show_camera.setChecked(value)

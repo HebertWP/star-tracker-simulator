@@ -4,8 +4,10 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from numpy import rad2deg
-from model.widget_model import *
 from modules.basic import deg2rad, spherical2catersian
+
+#my models includes
+from model.main_model import *
 
 try:
     from modules.canvas_2D import *
@@ -13,6 +15,7 @@ try:
 except ImportError:
     from star_tracker.modules.canvas_2D import *
     from star_tracker.modules.canvas_3D import *
+
 class Widget(QWidget):
     
     def __init__(self, parent = None):
@@ -63,14 +66,14 @@ class Widget(QWidget):
         return self._model
     
     @model.setter
-    def model(self, value : WidgetModel):
+    def model(self, value : MainModel):
         self._model = value
     
         #events signal
-        self._model.view_mode_changed.connect(self.set_view)
+        self._model.view_plot_mode_changed.connect(self.set_view)
         self._model.stars_changed.connect(self.plot_stars)
         self._model.camera_position_changed.connect(self.plot_camera)
-        self._model.update_graticule.connect(self.plotGraticule)
+        self._model.graticule_view_changed.connect(self.plotGraticule)
 
     def plotGraticule(self, show):
         self._canvas_2D.showGraticule(show)

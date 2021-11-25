@@ -33,6 +33,8 @@ class Camera():
 
     @config.setter 
     def config(self, input_file):
+        if input_file == '':
+            return
         self._configured = True
         self._input_file = input_file
         f = open(self._input_file)
@@ -61,7 +63,7 @@ class Camera():
     
     @stars.setter
     def stars(self, value):
-        self._stars = value   
+        self._stars = value
         
     @property
     def roll(self):

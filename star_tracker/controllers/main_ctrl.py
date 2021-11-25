@@ -1,7 +1,7 @@
 import webbrowser
 
 from PySide2.QtCore import QObject, Slot
-from model.main_model import MainModel
+from model.main_model import MainModel, ViewMode
 from views.about_view import About
 
 class MainController(QObject):
@@ -24,11 +24,14 @@ class MainController(QObject):
         
     @Slot(str)
     def save_frame_name(self, value):
-        self._model.frame_name = value
+        self._model.take_photo(value)
     
     @Slot(bool)
     def change_view_plot_mode(self, value):
-        self._model.view_plot_mode = value
+        if(value):
+            self._model.view_plot_mode = ViewMode.VIEW3D
+        else:
+            self._model.view_plot_mode = ViewMode.VIEW2D    
     
     @Slot(bool)
     def change_camera_view(self, value):

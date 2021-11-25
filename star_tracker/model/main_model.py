@@ -1,9 +1,19 @@
 from os import error
-from PySide2.QtCore import QObject, Signal
+from PySide2.QtCore import SIGNAL, QObject, Signal
 import json
+from enum import Enum
+from modules.camera import Camera
+from modules.stars import Stars
+
+class ViewMode(Enum):
+    VIEW3D = 0
+    VIEW2D = 1
 
 class MainModel(QObject):
 
+    stars_changed = Signal(dict)
+    camera_position_changed = Signal(dict)
+    
     manual_controls_enable_chaged = Signal(bool)
 
     ################################################################
@@ -21,7 +31,25 @@ class MainModel(QObject):
     def stars_input_file(self, value):
         self._stars_input_file = value
         self.save()
+        try:
+            self.stars.load_catalog(value)
+            aux = Stars()
+            aux.load_catalog(value)
+            self._camera.stars = aux
+            self.stars_changed.emit(self.stars.getDict())
+            
+            #self._model.stars = self._stars.getDict()
+        except FileNotFoundError:
+            pass
         self.stars_input_file_changed.emit(value)
+    
+    @property
+    def stars(self):
+        return self._stars
+    @stars.setter
+    def stars(self, value):
+        self._stars = value
+        self.stars_changed.emit(value)
     
     ################################################################
     # Load a pre set movements file.
@@ -62,6 +90,7 @@ class MainModel(QObject):
     @camera_input_file.setter
     def camera_input_file(self,value):
         self._camera_input_file = value
+        self._camera.config = value
         self.camera_input_file_changed.emit(value)
     
         if value == '':
@@ -78,7 +107,8 @@ class MainModel(QObject):
     def camera_name(self,value):
         self._camera_name = value
         self.camera_name_changed.emit(value)
-        
+
+    """    
     ####################################################################
     # Save frame with the given location and name in png
     ####################################################################
@@ -88,15 +118,16 @@ class MainModel(QObject):
         return self._frame_name
     @frame_name.setter
     def frame_name(self, value):
+        print("OPA")
         self._frame_name = value
         self.frame_name_changed.emit(value)
-    
+    """
     ################################################################
     # Set view mode 3D or 2D
     # 3D: True
     # 2D: False
     ################################################################
-    view_plot_mode_changed = Signal(bool)
+    view_plot_mode_changed = Signal(ViewMode)
     @property
     def view_plot_mode(self):
         return self._view_plot_mode
@@ -187,12 +218,16 @@ class MainModel(QObject):
         super().__init__()
 
         self._stars_input_file = ''
+        self._stars = Stars()
+        
+        self._camera_position = {}
+        self._camera = Camera()
         self._movements_input_file = ''
         self._camera_input_file = ''
 
         self._camera_name = 'No Loaded File'
-
-        self._view_plot_mode = False
+        self._view_plot_mode = ViewMode.VIEW2D
+        
         self._load_stars_file = False
         self._change_camera_view = False
         self._change_graticule_view = False
@@ -203,6 +238,7 @@ class MainModel(QObject):
         
         self._load_movements_file = False
         self._manual_controls_enable = True
+        self.load()
 
     def load(self):
         try:
@@ -210,12 +246,16 @@ class MainModel(QObject):
             data = json.load(f)
             
             self.stars_input_file = data['stars_input_file']
+            
             self.movements_input_file = data['movements_input_file']
             self.camera_input_file = data['camera_input_file']
-
-            self.camera_name = data['camera_name']    
+            self.camera_name = data['camera_name']
             
-            self.view_plot_mode = data['view_plot_mode']
+            
+            if data['view_plot_mode']:
+                self.view_plot_mode = ViewMode.VIEW3D
+            else:
+                self.view_plot_mode = ViewMode.VIEW2D
             self.change_camera_view = data['show_camera']
             self.change_graticule_view = data['show_graticule']
 
@@ -232,7 +272,11 @@ class MainModel(QObject):
         data['camera_input_file'] = self._camera_input_file
         data['camera_name'] = self._camera_name
         
-        data['view_plot_mode'] = self._view_plot_mode
+        if self._view_plot_mode == ViewMode.VIEW3D:
+            data['view_plot_mode'] = True
+        else:
+            data['view_plot_mode'] = False    
+        
         data['show_camera'] = self._change_camera_view
         data['show_graticule'] = self._change_graticule_view
         
@@ -241,3 +285,27 @@ class MainModel(QObject):
         data['dec'] = self._dec
         file = open('./data/save.json','w')
         json.dump(data,file)
+
+    @property
+    def camera_position(self) -> dict:
+        return self._camera_position
+    
+    @camera_position.setter
+    def camera_position(self, value):
+        self._camera_position = value
+        self.camera_position_changed.emit(value)
+    
+    @property
+    def show_camera(self):
+        return self._show_camera
+    
+    @show_camera.setter
+    def show_camera(self, value):
+        self._show_camera = value
+        self.camera_position_changed.emit(self.camera_position)
+    
+    def fire(self):
+        self.view_plot_mode_changed.emit(self.view_plot_mode)
+
+    def take_photo(self,output_file):
+        self._camera.take_frame(output_file)
