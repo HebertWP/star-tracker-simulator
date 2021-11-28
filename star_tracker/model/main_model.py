@@ -49,7 +49,7 @@ class MainModel(QObject):
             self.view_plot_mode = ViewMode.VIEW2D
         self.movements_input_file = data['movements_input_file']
         self.change_camera_view = data['Show camera']
-        
+        self.change_graticule_view = data['Show graticule']
         """    
             self.change_camera_view = data['show_camera']
             self.change_graticule_view = data['show_graticule']
@@ -64,7 +64,7 @@ class MainModel(QObject):
         data['Stars input file'] = self._stars.input_file
         data['Show Stars'] = self._stars.show
         
-        data['show_graticule'] = self._change_graticule_view
+        data['Show graticule'] = self._change_graticule_view
         
         data['roll'] = self._roll
         data['ar'] = self._ar
@@ -262,24 +262,6 @@ class MainModel(QObject):
     def manual_controls_enable(self,value):
         self._manual_controls_enable = value
         self.manual_controls_enable_chaged.emit(value)
-    
-    @property
-    def camera_position(self) -> dict:
-        return self._camera_position
-    
-    @camera_position.setter
-    def camera_position(self, value):
-        self._camera_position = value
-        self.camera_position_changed.emit(value)
-    
-    @property
-    def show_camera(self):
-        return self._show_camera
-    
-    @show_camera.setter
-    def show_camera(self, value):
-        self._show_camera = value
-        self.camera_position_changed.emit(self.camera_position)
 
     def take_photo(self,output_file):
         self._camera.take_frame(output_file)
