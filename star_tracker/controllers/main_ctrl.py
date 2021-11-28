@@ -3,6 +3,7 @@ import webbrowser
 from PySide2.QtCore import QObject, Slot
 from model.main_model import MainModel, ViewMode
 from views.about_view import About
+from modules.basic import deg2rad
 
 class MainController(QObject):
     def __init__(self, model : MainModel):
@@ -49,14 +50,18 @@ class MainController(QObject):
 
     @Slot(float)
     def change_roll(self, value):
+        #value = deg2rad(value)
+        #print("aqui")
         self._model.roll = value
     
     @Slot(float)
     def change_ar(self, value):
+        #value = deg2rad(value)
         self._model.ar = value
     
     @Slot(float)
     def change_dec(self, value):
+        #value = deg2rad(value)
         self._model.dec = value
     
     @Slot(bool)

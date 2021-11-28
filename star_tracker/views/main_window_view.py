@@ -110,7 +110,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.view3D_text.setChecked(False)
         else:
             self.view3D_text.setChecked(True)
-            
     
     def change_camera_view(self, view_3D, view_2D, show):
         self._show_camera.setChecked(show)
@@ -122,17 +121,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._graticule_control.setChecked(value)
     
     def change_roll(self, value):
+        self._roll_scroll.blockSignals(True)
+        self._roll_spin.blockSignals(True)
         self._roll_scroll.setValue(value)
         self._roll_spin.setValue(value)
+        self._roll_scroll.blockSignals(False)
+        self._roll_spin.blockSignals(False)
     
     def change_ar(self, value):
+        self._ar_scroll.blockSignals(True)
+        self._ar_spin.blockSignals(True)
         self._ar_scroll.setValue(value)
         self._ar_spin.setValue(value)
+        self._ar_scroll.blockSignals(False)
+        self._ar_spin.blockSignals(False)
     
     def change_dec(self, value):
+        self._dec_scroll.blockSignals(True)
+        self._dec_spin.blockSignals(True)
         self._dec_scroll.setValue(value)
         self._dec_spin.setValue(value)
-    
+        self._dec_scroll.blockSignals(False)
+        self._dec_spin.blockSignals(False)
+
     def enable_manual_controls(self,value):
         self._dec_scroll.setDisabled(not value)
         self._dec_spin.setDisabled(not value)

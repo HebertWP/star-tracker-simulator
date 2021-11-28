@@ -2,9 +2,12 @@ from os import error
 from PySide2.QtCore import SIGNAL, QObject, Signal
 import json
 from enum import Enum
-from modules.camera import Camera
-from modules.stars import Stars
-
+from numpy import pi
+try:
+    from modules.camera import Camera
+    from modules.stars import Stars
+except ImportError:
+    pass
 class ViewMode(Enum):
     VIEW3D = 0
     VIEW2D = 1
@@ -22,10 +25,6 @@ class MainModel(QObject):
         self._view_plot_mode = ViewMode.VIEW2D
         
         self._change_graticule_view = False
-
-        self._roll = 0.0
-        self._ar = 0.0
-        self._dec = 0.0
 
         self._load_movements_file = False
         self._manual_controls_enable = True
@@ -50,14 +49,9 @@ class MainModel(QObject):
         self.movements_input_file = data['movements_input_file']
         self.change_camera_view = data['Show camera']
         self.change_graticule_view = data['Show graticule']
-        """    
-            self.change_camera_view = data['show_camera']
-            self.change_graticule_view = data['show_graticule']
-
-            self.roll = data['roll']
-            self.dec = data['dec']
-            self.ar = data['ar']
-        """
+        self.roll = data['roll']
+        self.dec = data['dec']
+        self.ar = data['ar']
 
     def save(self):
         data = {}
@@ -66,9 +60,9 @@ class MainModel(QObject):
         
         data['Show graticule'] = self._change_graticule_view
         
-        data['roll'] = self._roll
-        data['ar'] = self._ar
-        data['dec'] = self._dec
+        data['roll'] = self._camera.roll * 180/pi
+        data['ar'] = self._camera.ar * 180/pi
+        data['dec'] = self._camera.dec * 180/pi
 
         data['movements_input_file'] = self._movements_input_file
         data['Camera input file'] = self._camera.input_file
@@ -186,8 +180,8 @@ class MainModel(QObject):
     @view_plot_mode.setter
     def view_plot_mode(self, value):
         self._view_plot_mode = value
-        self.save()
         self.view_plot_mode_changed.emit(value)
+        self.save()
     
     ################################################################
     # Show or hide graticule in pre view
@@ -219,27 +213,31 @@ class MainModel(QObject):
     roll_changed = Signal(float)
     @property
     def roll(self):
-        return self._roll
+        return self._camera.roll * 180/pi
     @roll.setter
     def roll(self, value):
-        self._roll = value
-        self.save()
-        self._camera.roll = value
+        self._camera.roll = value *pi/180
         self.roll_changed.emit(value)
-
+        data_3D = self._camera.position_dict
+        data_2D = self._camera.position_dict_spherical
+        self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
+        self.save()
+    
     ################################################################
     # ar in degrees
     ################################################################
     ar_changed = Signal(float)
     @property
     def ar(self):
-        return self._ar
+        return self._camera.ar * 180/pi
     @ar.setter
     def ar(self, value):
-        self._ar = value
-        self.save()
-        self._camera.ar = value
+        self._camera.ar = value * pi/180
         self.ar_changed.emit(value)
+        data_3D = self._camera.position_dict
+        data_2D = self._camera.position_dict_spherical
+        self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
+        self.save()
     
     ################################################################
     # dec in degrees
@@ -247,13 +245,15 @@ class MainModel(QObject):
     dec_changed = Signal(float)
     @property
     def dec(self):
-        return self._dec
+        return self._camera.dec * 180/pi
     @dec.setter
     def dec(self, value):
-        self._dec = value
-        self.save()
-        self._camera.dec = value
+        self._camera.dec = value * pi/180
         self.dec_changed.emit(value)
+        data_3D = self._camera.position_dict
+        data_2D = self._camera.position_dict_spherical
+        self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
+        self.save()
         
     @property
     def manual_controls_enable(self):
