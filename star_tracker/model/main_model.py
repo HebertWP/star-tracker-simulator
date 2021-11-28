@@ -43,14 +43,17 @@ class MainModel(QObject):
         self._camera.stars.load_catalog(data['Stars input file'])
         self._stars.show = data['Show Stars']
         self.stars_changed.emit(self._stars.getDict(),self._stars.show)
+        
+        if data['view_plot_mode']:
+            self.view_plot_mode = ViewMode.VIEW3D
+        else:
+            self.view_plot_mode = ViewMode.VIEW2D
+        self.view_plot_mode_changed.emit(self.view_plot_mode)
+
         """
         self.movements_input_file = data['movements_input_file']
             self.camera_input_file = data['camera_input_file']
             
-            if data['view_plot_mode']:
-                self.view_plot_mode = ViewMode.VIEW3D
-            else:
-                self.view_plot_mode = ViewMode.VIEW2D
             self.change_camera_view = data['show_camera']
             self.change_graticule_view = data['show_graticule']
 
@@ -63,6 +66,13 @@ class MainModel(QObject):
         data = {}
         data['Stars input file'] = self._stars.input_file
         data['Show Stars'] = self._stars.show
+        
+        data['show_graticule'] = self._change_graticule_view
+        
+        data['roll'] = self._roll
+        data['ar'] = self._ar
+        data['dec'] = self._dec
+
         data['movements_input_file'] = self._movements_input_file
         data['Camera input file'] = self._camera.input_file
         
@@ -72,11 +82,7 @@ class MainModel(QObject):
             data['view_plot_mode'] = False    
         
         data['show_camera'] = self._change_camera_view
-        data['show_graticule'] = self._change_graticule_view
-        
-        data['roll'] = self._roll
-        data['ar'] = self._ar
-        data['dec'] = self._dec
+
         file = open('./data/save.json','w')
         json.dump(data,file)
 
@@ -288,9 +294,6 @@ class MainModel(QObject):
     def show_camera(self, value):
         self._show_camera = value
         self.camera_position_changed.emit(self.camera_position)
-    
-    def fire(self):
-        self.view_plot_mode_changed.emit(self.view_plot_mode)
 
     def take_photo(self,output_file):
         self._camera.take_frame(output_file)

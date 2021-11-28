@@ -83,7 +83,6 @@ class Widget(QWidget):
         self._canvas_3D.draw()
         
     def plot_stars(self, stars, show):
-        print(show)
         self._canvas_2D.stars = stars
         self._canvas_2D.show_stars(show)
         self._canvas_2D.draw()

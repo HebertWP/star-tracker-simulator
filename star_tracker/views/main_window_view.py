@@ -54,9 +54,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._model.roll_changed.connect(self.change_roll)
         self._model.ar_changed.connect(self.change_ar)
         self._model.dec_changed.connect(self.change_dec)
-    
-        self._model.fire()
-        
+
     def open_stars(self):
         file = QFileDialog(self)
         file.setNameFilter("*.csv")
