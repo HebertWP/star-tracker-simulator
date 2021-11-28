@@ -72,7 +72,7 @@ class Widget(QWidget):
         #events signal
         self._model.view_plot_mode_changed.connect(self.set_view)
         self._model.stars_changed.connect(self.plot_stars)
-        self._model.camera_position_changed.connect(self.plot_camera)
+        self._model.camera_auxiliary_view_changed.connect(self.plot_camera)
         self._model.graticule_view_changed.connect(self.plotGraticule)
 
     def plotGraticule(self, show):
@@ -91,14 +91,14 @@ class Widget(QWidget):
         self._canvas_3D.show_stars(show)
         self._canvas_3D.draw()
         
-    def plot_camera(self, camera):
-        camera_3D = {'3D':camera['3D'], '3D_pos': camera['3D_pos']}
-        camera_2D = camera['2D']
+    def plot_camera(self, camera_3D, camera_2D, show):
+        #camera_3D = {'3D':camera['3D'], '3D_pos': camera['3D_pos']}
+        #camera_2D = camera['2D']
         
         self._canvas_2D.camera = camera_2D
-        self._canvas_2D.show_camera(self._model.show_camera)
+        self._canvas_2D.show_camera(show)
         self._canvas_2D.draw()
         
-        self._canvas_3D.camera = camera_3D
-        self._canvas_3D.show_camera(self._model.show_camera)
-        self._canvas_3D.draw()
+        #self._canvas_3D.camera = camera_3D
+        #self._canvas_3D.show_camera(show)
+        #self._canvas_3D.draw()

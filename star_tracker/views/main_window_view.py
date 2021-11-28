@@ -42,11 +42,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._dec_scroll.valueChanged.connect(self._main_controller.change_dec)
         
         #event signal
-        self._model.camera_name_changed.connect(self.load_camera)
-
         self._model.view_plot_mode_changed.connect(self.change_mode_view_icon)
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
-        self._model.show_camera_changed.connect(self.change_camera_vew)
+        self._model.camera_auxiliary_view_changed.connect(self.change_camera_view)
         self._model.graticule_view_changed.connect(self.change_graticule_view)
         self._model.stars_changed.connect(self.show_stars)
 
@@ -114,8 +112,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.view3D_text.setChecked(True)
             
     
-    def change_camera_vew(self, value):
-        self._show_camera.setChecked(value)
+    def change_camera_view(self, view_3D, view_2D, show):
+        self._show_camera.setChecked(show)
 
     def show_stars(self,dic,show):
         self._view_stars.setChecked(show)

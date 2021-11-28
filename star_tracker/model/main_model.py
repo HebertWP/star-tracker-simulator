@@ -21,14 +21,12 @@ class MainModel(QObject):
 
         self._view_plot_mode = ViewMode.VIEW2D
         
-        self._change_camera_view = False
         self._change_graticule_view = False
 
         self._roll = 0.0
         self._ar = 0.0
         self._dec = 0.0
 
-        self._load_stars_file = False
         self._load_movements_file = False
         self._manual_controls_enable = True
 
@@ -43,16 +41,16 @@ class MainModel(QObject):
         self._camera.stars.load_catalog(data['Stars input file'])
         self._stars.show = data['Show Stars']
         self.stars_changed.emit(self._stars.getDict(),self._stars.show)
-        
+        self.camera_input_file = data['Camera input file']
+
         if data['view_plot_mode']:
             self.view_plot_mode = ViewMode.VIEW3D
         else:
             self.view_plot_mode = ViewMode.VIEW2D
         self.movements_input_file = data['movements_input_file']
+        self.change_camera_view = data['Show camera']
         
-        """
-            self.camera_input_file = data['camera_input_file']
-            
+        """    
             self.change_camera_view = data['show_camera']
             self.change_graticule_view = data['show_graticule']
 
@@ -80,13 +78,11 @@ class MainModel(QObject):
         else:
             data['view_plot_mode'] = False    
         
-        data['show_camera'] = self._change_camera_view
+        data['Show camera'] = self._camera.show
 
         file = open('./data/save.json','w')
         json.dump(data,file)
 
-    camera_position_changed = Signal(dict)
-    
     manual_controls_enable_chaged = Signal(bool)
 
     ################################################################
@@ -147,31 +143,37 @@ class MainModel(QObject):
     #       "h": 720
     #   }
     ################################################################
-    camera_input_file_changed = Signal(str)
+    camera_auxiliary_view_changed = Signal(dict, dict, bool)
     @property
     def camera_input_file(self):
-        return self._camera_input_file
+        return self._camera.input_file
     @camera_input_file.setter
     def camera_input_file(self,value):
-        self._camera_input_file = value
-        self._camera.config = value
-        self.camera_input_file_changed.emit(value)
-    
-        if value == '':
-            self.camera_name = "No Loaded File"
-        else:
-            v = value.split(sep="/")
-            self.camera_name = v[-1]    
+        try:
+            self._camera.config = value
+            data_3D = self._camera.position_dict
+            data_2D = self._camera.position_dict_spherical
+            self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)            
+        except FileNotFoundError:
+            pass   
         self.save()
-    camera_name_changed = Signal(str)
-    @property
-    def camera_name(self):
-        return self._camera_name
-    @camera_name.setter
-    def camera_name(self,value):
-        self._camera_name = value
-        self.camera_name_changed.emit(value)
 
+    ################################################################
+    # Show or hide camera
+    # Show: True
+    # Hide: False
+    ################################################################
+    @property
+    def change_camera_view(self):
+        return self._camera.show
+    @change_camera_view.setter
+    def change_camera_view(self,value):
+        self._camera.show = value
+        data_3D = self._camera.position_dict
+        data_2D = self._camera.position_dict_spherical
+        self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show) 
+        self.save()
+    
     ################################################################
     # Set view mode 3D or 2D
     # 3D: True
@@ -186,21 +188,6 @@ class MainModel(QObject):
         self._view_plot_mode = value
         self.save()
         self.view_plot_mode_changed.emit(value)
-    
-    ################################################################
-    # Show or hide camera
-    # Show: True
-    # Hide: False
-    ################################################################
-    show_camera_changed = Signal(bool)
-    @property
-    def change_camera_view(self):
-        return self._change_camera_view
-    @change_camera_view.setter
-    def change_camera_view(self,value):
-        self._change_camera_view = value
-        self.save()
-        self.show_camera_changed.emit(value)
     
     ################################################################
     # Show or hide graticule in pre view

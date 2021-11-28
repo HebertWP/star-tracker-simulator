@@ -27,6 +27,8 @@ class Camera():
         self._roll = 0 
         self._stars = Stars()
         self._input_file = ''
+        self._name = 'No Loaded File'
+        self._show = True
         
     @property
     def config(self):
@@ -219,3 +221,10 @@ class Camera():
     @property
     def coordinates(self):
         return self._axles
+    
+    @property
+    def show(self):
+        return self._show
+    @show.setter
+    def show(self, value):
+        self._show = value
