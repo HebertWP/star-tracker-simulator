@@ -48,10 +48,9 @@ class MainModel(QObject):
             self.view_plot_mode = ViewMode.VIEW3D
         else:
             self.view_plot_mode = ViewMode.VIEW2D
-        self.view_plot_mode_changed.emit(self.view_plot_mode)
-
-        """
         self.movements_input_file = data['movements_input_file']
+        
+        """
             self.camera_input_file = data['camera_input_file']
             
             self.change_camera_view = data['show_camera']
