@@ -8,7 +8,6 @@ from model.camera_window_model import CameraWindowModel
 
 #my controllers import
 from controllers.main_ctrl import MainController
-from controllers.widget_ctrl import WidgetController
 from controllers.frame_ctrl import FrameController
 from controllers.camera_window_ctrl import CameraWindowController
 
@@ -26,7 +25,6 @@ class App(QApplication):
         self._main_controller = MainController(self._main_model)
         self._main_view = MainWindow(self._main_model, self._main_controller)
         
-        self._widget_controller = WidgetController(self._main_model)
         self._widget_view = self._main_view.view_plot_widget
         self._widget_view.model = self._main_model
         

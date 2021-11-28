@@ -40,7 +40,9 @@ class MainController(QObject):
     @Slot(bool)
     def change_graticule_view(self, value):
         self._model.change_graticule_view = value
-    
+    @Slot(bool)
+    def change_stars_view(self, value):
+        self._model.change_stars_view = value
     @Slot(bool)
     def change_view_simulation(self, value):
         print("Not implemented")

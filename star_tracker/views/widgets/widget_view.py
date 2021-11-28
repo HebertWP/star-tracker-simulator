@@ -82,13 +82,14 @@ class Widget(QWidget):
         self._canvas_3D.showGraticule(show)
         self._canvas_3D.draw()
         
-    def plot_stars(self, stars):
+    def plot_stars(self, stars, show):
+        print(show)
         self._canvas_2D.stars = stars
-        self._canvas_2D.show_stars(True)
+        self._canvas_2D.show_stars(show)
         self._canvas_2D.draw()
         
         self._canvas_3D.stars = stars
-        self._canvas_3D.show_stars(True)
+        self._canvas_3D.show_stars(show)
         self._canvas_3D.draw()
         
     def plot_camera(self, camera):

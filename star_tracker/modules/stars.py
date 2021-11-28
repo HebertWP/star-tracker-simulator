@@ -13,9 +13,14 @@ except ImportError:
 
 class Stars:
     def __init__(self):
-        self._x, self._y, self._z, self._ar, self._dec = [],[],[],[],[]
+        self._x, self._y, self._z, self._ar, self._dec, self._v = [], [], [], [], [], []
+        self._configured = False
+        self._show = True
+        self._input_file = ''
     
     def load_catalog(self, input_file):
+        if input_file == '':
+            return
         self._input_file = input_file
         stars = pandas.read_csv(self._input_file)
     
@@ -32,7 +37,12 @@ class Stars:
             self._dec.append(DEC[i])
             self._v.append(V[i])
             self._n.append(N[i])
-        self._x, self._y, self._z= spherical2catersian(deg2rad(self._ar), deg2rad(self._dec))
+        self._x, self._y, self._z = spherical2catersian(deg2rad(self._ar), deg2rad(self._dec))
+        self._configured = True
+
+    @property
+    def input_file(self):
+        return self._input_file
     
     def getStarts(self):
         return self._x, self._y, self._z
@@ -44,16 +54,13 @@ class Stars:
         for i in range(len(self._x)):
             self._x[i], self._y[i], self._z[i] = quaternus_rotation(q,[self._x[i], self._y[i], self._z[i]])
             self._dec[i], self._ar[i] = catersian2spherical(self._x[i], self._y[i], self._z[i])
-        
-        d2 = Canvas2D(Figure())
-        d2.stars = self.getDict()
-        d2.show_stars(True)
-        d2.draw()
-        
-        d3 = Canvas3D(Figure())
-        d3.stars = self.getDict()
-        d3.show_stars(True)
-        d3.draw()
-            
+
+    @property
+    def show(self):
+        return self._show
+    @show.setter
+    def show(self, value):
+        self._show = value
+    
     def __len__(self):
         return len(self._n)

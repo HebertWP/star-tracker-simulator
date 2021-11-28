@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view3D_text.clicked.connect(self._main_controller.change_view_plot_mode)
         self._show_camera.clicked.connect(self._main_controller.change_camera_view)
         self._graticule_control.clicked.connect(self._main_controller.change_graticule_view)
+        self._view_stars.clicked.connect(self._main_controller.change_stars_view)
         self._view_simulation.clicked.connect(self._main_controller.change_view_simulation)
         self._save_frame_button.clicked.connect(self.save_frame)
 
@@ -47,6 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._model.view_plot_mode_changed.connect(self.change_mode_view_text)
         self._model.show_camera_changed.connect(self.change_camera_vew)
         self._model.graticule_view_changed.connect(self.change_graticule_view)
+        self._model.stars_changed.connect(self.show_stars)
 
         self._model.manual_controls_enable_chaged.connect(self.enable_manual_controls)
         self._model.roll_changed.connect(self.change_roll)
@@ -117,6 +119,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def change_camera_vew(self, value):
         self._show_camera.setChecked(value)
 
+    def show_stars(self,dic,show):
+        self._view_stars.setChecked(show)
+    
     def change_graticule_view(self, value):
         self._graticule_control.setChecked(value)
     

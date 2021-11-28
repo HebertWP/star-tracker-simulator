@@ -26,6 +26,7 @@ class Camera():
         self._dec = 0
         self._roll = 0 
         self._stars = Stars()
+        self._input_file = ''
         
     @property
     def config(self):
@@ -56,6 +57,10 @@ class Camera():
         
         aux = self._dots
         self._position_dict = {'x' : [aux[0][0], aux[1][0], aux[2][0], aux[3][0]], 'y': [aux[0][1], aux[1][1], aux[2][1], aux[3][1]],'z': [aux[0][2], aux[1][2], aux[2][2], aux[3][2]]}
+    
+    @property
+    def input_file(self):
+        return self._input_file
     
     @property
     def stars(self) -> Stars:
