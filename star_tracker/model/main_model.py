@@ -145,7 +145,7 @@ class MainModel(QObject):
     def camera_input_file(self,value):
         try:
             self._camera.config = value
-            data_3D = self._camera.position_dict
+            data_3D = {'3D':self._camera.position_dict, '3D_pos':self._camera.coordinates}
             data_2D = self._camera.position_dict_spherical
             self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)            
         except FileNotFoundError:
@@ -163,7 +163,7 @@ class MainModel(QObject):
     @change_camera_view.setter
     def change_camera_view(self,value):
         self._camera.show = value
-        data_3D = self._camera.position_dict
+        data_3D = {'3D':self._camera.position_dict, '3D_pos':self._camera.coordinates}
         data_2D = self._camera.position_dict_spherical
         self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show) 
         self.save()
@@ -218,7 +218,7 @@ class MainModel(QObject):
     def roll(self, value):
         self._camera.roll = value *pi/180
         self.roll_changed.emit(value)
-        data_3D = self._camera.position_dict
+        data_3D = {'3D':self._camera.position_dict, '3D_pos':self._camera.coordinates}
         data_2D = self._camera.position_dict_spherical
         self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
         self.save()
@@ -234,7 +234,7 @@ class MainModel(QObject):
     def ar(self, value):
         self._camera.ar = value * pi/180
         self.ar_changed.emit(value)
-        data_3D = self._camera.position_dict
+        data_3D = {'3D':self._camera.position_dict, '3D_pos':self._camera.coordinates}
         data_2D = self._camera.position_dict_spherical
         self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
         self.save()
@@ -250,7 +250,7 @@ class MainModel(QObject):
     def dec(self, value):
         self._camera.dec = value * pi/180
         self.dec_changed.emit(value)
-        data_3D = self._camera.position_dict
+        data_3D = {'3D':self._camera.position_dict, '3D_pos':self._camera.coordinates}
         data_2D = self._camera.position_dict_spherical
         self.camera_auxiliary_view_changed.emit(data_3D, data_2D,self._camera.show)
         self.save()

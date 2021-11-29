@@ -99,6 +99,6 @@ class Widget(QWidget):
         self._canvas_2D.show_camera(show)
         self._canvas_2D.draw()
         
-        #self._canvas_3D.camera = camera_3D
-        #self._canvas_3D.show_camera(show)
-        #self._canvas_3D.draw()
+        self._canvas_3D.camera = camera_3D
+        self._canvas_3D.show_camera(show)
+        self._canvas_3D.draw()
