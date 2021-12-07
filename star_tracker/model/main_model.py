@@ -1,4 +1,5 @@
-from os import error
+import sys, os
+from pathlib import Path
 from PySide2.QtCore import SIGNAL, QObject, Signal
 import json
 from enum import Enum
@@ -31,7 +32,9 @@ class MainModel(QObject):
 
     def load(self):
         try:
-            f = open('./data/save.json','r')
+            pathname = os.path.dirname(sys.argv[0])
+            path = os.path.abspath(pathname) + "/data/save.json"
+            f = open(path,'r')
             data = json.load(f)
         except FileNotFoundError:
             return
@@ -74,9 +77,13 @@ class MainModel(QObject):
         
         data['Show camera'] = self._camera.show
 
-        file = open('./data/save.json','w')
+        pathname = os.path.dirname(sys.argv[0])        
+        Path(pathname + "/data").mkdir(parents=True, exist_ok=True)
+        path = os.path.abspath(pathname) + "/data/save.json"
+        file = open(path,'w')
         json.dump(data,file)
-
+        print(path)
+        
     manual_controls_enable_chaged = Signal(bool)
 
     ################################################################

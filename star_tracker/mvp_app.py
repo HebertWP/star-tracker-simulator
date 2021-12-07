@@ -13,7 +13,7 @@ from controllers.camera_window_ctrl import CameraWindowController
 
 #my views import
 from views.main_window_view import MainWindow
-from views.widgets.widget_view import Widget
+from views.widget_view import Widget
 from views.frame_view import AutomaticMovements
 from views.camera_window_view import CameraWindowView 
 

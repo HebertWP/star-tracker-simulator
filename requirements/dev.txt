@@ -11,3 +11,4 @@ matplotlib
 tk
 PySide6
 PySide2
+pyinstaller

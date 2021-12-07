@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Star Simulator</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -870,7 +870,7 @@
   <customwidget>
    <class>Widget</class>
    <extends>QWidget</extends>
-   <header>views.widgets.widget_view.h</header>
+   <header>views.widget_view.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

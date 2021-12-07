@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from views.widgets.widget_view import Widget
+from views.widget_view import Widget
 from views.frame_view import AutomaticMovements
 
 import resources_rc
@@ -558,7 +558,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Star Simulator", None))
         self.actionOpen_Star_File.setText(QCoreApplication.translate("MainWindow", u"Open Star File", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Manual Control", None))
         self._roll_label.setText(QCoreApplication.translate("MainWindow", u"Roll", None))
