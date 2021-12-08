@@ -189,6 +189,9 @@ Figura 7. Sistema equatorial de coordenadas. Fonte (Carvalho, 2001)
 
 A transformação do sistema de coordenadas polares para coordenadas cartesianas é feita  com base na figura 9.
 
+# Imagen interface preliminar
+![alt_text](images/interface.png "image_tooltip")
+
 # 4 Referências  
 
 
