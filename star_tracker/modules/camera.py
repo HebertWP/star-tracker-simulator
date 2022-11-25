@@ -192,7 +192,7 @@ class Camera():
         st=[]
         for i in range(len(stars['x'])):
             if(stars['x'][i] >= 0):#np.cos(self._view_ang/2)):
-                st.append([stars['x'][i],stars['y'][i],stars['z'][i],stars['v'][i]])
+                st.append([stars['x'][i],stars['y'][i],stars['z'][i],stars['v'][i]/7])
         res = {'x':[], 'y':[], 'z':[],'v':[]}
         aux = self.perspective(st)
         for i in range(len(aux)):
@@ -208,7 +208,7 @@ class Camera():
             os.remove(value)
         except:
             pass
-        la.figure.savefig(value)
+        la.figure.savefig(value,dpi = 900)
 
         q_ar[0] = -q_ar[0]
         q_dec[0] = -q_dec[0]

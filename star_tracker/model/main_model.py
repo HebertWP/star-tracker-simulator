@@ -82,7 +82,7 @@ class MainModel(QObject):
         path = os.path.abspath(pathname) + "/data/save.json"
         file = open(path,'w')
         json.dump(data,file)
-        print(path)
+        #print(path)
         
     manual_controls_enable_chaged = Signal(bool)
 

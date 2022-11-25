@@ -71,7 +71,9 @@ class Canvas3D(FigureCanvas):
                 dec.append(deg2rad(i))
             x,y,z=spherical2catersian(ar, dec)
             self._graticule_plots.append(self.axes.plot(x,y,z, color=self._graticule_color, linewidth = 0.4))
-    
+
+        for i in self.stars['x']:
+            print(i)
     @property
     def stars(self):
         return self._stars
@@ -87,7 +89,7 @@ class Canvas3D(FigureCanvas):
             del self._stars_plots[0]
         if not show:
             return
-        self._stars_plots.append(self.axes.scatter3D(self.stars['x'], self.stars['y'], self.stars['z'], s = self.stars['v'], color = "white"))
+        self._stars_plots.append(self.axes.scatter3D(self.stars['x'], self.stars['y'], self.stars['z'], s = [i/10 for i in self.stars['v']], color = "white"))
     
     @property
     def camera(self):

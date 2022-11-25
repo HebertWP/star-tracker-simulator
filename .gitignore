@@ -66,3 +66,5 @@ target/
 
 #GUI auxiliar operation data
 star_tracker/data
+
+*.venv
