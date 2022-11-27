@@ -3,7 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
-from model.camera_window_model import CameraWindowModel
+from models.camera_window_model import CameraWindowModel
 from controllers.camera_window_ctrl import CameraWindowController
 from views.CameraWindow_ui import Ui_CameraWindow
 

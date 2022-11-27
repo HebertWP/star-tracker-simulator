@@ -1,7 +1,7 @@
 import webbrowser
 
 from PySide2.QtCore import QObject, Slot
-from model.main_model import MainModel, ViewMode
+from models.main_model import MainModel, ViewMode
 from views.about_view import About
 from modules.basic import deg2rad
 

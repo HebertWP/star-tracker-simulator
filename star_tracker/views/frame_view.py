@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import *
-from model.frame_model import *
+from models.frame_model import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 from controllers.frame_ctrl import *

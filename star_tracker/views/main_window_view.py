@@ -3,7 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 
-from model.main_model import MainModel, ViewMode
+from models.main_model import MainModel, ViewMode
 from controllers.main_ctrl import MainController
 from views.MainWindow_ui import Ui_MainWindow
 from views.frame_view import AutomaticMovements

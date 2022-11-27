@@ -7,7 +7,7 @@ from numpy import rad2deg
 from modules.basic import deg2rad, spherical2catersian
 
 #my models includes
-from model.main_model import *
+from models.main_model import *
 
 try:
     from modules.canvas_2D import *

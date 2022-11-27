@@ -2,9 +2,9 @@ import sys
 from PySide2.QtWidgets import QApplication
 
 #my models import
-from model.main_model import MainModel
-from model.frame_model import FrameModel
-from model.camera_window_model import CameraWindowModel
+from models.main_model import MainModel
+from models.frame_model import FrameModel
+from models.camera_window_model import CameraWindowModel
 
 #my controllers import
 from controllers.main_ctrl import MainController

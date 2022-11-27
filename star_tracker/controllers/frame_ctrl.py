@@ -2,8 +2,8 @@ from PySide2.QtCore import QObject, QRunnable, QThreadPool, Slot
 import time
 
 #my models includes
-from model.frame_model import *
-from model.main_model import *
+from models.frame_model import *
+from models.main_model import *
 
 #my modules includes
 from modules.loadfile import Movements

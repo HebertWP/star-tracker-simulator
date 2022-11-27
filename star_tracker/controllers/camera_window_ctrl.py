@@ -1,8 +1,8 @@
 import webbrowser
 
 from PySide2.QtCore import QObject, Slot
-from model.camera_window_model import CameraWindowModel
-from model.main_model import MainModel
+from models.camera_window_model import CameraWindowModel
+from models.main_model import MainModel
 from views.about_view import About
 
 class CameraWindowController(QObject):
