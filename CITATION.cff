@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+author:
+- family-names: "Parreira"
+  given-names: "hebert"
+title: "Star Tracker Simulator"
+version: 1.0.0
+date-released: 2022-12-10
+url: "https://github.com/HebertWP/star-tracker-simulator"
